@@ -1,0 +1,892 @@
+/* Podcast Forge – Backend */
+
+.aaspf-wrap .aaspf-config-line {
+	background: #1d2327;
+	color: #f0f0f1;
+	padding: 12px 14px;
+	border-radius: 4px;
+	overflow-x: auto;
+	font-size: 14px;
+	user-select: all;
+}
+
+.aaspf-wrap .aaspf-health th,
+.aaspf-wrap .aaspf-health td {
+	padding: 10px 12px;
+	vertical-align: top;
+}
+
+/* Der Zustand steht immer als Wort da. Farbe kommt dazu, sie trägt nicht allein. */
+.aaspf-status {
+	font-weight: 600;
+}
+
+.aaspf-status::before {
+	margin-right: 6px;
+	font-weight: 700;
+}
+
+.aaspf-status-ok      { color: #1a6b2f; }
+.aaspf-status-ok::before      { content: "\2714"; }
+.aaspf-status-warn    { color: #8a5300; }
+.aaspf-status-warn::before    { content: "\26A0"; }
+.aaspf-status-fail    { color: #a00806; }
+.aaspf-status-fail::before    { content: "\2716"; }
+.aaspf-status-skip    { color: #4a5057; }
+.aaspf-status-skip::before    { content: "\2013"; }
+.aaspf-status-pending { color: #646970; font-weight: 400; }
+.aaspf-status-running { color: #2271b1; font-weight: 400; }
+
+.aaspf-detail {
+	display: block;
+	margin-top: 4px;
+	color: #3c434a;
+	font-weight: 400;
+}
+
+.aaspf-badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 10px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1.6;
+}
+
+.aaspf-badge-ok   { background: #d7ead9; color: #14562a; }
+.aaspf-badge-skip { background: #e4e6e8; color: #3c434a; }
+
+.aaspf-segments td { vertical-align: top; }
+.aaspf-segments tr.aaspf-flagged td { background: #fcf0ef; }
+.aaspf-segments tr.aaspf-flagged td:first-child { box-shadow: inset 4px 0 0 #a00806; }
+
+/* ── Segmentliste ─────────────────────────────────────────────────────── */
+
+.aaspf-segment {
+	border: 1px solid #c3c4c7;
+	border-left-width: 5px;
+	border-left-color: #c3c4c7;
+	border-radius: 4px;
+	background: #fff;
+	margin: 0 0 12px;
+	padding: 14px 16px;
+}
+
+.aaspf-segment[data-status="beanstandet"]     { border-left-color: #a00806; background: #fdf6f6; }
+.aaspf-segment[data-status="nachgesprochen"]  { border-left-color: #1a6b2f; }
+.aaspf-segment[data-status="offen"]           { border-left-color: #dba617; }
+
+.aaspf-segment-kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.aaspf-segment-nr {
+	font-size: 17px;
+	font-weight: 700;
+	color: #1d2327;
+	min-width: 2.2em;
+}
+
+.aaspf-segment-kapitel {
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.aaspf-segment-meta {
+	color: #50575e;
+	font-size: 13px;
+}
+
+.aaspf-segment-text {
+	font-size: 15px;
+	line-height: 1.6;
+	color: #1d2327;
+	margin: 0 0 10px;
+	max-width: 62em;
+}
+
+.aaspf-segment audio {
+	width: 100%;
+	max-width: 34em;
+	height: 34px;
+	display: block;
+	margin-bottom: 10px;
+}
+
+/* ── Schaltflächenleiste ──────────────────────────────────────────────── */
+
+.aaspf-aktionen {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+}
+
+.aaspf-aktionen form { margin: 0; }
+
+.aaspf-knopf {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	border: 1px solid #8c8f94;
+	background: #f6f7f7;
+	color: #1d2327;
+	border-radius: 3px;
+	padding: 6px 12px;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.4;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.aaspf-knopf:hover        { background: #f0f0f1; border-color: #50575e; color: #1d2327; }
+.aaspf-knopf:focus-visible{ outline: 2px solid #2271b1; outline-offset: 1px; }
+.aaspf-knopf[disabled]    { opacity: .5; cursor: default; }
+
+.aaspf-knopf-warnung  { border-color: #a00806; color: #a00806; }
+.aaspf-knopf-warnung:hover { background: #fcf0ef; border-color: #a00806; color: #a00806; }
+.aaspf-knopf-haupt    { background: #2271b1; border-color: #2271b1; color: #fff; }
+.aaspf-knopf-haupt:hover { background: #135e96; border-color: #135e96; color: #fff; }
+.aaspf-knopf-aufnahme { border-color: #a00806; background: #a00806; color: #fff; }
+.aaspf-knopf-aufnahme:hover { background: #8a0605; border-color: #8a0605; color: #fff; }
+
+.aaspf-punkt {
+	width: 9px; height: 9px; border-radius: 50%;
+	background: currentColor; display: inline-block;
+}
+
+.aaspf-laeuft .aaspf-punkt { animation: aaspf-pulsieren 1s ease-in-out infinite; }
+
+@keyframes aaspf-pulsieren { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+
+@media (prefers-reduced-motion: reduce) {
+	.aaspf-laeuft .aaspf-punkt { animation: none; }
+}
+
+/* ── Korrekturbereich ─────────────────────────────────────────────────── */
+
+.aaspf-korrektur {
+	margin-top: 14px;
+	border-top: 1px solid #dcdcde;
+	padding-top: 14px;
+}
+
+.aaspf-weg {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 12px 14px;
+	margin-bottom: 10px;
+	background: #fbfbfc;
+}
+
+.aaspf-weg h4 {
+	margin: 0 0 4px;
+	font-size: 14px;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.aaspf-weg-nr {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 22px; height: 22px;
+	border-radius: 50%;
+	background: #2271b1;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 700;
+	flex: 0 0 auto;
+}
+
+.aaspf-weg p.description { margin: 0 0 10px; }
+
+.aaspf-felder { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.aaspf-felder label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+
+/* Der vorzulesende Satz — bewusst groß, er wird laut gelesen. */
+.aaspf-vorlesen {
+	font-size: 18px;
+	line-height: 1.7;
+	background: #fff;
+	border: 2px solid #2271b1;
+	border-radius: 4px;
+	padding: 14px 16px;
+	margin: 0 0 12px;
+	max-width: 46em;
+	color: #1d2327;
+}
+
+.aaspf-hinweis { font-size: 13px; color: #50575e; margin: 8px 0 0; }
+.aaspf-meldung { margin: 10px 0 0; font-weight: 600; }
+.aaspf-meldung-ok   { color: #1a6b2f; }
+.aaspf-meldung-fehler { color: #a00806; }
+
+/* ── Abnahme der ganzen Folge ─────────────────────────────────────────── */
+
+.aaspf-abnahme {
+	border: 2px solid #2271b1;
+	border-radius: 5px;
+	background: #fff;
+	padding: 18px 20px;
+	margin: 16px 0;
+	max-width: 52em;
+}
+
+.aaspf-abnahme h3 { margin-top: 0; font-size: 17px; }
+.aaspf-abnahme h4 { margin-bottom: 6px; font-size: 14px; }
+
+.aaspf-folge-player {
+	width: 100%;
+	height: 44px;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.aaspf-kapitel { margin: 0 0 10px; padding: 0; list-style: none; }
+.aaspf-kapitel li { margin: 0 0 2px; }
+
+.aaspf-sprung {
+	display: block;
+	width: 100%;
+	text-align: left;
+	background: none;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	padding: 5px 8px;
+	font-size: 14px;
+	color: #1d2327;
+	cursor: pointer;
+}
+
+.aaspf-sprung code {
+	background: #f0f0f1;
+	padding: 1px 5px;
+	border-radius: 2px;
+	margin-right: 8px;
+}
+
+.aaspf-sprung:hover        { background: #f0f6fc; border-color: #2271b1; }
+.aaspf-sprung:focus-visible{ outline: 2px solid #2271b1; outline-offset: 1px; }
+.aaspf-sprung[aria-current="true"] { background: #f0f6fc; border-color: #2271b1; font-weight: 600; }
+
+.aaspf-segmentliste {
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 12px 14px;
+	margin-top: 16px;
+	background: #fbfbfc;
+}
+
+.aaspf-segmentliste > summary {
+	cursor: pointer;
+	font-size: 15px;
+	padding: 2px 0;
+}
+
+.aaspf-segmentliste > summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
+
+.aaspf-badge-warn { background: #fcf0ef; color: #a00806; }
+
+/* ── Folgenansicht: Gerüst ────────────────────────────────────────────── */
+
+.aaspf-zurueck { margin: 0 0 2px; }
+
+.aaspf-kopfzeile {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 16px;
+}
+
+.aaspf-karte {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 5px;
+	padding: 16px 20px 20px;
+	margin: 0 0 18px;
+	/* Sprungziel der Schrittleiste — nicht unter die Adminleiste rutschen. */
+	scroll-margin-top: 46px;
+}
+
+.aaspf-karte > h2 {
+	margin: 0 0 12px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #dcdcde;
+	font-size: 18px;
+}
+
+.aaspf-karte h3 { font-size: 15px; margin: 20px 0 6px; }
+.aaspf-karte h3:first-of-type { margin-top: 4px; }
+.aaspf-karte h4 { font-size: 14px; margin: 14px 0 4px; }
+
+/* Lange Titel, URLs und Kennungen dürfen die Karte nicht aufspreizen. */
+.aaspf-karte table th,
+.aaspf-karte table td { overflow-wrap: anywhere; }
+
+.aaspf-karte-zu > summary {
+	cursor: pointer;
+	list-style-position: outside;
+}
+
+.aaspf-karte-zu > summary > h2 {
+	display: inline;
+	font-size: 18px;
+}
+
+.aaspf-karte-zu > summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
+.aaspf-karte-inhalt { margin-top: 10px; }
+
+/* ── Schrittleiste ────────────────────────────────────────────────────── */
+
+.aaspf-leiste { margin: 0 0 16px; }
+
+.aaspf-leiste ol {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: none;
+}
+
+.aaspf-schritt { flex: 1 1 9em; min-width: 0; }
+
+.aaspf-schritt a {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 8px 10px;
+	border: 1px solid #c3c4c7;
+	border-top-width: 4px;
+	border-radius: 4px;
+	background: #f6f7f7;
+	color: #50575e;
+	text-decoration: none;
+	font-size: 13px;
+	line-height: 1.4;
+}
+
+.aaspf-schritt a:hover { border-color: #50575e; border-top-color: currentColor; }
+.aaspf-schritt a:focus-visible { outline: 2px solid #2271b1; outline-offset: 1px; }
+
+.aaspf-schritt-nr { font-size: 11px; font-weight: 700; opacity: .7; }
+.aaspf-schritt-titel { font-weight: 600; color: #1d2327; }
+.aaspf-schritt-zustand { font-size: 12px; }
+
+.aaspf-schritt[data-zustand="fertig"] a {
+	border-top-color: #1a6b2f;
+	background: #f2f9f3;
+}
+.aaspf-schritt[data-zustand="fertig"] .aaspf-schritt-zustand { color: #1a6b2f; font-weight: 600; }
+.aaspf-schritt[data-zustand="fertig"] .aaspf-schritt-zustand::before { content: "\2714 "; }
+
+.aaspf-schritt[data-zustand="dran"] a {
+	border-color: #2271b1;
+	border-top-color: #2271b1;
+	background: #f0f6fc;
+}
+.aaspf-schritt[data-zustand="dran"] .aaspf-schritt-zustand { color: #135e96; font-weight: 700; }
+.aaspf-schritt[data-zustand="dran"] .aaspf-schritt-zustand::before { content: "\25B6 "; }
+
+.aaspf-schritt[data-zustand="offen"] a { border-top-color: #c3c4c7; }
+.aaspf-schritt[data-zustand="offen"] .aaspf-schritt-zustand::before { content: "\2013 "; }
+
+/* ── Was als Nächstes dran ist ────────────────────────────────────────── */
+
+.aaspf-naechstes {
+	border: 1px solid #2271b1;
+	border-left-width: 5px;
+	border-radius: 4px;
+	background: #f0f6fc;
+	padding: 14px 18px;
+	margin: 0 0 20px;
+	max-width: 52em;
+}
+
+.aaspf-naechstes-marke {
+	margin: 0 0 4px;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	color: #135e96;
+}
+
+.aaspf-naechstes-tat {
+	margin: 0 0 10px;
+	font-size: 15px;
+	line-height: 1.6;
+	color: #1d2327;
+}
+
+.aaspf-naechstes p:last-child { margin-bottom: 0; }
+
+.aaspf-naechstes-fertig {
+	border-color: #1a6b2f;
+	background: #f2f9f3;
+}
+
+/* ── Eingabefelder ────────────────────────────────────────────────────── */
+
+.aaspf-felder > div { flex: 1 1 13em; min-width: 0; }
+.aaspf-felder > div:last-child { flex: 0 0 auto; }
+.aaspf-felder input[type="text"] { width: 100%; box-sizing: border-box; }
+
+.aaspf-feld-notiz {
+	width: 16em;
+	max-width: 100%;
+	margin-right: 6px;
+}
+
+.aaspf-vorschau-player { width: 100%; max-width: 34em; margin-top: 10px; }
+
+/* ── Korrekturbereich aufklappen ──────────────────────────────────────── */
+
+.aaspf-korrektur-auf {
+	margin-top: 12px;
+	border-top: 1px solid #dcdcde;
+	padding-top: 10px;
+}
+
+.aaspf-korrektur-auf > summary {
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 600;
+	color: #135e96;
+	padding: 4px 0;
+}
+
+.aaspf-korrektur-auf > summary:hover { color: #0a4b78; }
+.aaspf-korrektur-auf > summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
+.aaspf-korrektur-auf > .aaspf-korrektur { border-top: 0; padding-top: 4px; }
+
+/* ── Schmale Fenster ──────────────────────────────────────────────────── */
+
+@media screen and (max-width: 782px) {
+	.aaspf-karte { padding: 14px 14px 16px; border-radius: 4px; }
+	.aaspf-karte > h2 { font-size: 17px; }
+
+	/* Sechs Kacheln nebeneinander sind auf dem Telefon unlesbar schmal —
+	   darunter wird die Leiste zur Liste. */
+	.aaspf-schritt { flex: 1 1 100%; }
+	.aaspf-schritt a {
+		flex-direction: row;
+		align-items: baseline;
+		gap: 8px;
+		border-top-width: 1px;
+		border-left-width: 4px;
+	}
+	.aaspf-schritt-titel { flex: 1 1 auto; }
+	.aaspf-schritt[data-zustand="fertig"] a { border-top-color: #c3c4c7; border-left-color: #1a6b2f; }
+	.aaspf-schritt[data-zustand="dran"] a   { border-top-color: #2271b1; border-left-color: #2271b1; }
+	.aaspf-schritt[data-zustand="offen"] a  { border-top-color: #c3c4c7; border-left-color: #c3c4c7; }
+
+	.aaspf-felder > div,
+	.aaspf-felder > div:last-child { flex: 1 1 100%; }
+	.aaspf-felder button { width: 100%; justify-content: center; }
+
+	.aaspf-feld-notiz { width: 100%; margin: 0 0 6px; }
+	.aaspf-aktionen form { flex: 1 1 100%; }
+	.aaspf-aktionen .aaspf-knopf { width: 100%; justify-content: center; }
+
+	.aaspf-segment { padding: 12px 12px 14px; }
+	.aaspf-segment audio,
+	.aaspf-vorschau-player { max-width: 100%; }
+	.aaspf-vorlesen { font-size: 17px; padding: 12px; }
+	.aaspf-abnahme { padding: 14px; }
+}
+
+@media screen and (max-width: 480px) {
+	.aaspf-karte { padding: 12px 12px 14px; }
+	.aaspf-segment-text { font-size: 14px; }
+	.aaspf-sprung { font-size: 13px; }
+}
+
+/* Himmelsvorschau ------------------------------------------------------- */
+
+.aaspf-einklappen {
+	margin: 1em 0;
+}
+
+.aaspf-einklappen > summary {
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	padding: 6px 0;
+}
+
+.aaspf-vorlage {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	max-height: 32em;
+	overflow: auto;
+	background: #f6f7f7;
+	border: 1px solid #c3c4c7;
+	padding: 12px;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.aaspf-liste li {
+	margin-bottom: 0.5em;
+	line-height: 1.5;
+}
+
+.aaspf-schmal {
+	max-width: 60em;
+	margin-bottom: 1em;
+}
+
+.aaspf-zeile {
+	margin: 1em 0;
+}
+
+.aaspf-zeile select {
+	min-width: 18em;
+	vertical-align: middle;
+}
+
+/* ══ Aufbau seit 25.09.2026: angelehnt an die Übersicht des Galerie-Plugins ══ */
+
+.aaspf-wrap .description { font-size: 13px; }
+
+.aaspf-zurueck { margin: 8px 0 4px; }
+
+.aaspf-titelzeile {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	margin: 4px 0 2px;
+}
+
+.aaspf-titelzeile h1 {
+	flex: 1 1 420px;
+	margin: 0;
+	padding: 0;
+	font-size: 23px;
+	font-weight: 400;
+	line-height: 1.3;
+}
+
+.aaspf-meta { margin: 4px 0 16px; color: #50575e; }
+
+/* Pillen: Zustand als Wort, Farbe kommt dazu. */
+.aaspf-pille {
+	display: inline-block;
+	padding: 3px 12px;
+	border-radius: 12px;
+	font-size: 13px;
+	font-weight: 600;
+	line-height: 1.6;
+	white-space: nowrap;
+}
+.aaspf-pille-ok     { background: #d7ead9; color: #14562a; }
+.aaspf-pille-warn   { background: #fcf0d4; color: #6b4200; }
+.aaspf-pille-fail   { background: #fbe0de; color: #8a0605; }
+.aaspf-pille-laeuft { background: #dbe9f7; color: #0a4b78; }
+
+/* Karten wie .asg-card im Galerie-Plugin */
+.aaspf-panel,
+.aaspf-kennzahl,
+.aaspf-jetzt {
+	background: #fff;
+	border: 1px solid #e2e4e7;
+	border-radius: 12px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+	box-sizing: border-box;
+}
+
+.aaspf-panel {
+	padding: 18px 22px;
+	margin: 0 0 16px;
+	min-width: 0;
+}
+
+.aaspf-panel > h2,
+.aaspf-panel-kopf h2 {
+	margin: 0 0 10px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.aaspf-panel-kopf {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 12px;
+	margin-bottom: 12px;
+}
+
+.aaspf-panel-kopf h2 { flex: 1 1 320px; margin: 0; font-size: 16px; }
+
+.aaspf-kennzahlen {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+	margin: 16px 0 20px;
+}
+
+.aaspf-kennzahl { padding: 16px 20px; }
+
+.aaspf-kennzahl-titel {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: #50575e;
+	margin-bottom: 6px;
+}
+
+.aaspf-kennzahl-wert {
+	font-size: 26px;
+	font-weight: 600;
+	color: #1d2327;
+	line-height: 1.2;
+	overflow-wrap: anywhere;
+}
+
+.aaspf-kennzahl-unter { font-size: 12px; color: #646970; margin-top: 6px; }
+.aaspf-kennzahl-ok .aaspf-kennzahl-wert   { color: #1a6b2f; }
+.aaspf-kennzahl-warn .aaspf-kennzahl-wert { color: #8a5300; }
+.aaspf-kennzahl-warn .aaspf-kennzahl-unter { color: #8a5300; }
+
+.aaspf-zweispaltig {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+	gap: 16px;
+}
+
+.aaspf-abschnitt { margin: 24px 0 10px; font-size: 17px; font-weight: 500; }
+
+.aaspf-folgen td, .aaspf-folgen th { vertical-align: middle; }
+.aaspf-folgen .aaspf-rechts { text-align: right; }
+.aaspf-folgen .aaspf-ausgeblendet td { opacity: .7; }
+
+.aaspf-kurztabelle { border-collapse: collapse; width: 100%; margin-bottom: 8px; }
+.aaspf-kurztabelle th,
+.aaspf-kurztabelle td { padding: 6px 8px 6px 0; text-align: left; border-bottom: 1px solid #f0f0f1; }
+
+/* Schrittleiste */
+.aaspf-schritte {
+	list-style: none;
+	margin: 12px 0 16px;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+	gap: 6px;
+}
+
+.aaspf-schritte li {
+	margin: 0;
+	padding: 8px 10px;
+	background: #fff;
+	border-top: 4px solid #c3c4c7;
+	border-radius: 0 0 4px 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.aaspf-schritte li[data-zustand="fertig"]      { background: #edf6ee; border-top-color: #1a6b2f; }
+.aaspf-schritte li[data-zustand="dran"]        { background: #fcf9e8; border-top-color: #dba617; }
+.aaspf-schritte li[data-zustand="freigabe"]    { border-top-color: #996800; }
+.aaspf-schritte li[data-zustand="automatisch"] { border-top-color: #72aee6; }
+
+.aaspf-schritt-name { font-weight: 600; font-size: 13px; }
+.aaspf-schritt-wort { font-size: 12px; color: #50575e; }
+.aaspf-schritte-klein { margin: 0 0 8px; }
+
+.aaspf-schritte-kurz { display: none; }
+
+/* Kasten "Jetzt dran" */
+.aaspf-jetzt {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+	gap: 20px 28px;
+	align-items: center;
+	padding: 20px 24px;
+	border: 2px solid #dba617;
+	margin: 0 0 4px;
+}
+
+.aaspf-jetzt-laeuft { border-color: #72aee6; }
+.aaspf-jetzt-fertig { border-color: #1a6b2f; }
+
+.aaspf-jetzt h2 { margin: 2px 0 8px; font-size: 19px; font-weight: 600; line-height: 1.3; }
+.aaspf-jetzt p { margin: 6px 0; }
+
+.aaspf-jetzt-marke {
+	font-size: 12px !important;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	font-weight: 600;
+	color: #6b4200;
+	margin: 0 !important;
+}
+.aaspf-jetzt-laeuft .aaspf-jetzt-marke { color: #0a4b78; }
+
+.aaspf-jetzt-aktion {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 8px;
+	text-align: center;
+}
+
+.aaspf-jetzt-aktion form { margin: 0; }
+.aaspf-jetzt-aktion .button { width: 100%; text-align: center; justify-content: center; }
+.aaspf-jetzt-hinweis { color: #50575e; font-size: 13px; }
+.aaspf-jetzt-link { font-weight: 600; }
+.aaspf-jetzt-aktion .aaspf-felder { flex-direction: column; align-items: stretch; }
+
+.aaspf-pruefliste {
+	list-style: none;
+	margin: 6px 0 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 6px 24px;
+	font-size: 14px;
+}
+.aaspf-pruefliste li { margin: 0; }
+
+.aaspf-fortschritt { width: 100%; height: 12px; margin-top: 6px; }
+
+/* Reiter */
+.aaspf-reiter { margin: 8px 0 0; }
+
+.aaspf-reiter-leiste {
+	display: flex;
+	flex-wrap: wrap;
+	border-bottom: 1px solid #c3c4c7;
+}
+
+.aaspf-reiter-knopf {
+	padding: 9px 14px;
+	margin-bottom: -1px;
+	font-size: 14px;
+	text-decoration: none;
+	border: 1px solid transparent;
+	color: #2271b1;
+}
+
+.aaspf-reiter-knopf[aria-selected="true"] {
+	border-color: #c3c4c7;
+	border-bottom-color: #f0f0f1;
+	background: #f0f0f1;
+	color: #1d2327;
+	font-weight: 600;
+}
+
+.aaspf-reiter-knopf:focus-visible { outline: 2px solid #2271b1; outline-offset: -2px; box-shadow: none; }
+
+.aaspf-reiter-wahl,
+.aaspf-reiter-wahl-label { display: none; }
+
+.aaspf-raster {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: 20px;
+	align-items: start;
+	margin-top: 16px;
+}
+
+.aaspf-raster-mit-seite { grid-template-columns: minmax(0, 1fr) 360px; }
+
+.aaspf-reiter-panel > h3:first-child { margin-top: 0; }
+
+/* Seitenleiste */
+.aaspf-seitenkarte h2 { font-size: 15px; }
+
+.aaspf-seitenkarte-hinweis { background: #fcf9e8; border-color: #dba617; }
+
+.aaspf-fenster {
+	display: flex;
+	align-items: flex-end;
+	gap: 2px;
+	height: 110px;
+	border-bottom: 1px solid #8c8f94;
+	margin-top: 8px;
+}
+
+.aaspf-fenster-balken {
+	flex: 1 1 0;
+	background: #2271b1;
+	border-radius: 2px 2px 0 0;
+	min-height: 2px;
+}
+.aaspf-fenster-best { background: #1a6b2f; }
+.aaspf-fenster-leer { background: #c3c4c7; }
+
+.aaspf-fenster-achse {
+	display: flex;
+	justify-content: space-between;
+	font-size: 12px;
+	color: #50575e;
+	margin-top: 4px;
+}
+
+/* ── mittlere Breiten: Seitenleiste unter den Inhalt ── */
+@media (max-width: 1180px) {
+	.aaspf-raster-mit-seite { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── schmal, ab dem WordPress-Umbruch für Mobilgeräte ── */
+@media (max-width: 782px) {
+	.aaspf-titelzeile h1 { font-size: 21px; flex-basis: 100%; }
+
+	.aaspf-schritte { display: none; }
+
+	.aaspf-schritte-kurz {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 8px;
+		background: #fff;
+		border: 1px solid #e2e4e7;
+		border-radius: 12px;
+		padding: 12px 14px;
+		margin: 12px 0;
+		font-size: 13px;
+	}
+
+	.aaspf-schritte-balken {
+		flex-basis: 100%;
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 1fr;
+		gap: 3px;
+	}
+
+	.aaspf-schritte-balken span { height: 6px; border-radius: 3px; background: #c3c4c7; }
+	.aaspf-schritte-balken span[data-zustand="fertig"] { background: #1a6b2f; }
+	.aaspf-schritte-balken span[data-zustand="dran"]   { background: #dba617; }
+
+	.aaspf-jetzt { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+	.aaspf-jetzt-aktion .button { min-height: 48px; font-size: 16px; }
+
+	.aaspf-kennzahlen { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+	.aaspf-kennzahl { padding: 12px 14px; }
+	.aaspf-kennzahl-wert { font-size: 20px; }
+	.aaspf-kennzahl-titel { text-transform: none; letter-spacing: 0; font-size: 12px; }
+
+	.aaspf-zweispaltig { grid-template-columns: minmax(0, 1fr); }
+
+	.aaspf-reiter-leiste { display: none; }
+	.aaspf-reiter-wahl-label { display: block; font-weight: 600; margin: 8px 0 4px; }
+	.aaspf-reiter-wahl { display: block; width: 100%; max-width: none; min-height: 44px; font-size: 16px; }
+
+	.aaspf-panel { padding: 14px 16px; }
+	.aaspf-folgen .aaspf-schmal-weg { display: none; }
+}

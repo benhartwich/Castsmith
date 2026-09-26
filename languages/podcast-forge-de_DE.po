@@ -1,0 +1,3569 @@
+msgid ""
+msgstr "Project-Id-Version: Podcast Forge 0.2.0\nReport-Msgid-Bugs-To: https://github.com/benhartwich/podcast-forge/issues\nLast-Translator: FULL NAME <EMAIL@ADDRESS>\nLanguage-Team: LANGUAGE <LL@li.org>\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPOT-Creation-Date: 2026-09-26T20:59:32+00:00\nPO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\nX-Generator: WP-CLI 2.12.0\nX-Domain: podcast-forge\nLanguage: de_DE\nPlural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Plugin Name of the plugin
+#: podcast-forge.php
+#: src/Admin/EpisodesPage.php:44
+#: src/Admin/EpisodesPage.php:45
+#: src/Settings/SettingsPage.php:95
+msgid "Podcast Forge"
+msgstr "Podcast Forge"
+
+#. Plugin URI of the plugin
+#: podcast-forge.php
+msgid "https://github.com/benhartwich/podcast-forge"
+msgstr "https://github.com/benhartwich/podcast-forge"
+
+#. Description of the plugin
+#: podcast-forge.php
+msgid "Turns a fact script, a post or a custom source into a finished podcast episode: speaking script via language model, number and fact checking, speech synthesis with your own voice clone, assembly, mastering and a Podlove draft — with two human approvals."
+msgstr "Macht aus einem Faktenskript, einem Beitrag oder einer eigenen Quelle eine fertige Podcastfolge: Sprechskript per Sprachmodell, Zahlen- und Faktenprüfung, Sprachsynthese mit dem eigenen Stimmklon, Montage, Mastering und Podlove-Entwurf — mit zwei menschlichen Freigaben."
+
+#. Author of the plugin
+#: podcast-forge.php
+msgid "Benjamin Hartwich"
+msgstr "Benjamin Hartwich"
+
+#. Author URI of the plugin
+#: podcast-forge.php
+msgid "https://astroblog.org"
+msgstr "https://astroblog.org"
+
+#. translators: %s: running PHP version
+#: podcast-forge.php:43
+#, php-format
+msgid "The plugin requires PHP 8.2 or newer, but is running under %s. It stays deactivated."
+msgstr "Das Plugin braucht PHP 8.2 oder neuer, läuft aber unter %s. Es bleibt deaktiviert."
+
+#: podcast-forge.php:59
+msgid "The Composer autoloader is missing. Run \"composer install\" in the plugin directory."
+msgstr "Der Composer-Autoloader fehlt. Im Plugin-Verzeichnis \"composer install\" ausführen."
+
+#: podcast-forge.php:92
+msgid "Startup failed — "
+msgstr "Start fehlgeschlagen — "
+
+#: src/Admin/AudioStream.php:55
+#: src/Admin/DictionaryController.php:32
+#: src/Admin/EpisodesPage.php:118
+#: src/Admin/PatchController.php:37
+#: src/Health/AjaxController.php:30
+#: src/Jobs/AdminActions.php:26
+#: src/Settings/SettingsPage.php:91
+msgid "You do not have permission to do this."
+msgstr "Dafür fehlen dir die Rechte."
+
+#: src/Admin/AudioStream.php:62
+#: src/Admin/AudioStream.php:74
+msgid "This file does not exist."
+msgstr "Diese Datei gibt es nicht."
+
+#. translators: 1: created or replaced, 2: rule type (phoneme or alias), 3: term, 4: IPA or alias pronunciation, 5: dictionary version ID, 6: number of rules
+#: src/Admin/DictionaryController.php:56
+#, php-format
+msgid "Rule %1$s (%2$s): \"%3$s\" is spoken as \"%4$s\". New version %5$s with %6$d rules."
+msgstr "Regel %1$s (%2$s): \"%3$s\" wird als \"%4$s\" gesprochen. Neue Version %5$s mit %6$d Regeln."
+
+#: src/Admin/DictionaryController.php:57
+#: src/Admin/DictionaryController.php:70
+msgid "replaced"
+msgstr "ersetzt"
+
+#: src/Admin/DictionaryController.php:57
+#: src/Admin/DictionaryController.php:70
+msgid "created"
+msgstr "angelegt"
+
+#. translators: 1: created or replaced, 2: term, 3: number of rules
+#: src/Admin/DictionaryController.php:69
+#, php-format
+msgid "Rule for \"%2$s\" %1$s. The dictionary now has %3$d rules and is bound. Regenerate the affected segments for it to take effect."
+msgstr "Regel für \"%2$s\" %1$s. Das Wörterbuch hat jetzt %3$d Regeln und ist gebunden. Betroffene Segmente neu erzeugen, damit sie wirkt."
+
+#: src/Admin/EpisodeActions.php:82
+msgid "The source document contains no text."
+msgstr "Die Vorlage enthält keinen Text."
+
+#: src/Admin/EpisodeActions.php:98
+msgid "Source document imported."
+msgstr "Vorlage eingelesen."
+
+#: src/Admin/EpisodeActions.php:115
+msgid "This post does not exist, or it cannot become an episode."
+msgstr "Diesen Beitrag gibt es nicht, oder er kann keine Folge werden."
+
+#: src/Admin/EpisodeActions.php:119
+msgid "You are not allowed to read this post."
+msgstr "Diesen Beitrag darfst du nicht lesen."
+
+#: src/Admin/EpisodeActions.php:125
+msgid "The post contains no text that can be read aloud."
+msgstr "Der Beitrag enthält keinen vorlesbaren Text."
+
+#: src/Admin/EpisodeActions.php:137
+msgid "Post imported."
+msgstr "Beitrag eingelesen."
+
+#: src/Admin/EpisodeActions.php:147
+msgid "Scheduled."
+msgstr "Eingeplant."
+
+#: src/Admin/EpisodeActions.php:148
+msgid "The edit is scheduled and runs in the background."
+msgstr "Das Redigat ist eingeplant und läuft im Hintergrund."
+
+#: src/Admin/EpisodeActions.php:150
+#: src/Jobs/Scheduler.php:56
+msgid "The job was not accepted by Action Scheduler."
+msgstr "Action Scheduler hat den Job nicht angenommen."
+
+#. translators: 1: number of characters in the script, 2: comma-separated list of confirmed deviations or "none"
+#: src/Admin/EpisodeActions.php:183
+#, php-format
+msgid "Script saved (%1$d characters). Confirmed deviations: %2$s."
+msgstr "Sprechskript gespeichert (%1$d Zeichen). Bestätigte Abweichungen: %2$s."
+
+#: src/Admin/EpisodeActions.php:185
+msgid "none"
+msgstr "keine"
+
+#: src/Admin/EpisodeActions.php:191
+msgid "Saved. There are still open deviations."
+msgstr "Gespeichert. Es stehen weiterhin Abweichungen offen."
+
+#: src/Admin/EpisodeActions.php:192
+msgid "Saved. The check is clean."
+msgstr "Gespeichert. Die Prüfung ist sauber."
+
+#: src/Admin/EpisodeActions.php:205
+msgid "Approval is locked as long as deviations are open."
+msgstr "Die Freigabe ist gesperrt, solange Abweichungen offen sind."
+
+#. translators: %s: display name of the approving user
+#: src/Admin/EpisodeActions.php:216
+#, php-format
+msgid "Text approved by %s."
+msgstr "Text freigegeben von %s."
+
+#: src/Admin/EpisodeActions.php:223
+msgid "Aborted: "
+msgstr "Abgebrochen: "
+
+#: src/Admin/EpisodeActions.php:224
+msgid "The text is approved, but the chain could not be triggered automatically: "
+msgstr "Der Text ist freigegeben, aber die Kette ließ sich nicht automatisch anstoßen: "
+
+#: src/Admin/EpisodeActions.php:229
+msgid "The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent."
+msgstr "Der Text ist freigegeben. Synthese, Montage und Auphonic laufen jetzt von selbst; wenn der Podlove-Entwurf bereit ist, kommt eine Mail."
+
+#: src/Admin/EpisodeActions.php:230
+msgid "The text is approved. Next up is the audio."
+msgstr "Der Text ist freigegeben. Weiter geht es mit dem Audio."
+
+#: src/Admin/EpisodeActions.php:241
+msgid "The audio is only created after the text approval. That is the first of the two human gates."
+msgstr "Das Audio entsteht erst nach der Textfreigabe. Das ist das erste der beiden menschlichen Tore."
+
+#. translators: 1: total number of segments, 2: number of new segments, 3: number of unchanged segments, 4: number of removed segments
+#: src/Admin/EpisodeActions.php:254
+#, php-format
+msgid "%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed."
+msgstr "%1$d Segmente: %2$d neu, %3$d unverändert übernommen, %4$d entfernt."
+
+#. translators: 1: new segments, 2: kept segments
+#: src/Admin/EpisodeActions.php:265
+#, php-format
+msgid "%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background."
+msgstr "%1$d Segmente werden erzeugt, %2$d bleiben unverändert. Die Synthese läuft im Hintergrund."
+
+#: src/Admin/EpisodeActions.php:278
+msgid "The montage is scheduled."
+msgstr "Die Montage ist eingeplant."
+
+#: src/Admin/EpisodeActions.php:291
+#: src/Admin/EpisodeActions.php:327
+msgid "This segment does not belong to this episode."
+msgstr "Dieses Segment gehört nicht zu dieser Folge."
+
+#: src/Admin/EpisodeActions.php:308
+#: src/Segments/SegmentStatus.php:22
+msgid "flagged"
+msgstr "beanstandet"
+
+#: src/Admin/EpisodeActions.php:308
+msgid "approved again"
+msgstr "wieder freigegeben"
+
+#: src/Admin/EpisodeActions.php:313
+msgid "Segment flagged. Regenerate it or re-record it with your own voice."
+msgstr "Segment markiert. Neu erzeugen oder mit der eigenen Stimme nachsprechen."
+
+#: src/Admin/EpisodeActions.php:314
+msgid "Flag withdrawn."
+msgstr "Beanstandung zurückgenommen."
+
+#. translators: %d: index of the segment
+#: src/Admin/EpisodeActions.php:343
+#, php-format
+msgid "Segment %d is being regenerated with a new seed."
+msgstr "Segment %d wird mit neuem Seed neu erzeugt."
+
+#: src/Admin/EpisodeActions.php:344
+msgid "The segment is being regenerated with a new seed."
+msgstr "Das Segment wird mit einem neuen Seed neu erzeugt."
+
+#: src/Admin/EpisodeActions.php:361
+msgid "Production scheduled."
+msgstr "Produktion eingeplant."
+
+#: src/Admin/EpisodeActions.php:363
+msgid "The episode is going to Auphonic. The callback then creates the Podlove draft."
+msgstr "Die Folge geht an Auphonic. Der Rückruf legt danach den Podlove-Entwurf an."
+
+#. translators: %s: formatted size of the freed storage
+#: src/Admin/EpisodeActions.php:384
+#, php-format
+msgid "Segment audio files removed, %s freed. The finished episode and the transcript remain."
+msgstr "Segment-Audios entfernt, %s frei geworden. Die fertige Folge und das Transkript bleiben."
+
+#. translators: %s: freed storage
+#: src/Admin/EpisodeActions.php:390
+#, php-format
+msgid "Segment audio files removed, %s freed."
+msgstr "Segment-Audios entfernt, %s frei geworden."
+
+#: src/Admin/EpisodeActions.php:423
+msgid "There is no assembled version to listen to yet."
+msgstr "Es gibt noch keine montierte Fassung zum Anhören."
+
+#: src/Admin/EpisodeActions.php:431
+msgid "The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage."
+msgstr "Die Folge war noch nicht bei Auphonic. Freigegeben wird die gemasterte Fassung, nicht die Rohmontage."
+
+#. translators: %s: display name of the approving user
+#: src/Admin/EpisodeActions.php:442
+#, php-format
+msgid "Audio approved by %s."
+msgstr "Audio freigegeben von %s."
+
+#: src/Admin/EpisodeActions.php:446
+msgid "Audio approved. Publishing is done by hand in Podlove."
+msgstr "Audio freigegeben. Veröffentlicht wird von Hand in Podlove."
+
+#: src/Admin/EpisodeActions.php:457
+msgid "Episode and its audio files deleted."
+msgstr "Folge samt Audiodateien gelöscht."
+
+#. translators: %s: name of the music slot (e.g. opener, outro)
+#: src/Admin/EpisodeActions.php:475
+#, php-format
+msgid "%s removed"
+msgstr "%s entfernt"
+
+#. translators: %s: name of the music slot (e.g. opener, outro)
+#: src/Admin/EpisodeActions.php:491
+#, php-format
+msgid "The file for “%s” is not readable audio."
+msgstr "Die Datei für „%s“ ist kein lesbares Audio."
+
+#: src/Admin/EpisodeActions.php:503
+msgid "The file could not be stored."
+msgstr "Die Datei ließ sich nicht ablegen."
+
+#: src/Admin/EpisodeActions.php:511
+msgid "No file arrived."
+msgstr "Es kam keine Datei an."
+
+#. translators: %s: comma-separated list of applied music changes
+#: src/Admin/EpisodeActions.php:513
+#, php-format
+msgid "Applied: %s. Takes effect from the next montage."
+msgstr "Übernommen: %s. Wirkt ab der nächsten Montage."
+
+#. translators: %d: episode ID
+#: src/Admin/EpisodeActions.php:529
+#, php-format
+msgid "Episode %d is hidden."
+msgstr "Folge %d ist ausgeblendet."
+
+#. translators: %d: episode ID
+#: src/Admin/EpisodeActions.php:531
+#, php-format
+msgid "Episode %d is visible again."
+msgstr "Folge %d ist wieder sichtbar."
+
+#: src/Admin/EpisodeActions.php:552
+msgid "The uploaded file is not valid."
+msgstr "Die hochgeladene Datei ist nicht gültig."
+
+#: src/Admin/EpisodeActions.php:557
+msgid "Only DOCX files are read."
+msgstr "Es werden nur DOCX-Dateien gelesen."
+
+#: src/Admin/EpisodeActions.php:567
+msgid "Neither a file nor pasted text."
+msgstr "Weder eine Datei noch eingefügter Text."
+
+#: src/Admin/EpisodeActions.php:579
+msgid "You do not have the permissions for this."
+msgstr "Dafür fehlen dir die Rechte."
+
+#: src/Admin/EpisodeActions.php:590
+msgid "This episode does not exist."
+msgstr "Diese Folge gibt es nicht."
+
+#: src/Admin/EpisodesPage.php:56
+#: src/Admin/Overview.php:29
+msgid "Podcast Forge — Overview"
+msgstr "Podcast Forge — Übersicht"
+
+#: src/Admin/EpisodesPage.php:57
+#: src/Admin/EpisodesPage.php:166
+msgid "Overview"
+msgstr "Übersicht"
+
+#. translators: between two numbers: "19 of 43"
+#: src/Admin/EpisodesPage.php:90
+msgid "of"
+msgstr "von"
+
+#: src/Admin/EpisodesPage.php:101
+#: src/Admin/EpisodesPage.php:1510
+msgid "Start recording"
+msgstr "Aufnahme starten"
+
+#: src/Admin/EpisodesPage.php:102
+msgid "Stop recording"
+msgstr "Aufnahme beenden"
+
+#: src/Admin/EpisodesPage.php:103
+msgid "Recording — read the whole sentence aloud."
+msgstr "Aufnahme läuft — lies den ganzen Satz vor."
+
+#: src/Admin/EpisodesPage.php:104
+msgid "Recording done. Listen to it first, then apply it."
+msgstr "Aufnahme fertig. Erst anhören, dann übernehmen."
+
+#: src/Admin/EpisodesPage.php:105
+msgid "Converting into your voice …"
+msgstr "Wird in deine Stimme umgewandelt …"
+
+#: src/Admin/EpisodesPage.php:106
+msgid "This browser cannot record audio."
+msgstr "Dieser Browser kann nicht aufnehmen."
+
+#: src/Admin/EpisodesPage.php:107
+msgid "No access to the microphone:"
+msgstr "Kein Zugriff auf das Mikrofon:"
+
+#: src/Admin/EpisodesPage.php:108
+msgid "Creating rule …"
+msgstr "Regel wird angelegt …"
+
+#: src/Admin/EpisodesPage.php:109
+msgid "The term or both pronunciation forms are missing. One of the two is enough."
+msgstr "Es fehlt der Begriff oder beide Ausspracheformen. Eine der beiden genügt."
+
+#: src/Admin/EpisodesPage.php:110
+msgid "The request failed."
+msgstr "Das hat nicht geklappt."
+
+#: src/Admin/EpisodesPage.php:149
+#: src/Admin/EpisodesPage.php:757
+msgid "Something is stuck here."
+msgstr "Hier hängt etwas."
+
+#: src/Admin/EpisodesPage.php:167
+#: src/Admin/Overview.php:31
+msgid "New episode"
+msgstr "Neue Folge"
+
+#: src/Admin/EpisodesPage.php:168
+msgid "Where does the text come from? Once the fact script has been imported, the path is the same for every source: speech script, checks, your text approval, audio."
+msgstr "Woher kommt der Text? Ab dem eingelesenen Faktenskript ist der Weg für alle Quellen gleich: Sprechskript, Prüfungen, deine Textfreigabe, Audio."
+
+#: src/Admin/EpisodesPage.php:197
+#: src/Admin/Overview.php:162
+msgid "All episodes"
+msgstr "Alle Folgen"
+
+#. translators: %s: creation date of the episode
+#: src/Admin/EpisodesPage.php:211
+#, php-format
+msgid "created on %s"
+msgstr "angelegt am %s"
+
+#: src/Admin/EpisodesPage.php:213
+msgid "continues automatically after approval"
+msgstr "läuft nach der Freigabe automatisch weiter"
+
+#: src/Admin/EpisodesPage.php:214
+msgid "every step by hand"
+msgstr "jeder Schritt von Hand"
+
+#: src/Admin/EpisodesPage.php:222
+#: src/Admin/EpisodesPage.php:617
+#: src/Admin/EpisodesPage.php:624
+msgid "Speech script"
+msgstr "Sprechskript"
+
+#: src/Admin/EpisodesPage.php:226
+msgid "Publishing"
+msgstr "Veröffentlichung"
+
+#: src/Admin/EpisodesPage.php:227
+#: src/Admin/Workflow.php:63
+msgid "Audio"
+msgstr "Audio"
+
+#: src/Admin/EpisodesPage.php:228
+msgid "History and costs"
+msgstr "Verlauf und Kosten"
+
+#: src/Admin/EpisodesPage.php:238
+msgid "Section"
+msgstr "Bereich"
+
+#: src/Admin/EpisodesPage.php:244
+msgid "Episode sections"
+msgstr "Bereiche der Folge"
+
+#: src/Admin/EpisodesPage.php:265
+#: src/Admin/EpisodesPage.php:647
+#: src/Admin/EpisodesPage.php:880
+#: src/Source/UploadSource.php:22
+msgid "Fact script"
+msgstr "Vorlage"
+
+#: src/Admin/EpisodesPage.php:280
+msgid "Title, description and chapters are created together with the speech script."
+msgstr "Titel, Beschreibung und Kapitel entstehen zusammen mit dem Sprechskript."
+
+#: src/Admin/EpisodesPage.php:291
+msgid "The audio is created after the text approval."
+msgstr "Das Audio entsteht nach der Textfreigabe."
+
+#. translators: 1: current step number, 2: total number of steps, 3: step title
+#: src/Admin/EpisodesPage.php:332
+#, php-format
+msgid "Step %1$d of %2$d · %3$s"
+msgstr "Schritt %1$d von %2$d · %3$s"
+
+#: src/Admin/EpisodesPage.php:336
+msgid "All steps done"
+msgstr "Alle Schritte erledigt"
+
+#: src/Admin/EpisodesPage.php:344
+msgid "Episode progress"
+msgstr "Fortschritt der Folge"
+
+#: src/Admin/EpisodesPage.php:369
+msgid "Done"
+msgstr "Fertig"
+
+#. translators: %s: date and time of the audio approval
+#. translators: %s: point in time
+#: src/Admin/EpisodesPage.php:372
+#: src/Admin/EpisodesPage.php:1296
+#, php-format
+msgid "Audio approved on %s. Publishing is done by hand in Podlove."
+msgstr "Audio freigegeben am %s. Veröffentlicht wird von Hand in Podlove."
+
+#: src/Admin/EpisodesPage.php:379
+msgid "Open Podlove draft"
+msgstr "Podlove-Entwurf öffnen"
+
+#. translators: 1: current step number, 2: total number of steps
+#: src/Admin/EpisodesPage.php:394
+#, php-format
+msgid "Up next · Step %1$d of %2$d"
+msgstr "Jetzt dran · Schritt %1$d von %2$d"
+
+#. translators: 1: current step number, 2: total number of steps
+#: src/Admin/EpisodesPage.php:394
+#, php-format
+msgid "Running · Step %1$d of %2$d"
+msgstr "Läuft gerade · Schritt %1$d von %2$d"
+
+#: src/Admin/EpisodesPage.php:404
+msgid "A step got stuck"
+msgstr "Ein Schritt ist hängengeblieben"
+
+#: src/Admin/EpisodesPage.php:405
+msgid "The reason is shown in the yellow box at the top and in the history. “Resume run” picks up again at the missing step."
+msgstr "Der Grund steht oben im gelben Kasten und im Verlauf. „Lauf fortsetzen“ setzt beim fehlenden Schritt wieder an."
+
+#: src/Admin/EpisodesPage.php:415
+msgid "The speech script is being written"
+msgstr "Das Sprechskript entsteht"
+
+#: src/Admin/EpisodesPage.php:416
+msgid "Editing, number diff, fact check and publishing data run in the background, a few minutes in total."
+msgstr "Redigat, Zahlen-Diff, Faktenprüfung und Veröffentlichungsdaten laufen im Hintergrund, zusammen einige Minuten."
+
+#: src/Admin/EpisodesPage.php:418
+msgid "Create speech script"
+msgstr "Sprechskript erzeugen"
+
+#: src/Admin/EpisodesPage.php:419
+msgid "The fact script is turned into the speech script; then the number diff and fact check review it."
+msgstr "Aus dem Faktenskript wird das Sprechskript; danach prüfen Zahlen-Diff und Faktenprüfung."
+
+#: src/Admin/EpisodesPage.php:420
+#: src/Admin/EpisodesPage.php:787
+msgid "Start editing"
+msgstr "Redigat starten"
+
+#: src/Admin/EpisodesPage.php:425
+msgid "Read and approve the text"
+msgstr "Text lesen und freigeben"
+
+#: src/Admin/EpisodesPage.php:428
+msgid "Go to the open items"
+msgstr "Zu den offenen Punkten"
+
+#: src/Admin/EpisodesPage.php:429
+msgid "Locked until the open items have been fixed in the text or acknowledged."
+msgstr "Gesperrt, bis die offenen Punkte im Text behoben oder bestätigt sind."
+
+#: src/Admin/EpisodesPage.php:431
+#: src/Admin/EpisodesPage.php:1046
+msgid "Approve text"
+msgstr "Text freigeben"
+
+#: src/Admin/EpisodesPage.php:433
+msgid "After that, audio, Auphonic and Podlove run on their own. The audio approval request arrives by e-mail."
+msgstr "Danach laufen Audio, Auphonic und Podlove von selbst. Die Audiofreigabe kommt per Mail."
+
+#: src/Admin/EpisodesPage.php:434
+msgid "After that, you create the audio."
+msgstr "Danach erzeugst du das Audio."
+
+#: src/Admin/EpisodesPage.php:435
+msgid "Read speech script"
+msgstr "Sprechskript lesen"
+
+#: src/Admin/EpisodesPage.php:443
+msgid "The audio is being created"
+msgstr "Das Audio entsteht"
+
+#. translators: 1: number of voiced segments, 2: total number of segments
+#. translators: 1: number of services working fine, 2: total number of services
+#: src/Admin/EpisodesPage.php:446
+#: src/Admin/EpisodesPage.php:456
+#: src/Admin/Overview.php:121
+#, php-format
+msgid "%1$d of %2$d"
+msgstr "%1$d von %2$d"
+
+#: src/Admin/EpisodesPage.php:449
+msgid "segments voiced. Then assembly and Auphonic, all on their own."
+msgstr "Segmenten vertont. Danach Montage und Auphonic, alles von selbst."
+
+#: src/Admin/EpisodesPage.php:462
+#: src/Admin/EpisodesPage.php:470
+#: src/Admin/EpisodesPage.php:1147
+msgid "Create audio"
+msgstr "Audio erzeugen"
+
+#: src/Admin/EpisodesPage.php:464
+msgid "Each paragraph becomes a segment and is voiced with the voice clone."
+msgstr "Jeder Absatz wird ein Segment und über den Stimmklon vertont."
+
+#. translators: 1: number of finished segments, 2: total number of segments
+#: src/Admin/EpisodesPage.php:466
+#, php-format
+msgid "%1$d of %2$d segments done. Missing ones will be created, then the assembly."
+msgstr "%1$d von %2$d Segmenten fertig. Fehlende werden erzeugt, danach die Montage."
+
+#: src/Admin/EpisodesPage.php:470
+#: src/Admin/EpisodesPage.php:1148
+msgid "Create missing segments"
+msgstr "Fehlende Segmente erzeugen"
+
+#: src/Admin/EpisodesPage.php:478
+msgid "The episode is being sent to Auphonic"
+msgstr "Die Folge geht an Auphonic"
+
+#: src/Admin/EpisodesPage.php:479
+msgid "The assembly is done. Auphonic is now computing levels, loudness and chapter marks."
+msgstr "Die Montage ist fertig. Pegel, Loudness und Kapitelmarken rechnet jetzt Auphonic."
+
+#: src/Admin/EpisodesPage.php:481
+#: src/Admin/EpisodesPage.php:1664
+msgid "Send to Auphonic"
+msgstr "An Auphonic senden"
+
+#: src/Admin/EpisodesPage.php:482
+msgid "The raw assembly is done. You can listen to it in the Audio tab."
+msgstr "Die Rohmontage ist fertig. Anhören kannst du sie im Reiter Audio."
+
+#: src/Admin/EpisodesPage.php:490
+msgid "Auphonic is mastering the episode"
+msgstr "Auphonic mastert die Folge"
+
+#: src/Admin/EpisodesPage.php:491
+msgid "The callback then creates the Podlove draft. Nothing to do here."
+msgstr "Der Rückruf legt danach den Podlove-Entwurf an. Hier ist nichts zu tun."
+
+#: src/Admin/EpisodesPage.php:501
+msgid "Listen to and approve the mastered version"
+msgstr "Gemasterte Fassung anhören und freigeben"
+
+#: src/Admin/EpisodesPage.php:506
+msgid "Exactly as it will appear in the feed. Individual segments and the chapter jumps of the raw assembly are in the Audio tab."
+msgstr "So, wie sie im Feed stehen wird. Einzelne Segmente und die Kapitelsprünge der Rohmontage stehen im Reiter Audio."
+
+#: src/Admin/EpisodesPage.php:507
+#: src/Admin/EpisodesPage.php:1325
+msgid "Approve audio"
+msgstr "Audio freigeben"
+
+#: src/Admin/EpisodesPage.php:508
+msgid "Something sounds wrong"
+msgstr "Eine Stelle klingt falsch"
+
+#: src/Admin/EpisodesPage.php:509
+#: src/Notify/Notifier.php:147
+msgid "Publishing is then done by hand in Podlove."
+msgstr "Veröffentlicht wird danach von Hand in Podlove."
+
+#. translators: 1: number of invented numbers, 2: number of open discrepancies
+#: src/Admin/EpisodesPage.php:565
+#: src/Admin/EpisodesPage.php:567
+#: src/Admin/EpisodesPage.php:810
+msgid "Number diff"
+msgstr "Zahlen-Diff"
+
+#: src/Admin/EpisodesPage.php:565
+msgid "nothing invented, nothing missing"
+msgstr "nichts erfunden, nichts fehlt"
+
+#. translators: 1: number of invented numbers, 2: number of open discrepancies
+#: src/Admin/EpisodesPage.php:567
+#, php-format
+msgid "%1$d invented, %2$d open"
+msgstr "%1$d erfunden, %2$d offen"
+
+#. translators: %d: number of fact check notes
+#. translators: %d: number of open serious findings
+#: src/Admin/EpisodesPage.php:570
+#: src/Admin/EpisodesPage.php:576
+#: src/Admin/EpisodesPage.php:578
+#: src/Admin/EpisodesPage.php:926
+#: src/Admin/PromptsPage.php:50
+msgid "Fact check"
+msgstr "Faktenprüfung"
+
+#: src/Admin/EpisodesPage.php:570
+msgid "still running"
+msgstr "läuft noch"
+
+#. translators: %d: number of fact check notes
+#: src/Admin/EpisodesPage.php:576
+msgid "no findings"
+msgstr "ohne Befund"
+
+#. translators: %d: number of fact check notes
+#: src/Admin/EpisodesPage.php:576
+#, php-format
+msgid "%d notes, none open"
+msgstr "%d Hinweise, keiner offen"
+
+#. translators: %d: number of open serious findings
+#: src/Admin/EpisodesPage.php:578
+#, php-format
+msgid "%d serious, open"
+msgstr "%d schwerwiegend, offen"
+
+#. translators: %d: estimated length in minutes
+#: src/Admin/EpisodesPage.php:588
+#: src/Admin/EpisodesPage.php:590
+#: src/Admin/EpisodesPage.php:613
+#: src/Admin/Overview.php:173
+msgid "Length"
+msgstr "Länge"
+
+#. translators: %d: estimated length in minutes
+#: src/Admin/EpisodesPage.php:588
+#, php-format
+msgid "about %d instead of at most 30 minutes"
+msgstr "rund %d statt höchstens 30 Minuten"
+
+#. translators: %d: estimated length in minutes
+#: src/Admin/EpisodesPage.php:590
+#, php-format
+msgid "about %d minutes"
+msgstr "rund %d Minuten"
+
+#: src/Admin/EpisodesPage.php:613
+msgid "measured from the assembly"
+msgstr "gemessen an der Montage"
+
+#. translators: %s: number of characters in the speech script
+#. translators: %s: number of billed characters
+#: src/Admin/EpisodesPage.php:620
+#: src/Admin/EpisodesPage.php:1703
+#, php-format
+msgid "%s characters"
+msgstr "%s Zeichen"
+
+#: src/Admin/EpisodesPage.php:624
+msgid "not written yet"
+msgstr "entsteht noch"
+
+#: src/Admin/EpisodesPage.php:628
+#: src/Admin/EpisodesPage.php:634
+msgid "Checks"
+msgstr "Prüfungen"
+
+#: src/Admin/EpisodesPage.php:628
+msgid "after editing"
+msgstr "nach dem Redigat"
+
+#. translators: %d: number of open check items
+#: src/Admin/EpisodesPage.php:636
+#, php-format
+msgid "%d open"
+msgid_plural "%d open"
+msgstr[0] "%d offen"
+msgstr[1] "%d offen"
+
+#: src/Admin/EpisodesPage.php:637
+msgid "Numbers, facts and sources are clean"
+msgstr "Zahlen, Fakten und Belege sauber"
+
+#: src/Admin/EpisodesPage.php:637
+msgid "in the Speech script tab"
+msgstr "im Reiter Sprechskript"
+
+#: src/Admin/EpisodesPage.php:649
+msgid "characters of source text"
+msgstr "Zeichen Vorlage"
+
+#: src/Admin/EpisodesPage.php:655
+msgid "Costs so far"
+msgstr "Kosten bisher"
+
+#. translators: %s: number of billed ElevenLabs characters
+#: src/Admin/EpisodesPage.php:659
+#, php-format
+msgid "Anthropic estimated · %s ElevenLabs characters"
+msgstr "Anthropic geschätzt · %s Zeichen ElevenLabs"
+
+#: src/Admin/EpisodesPage.php:660
+#: src/Admin/EpisodesPage.php:1695
+msgid "Anthropic, estimated"
+msgstr "Anthropic, geschätzt"
+
+#. translators: %s: title of the current step
+#: src/Admin/EpisodesPage.php:697
+#, php-format
+msgid "Waiting: %s"
+msgstr "Wartet: %s"
+
+#. translators: %s: title of the current step
+#: src/Admin/EpisodesPage.php:700
+#, php-format
+msgid "%s running"
+msgstr "%s läuft"
+
+#. translators: %s: name of the text source
+#: src/Admin/EpisodesPage.php:718
+#, php-format
+msgid "%s: The text is being created in the background. You will get an e-mail when it is ready."
+msgstr "%s: Der Text entsteht im Hintergrund. Wenn er bereit ist, kommt eine Mail."
+
+#: src/Admin/EpisodesPage.php:719
+msgid "The speech script is being written or is waiting for editing to start."
+msgstr "Das Sprechskript entsteht oder wartet auf den Start des Redigats."
+
+#: src/Admin/EpisodesPage.php:720
+msgid "The text is waiting for your approval."
+msgstr "Der Text wartet auf deine Freigabe."
+
+#: src/Admin/EpisodesPage.php:721
+msgid "The audio is being created. Assembly and Auphonic then run on their own; you will get an e-mail when the Podlove draft is ready."
+msgstr "Das Audio entsteht. Montage und Auphonic laufen danach von selbst; wenn der Podlove-Entwurf bereit ist, kommt eine Mail."
+
+#: src/Admin/EpisodesPage.php:721
+msgid "The audio is waiting to be created."
+msgstr "Das Audio wartet darauf, erzeugt zu werden."
+
+#: src/Admin/EpisodesPage.php:722
+msgid "The episode is being sent to Auphonic."
+msgstr "Die Folge geht an Auphonic."
+
+#: src/Admin/EpisodesPage.php:722
+msgid "The raw assembly is waiting to be sent to Auphonic."
+msgstr "Die Rohmontage wartet darauf, an Auphonic zu gehen."
+
+#: src/Admin/EpisodesPage.php:723
+msgid "Auphonic is mastering the episode; the callback creates the Podlove draft."
+msgstr "Auphonic mastert die Folge; der Rückruf legt den Podlove-Entwurf an."
+
+#: src/Admin/EpisodesPage.php:724
+msgid "The mastered version is waiting for your approval."
+msgstr "Die gemasterte Fassung wartet auf deine Freigabe."
+
+#: src/Admin/EpisodesPage.php:763
+msgid "Resume run"
+msgstr "Lauf fortsetzen"
+
+#: src/Admin/EpisodesPage.php:764
+msgid "Picks up where something is missing. Segments that were already created are kept and cost nothing again."
+msgstr "Setzt dort an, wo es fehlt. Bereits erzeugte Segmente bleiben erhalten und kosten nichts erneut."
+
+#: src/Admin/EpisodesPage.php:778
+msgid "Editing is running in the background. Reload the page now and then."
+msgstr "Das Redigat läuft im Hintergrund. Die Seite gelegentlich neu laden."
+
+#: src/Admin/EpisodesPage.php:788
+msgid "Repeat editing"
+msgstr "Redigat wiederholen"
+
+#: src/Admin/EpisodesPage.php:794
+msgid "Repeating overwrites the speech script and costs tokens again."
+msgstr "Eine Wiederholung überschreibt das Sprechskript und kostet erneut Token."
+
+#: src/Admin/EpisodesPage.php:827
+msgid "Invented numbers"
+msgstr "Erfundene Zahlen"
+
+#: src/Admin/EpisodesPage.php:828
+msgid "Present in the speech script but not in the source text. This discrepancy cannot be acknowledged — it must be fixed in the text."
+msgstr "Stehen im Sprechskript, aber nicht in der Vorlage. Diese Abweichung lässt sich nicht bestätigen — sie muss im Text behoben werden."
+
+#: src/Admin/EpisodesPage.php:837
+msgid "Changed numbers"
+msgstr "Geänderte Zahlen"
+
+#: src/Admin/EpisodesPage.php:838
+msgid "Rounded quantities. Acknowledge them if the rounding is intended."
+msgstr "Gerundete Mengenangaben. Bestätigen, wenn die Rundung gewollt ist."
+
+#: src/Admin/EpisodesPage.php:845
+msgid "Missing numbers"
+msgstr "Fehlende Zahlen"
+
+#: src/Admin/EpisodesPage.php:846
+msgid "Present in the source text but not in the speech script."
+msgstr "Stehen in der Vorlage, aber nicht im Sprechskript."
+
+#: src/Admin/EpisodesPage.php:853
+msgid "Differing frequency"
+msgstr "Abweichende Häufigkeit"
+
+#: src/Admin/EpisodesPage.php:854
+msgid "Present on both sides, just a different number of times. Does not block — the mandatory intro mentions the month in addition."
+msgstr "Auf beiden Seiten vorhanden, nur unterschiedlich oft. Blockiert nicht — die vorgeschriebene Anmoderation nennt den Monat zusätzlich."
+
+#: src/Admin/EpisodesPage.php:862
+msgid "All numbers match."
+msgstr "Alle Zahlen stimmen überein."
+
+#: src/Admin/EpisodesPage.php:879
+msgid "Value"
+msgstr "Wert"
+
+#: src/Admin/EpisodesPage.php:881
+#: src/Admin/Workflow.php:61
+msgid "Script"
+msgstr "Skript"
+
+#: src/Admin/EpisodesPage.php:882
+msgid "Location"
+msgstr "Fundstelle"
+
+#: src/Admin/EpisodesPage.php:884
+#: src/Admin/EpisodesPage.php:944
+msgid "acknowledged"
+msgstr "bestätigt"
+
+#. translators: %s: the corresponding value on the other side
+#: src/Admin/EpisodesPage.php:896
+#, php-format
+msgid "instead of %s"
+msgstr "statt %s"
+
+#: src/Admin/EpisodesPage.php:929
+msgid "No content discrepancies found."
+msgstr "Keine inhaltlichen Abweichungen gefunden."
+
+#: src/Admin/EpisodesPage.php:934
+msgid "This check comes from a model and does not block on its own. Serious findings, however, must be acknowledged before the text can be approved."
+msgstr "Diese Prüfung kommt von einem Modell und blockiert nicht von sich aus. Schwerwiegende Befunde müssen aber bestätigt werden, bevor der Text freigegeben werden kann."
+
+#: src/Admin/EpisodesPage.php:940
+msgid "Severity"
+msgstr "Schwere"
+
+#: src/Admin/EpisodesPage.php:941
+msgid "Type"
+msgstr "Art"
+
+#: src/Admin/EpisodesPage.php:942
+msgid "In the source"
+msgstr "In der Vorlage"
+
+#: src/Admin/EpisodesPage.php:943
+msgid "In the speech script"
+msgstr "Im Sprechskript"
+
+#: src/Admin/EpisodesPage.php:975
+msgid "not needed"
+msgstr "nicht nötig"
+
+#: src/Admin/EpisodesPage.php:996
+msgid "Edit text"
+msgstr "Text bearbeiten"
+
+#. translators: %d: number of characters
+#: src/Admin/EpisodesPage.php:1004
+#, php-format
+msgid "%d characters. The number diff is recalculated after saving."
+msgstr "%d Zeichen. Nach dem Speichern wird der Zahlen-Diff neu gerechnet."
+
+#: src/Admin/EpisodesPage.php:1008
+msgid "Save and check speech script"
+msgstr "Sprechskript speichern und prüfen"
+
+#. translators: %s: date and time of the text approval
+#: src/Admin/EpisodesPage.php:1024
+#, php-format
+msgid "Text approved on %s."
+msgstr "Text freigegeben am %s."
+
+#: src/Admin/EpisodesPage.php:1036
+msgid "Locked while discrepancies are open. Correct the text, or acknowledge the overridable discrepancies and save."
+msgstr "Gesperrt, solange Abweichungen offen sind. Text korrigieren oder die übersteuerbaren Abweichungen bestätigen und speichern."
+
+#: src/Admin/EpisodesPage.php:1062
+#: src/Admin/Overview.php:172
+msgid "Title"
+msgstr "Titel"
+
+#: src/Admin/EpisodesPage.php:1064
+msgid "Short description"
+msgstr "Kurzbeschreibung"
+
+#. translators: %d: number of characters of the short description
+#: src/Admin/EpisodesPage.php:1066
+#, php-format
+msgid " (%d characters)"
+msgstr " (%d Zeichen)"
+
+#: src/Admin/EpisodesPage.php:1068
+msgid "Description"
+msgstr "Beschreibung"
+
+#: src/Admin/EpisodesPage.php:1071
+msgid "Keywords"
+msgstr "Schlagwörter"
+
+#: src/Admin/EpisodesPage.php:1078
+msgid "Chapters"
+msgstr "Kapitel"
+
+#: src/Admin/EpisodesPage.php:1082
+#: src/Settings/SettingsPage.php:203
+msgid "Disclosure"
+msgstr "Kennzeichnung"
+
+#: src/Admin/EpisodesPage.php:1084
+msgid "Appears at the end of the show notes. Fixed for this episode; later changes in the settings only affect new episodes."
+msgstr "Steht am Ende der Shownotes. Für diese Folge festgehalten; spätere Änderungen in den Einstellungen wirken nur auf neue Folgen."
+
+#: src/Admin/EpisodesPage.php:1090
+msgid "Dictionary extended"
+msgstr "Wörterbuch ergänzt"
+
+#: src/Admin/EpisodesPage.php:1101
+msgid "Created automatically and bound as a new dictionary version before synthesis runs."
+msgstr "Automatisch angelegt und als neue Wörterbuchversion gebunden, bevor die Synthese läuft."
+
+#: src/Admin/EpisodesPage.php:1107
+msgid "Check pronunciation"
+msgstr "Aussprache prüfen"
+
+#: src/Admin/EpisodesPage.php:1109
+msgid "These terms are not in the dictionary and might sound wrong. Creating a rule now is cheaper than re-recording them later."
+msgstr "Diese Begriffe stehen nicht im Wörterbuch und könnten falsch klingen. Eine Regel jetzt anzulegen ist billiger, als sie später nachzusprechen."
+
+#: src/Admin/EpisodesPage.php:1135
+msgid "The audio is only created after the text approval."
+msgstr "Das Audio entsteht erst nach der Textfreigabe."
+
+#: src/Admin/EpisodesPage.php:1154
+msgid "Unchanged segments keep their audio and cost nothing. Only what has changed is created."
+msgstr "Unveränderte Segmente behalten ihr Audio und kosten nichts. Erzeugt wird nur, was sich geändert hat."
+
+#. translators: 1: finished segments, 2: total, 3: duration
+#: src/Admin/EpisodesPage.php:1164
+#, php-format
+msgid "%1$d of %2$d segments done, %3$s in total."
+msgstr "%1$d von %2$d Segmenten fertig, zusammen %3$s."
+
+#: src/Admin/EpisodesPage.php:1170
+msgid "Synthesis is still running."
+msgstr "Die Synthese läuft noch."
+
+#: src/Admin/EpisodesPage.php:1196
+msgid "Rebuild assembly"
+msgstr "Montage neu rechnen"
+
+#: src/Admin/EpisodesPage.php:1208
+msgid "Listen to the whole episode"
+msgstr "Die ganze Folge anhören"
+
+#. translators: 1: duration, 2: file size
+#: src/Admin/EpisodesPage.php:1215
+#, php-format
+msgid "%1$s, %2$s. The file is stored outside the web root and is only delivered after a permission check."
+msgstr "%1$s, %2$s. Die Datei liegt außerhalb des Webverzeichnisses und wird nur nach Rechteprüfung ausgeliefert."
+
+#: src/Admin/EpisodesPage.php:1221
+msgid "Chapters — click to jump"
+msgstr "Kapitel — anklicken springt"
+
+#: src/Admin/EpisodesPage.php:1233
+msgid "When jumping, the sentence should be heard from its start, not from the middle."
+msgstr "Beim Springen sollte der Satz von Anfang an zu hören sein, nicht mittendrin."
+
+#. translators: %s: file size
+#: src/Admin/EpisodesPage.php:1240
+#, php-format
+msgid "A transcript is available (%s), generated from the synthesis timestamps."
+msgstr "Ein Transkript liegt bereit (%s), erzeugt aus den Zeitmarken der Synthese."
+
+#: src/Admin/EpisodesPage.php:1268
+msgid "This is the raw assembly. Auphonic has mastered it in the meantime — the finished version is approved further down."
+msgstr "Das ist die Rohmontage. Auphonic hat inzwischen gemastert — freigegeben wird weiter unten die fertige Fassung."
+
+#: src/Admin/EpisodesPage.php:1270
+msgid "This is the raw assembly. Auphonic is processing it right now; the approval comes afterwards, further down."
+msgstr "Das ist die Rohmontage. Auphonic rechnet gerade daran; die Freigabe kommt danach, weiter unten."
+
+#: src/Admin/EpisodesPage.php:1272
+msgid "This is the raw assembly, still without levelling and loudness. If it sounds right, send it to Auphonic further down. Approval only comes after that."
+msgstr "Das ist die Rohmontage, noch ohne Pegel und Loudness. Klingt sie richtig, geht sie weiter unten an Auphonic. Freigegeben wird erst danach."
+
+#: src/Admin/EpisodesPage.php:1291
+#: src/Admin/Workflow.php:66
+msgid "Audio approval"
+msgstr "Audiofreigabe"
+
+#: src/Admin/EpisodesPage.php:1306
+msgid "Auphonic is still processing. As soon as the callback arrives, the approval button appears here."
+msgstr "Auphonic rechnet noch. Sobald der Rückruf da ist, steht hier der Freigabeknopf."
+
+#: src/Admin/EpisodesPage.php:1307
+msgid "Send to Auphonic first. The mastered version is approved, not the raw assembly."
+msgstr "Zuerst an Auphonic senden. Freigegeben wird die gemasterte Fassung, nicht die Rohmontage."
+
+#: src/Admin/EpisodesPage.php:1315
+msgid "The finished version, exactly as it appears in the feed:"
+msgstr "Die fertige Fassung, so wie sie im Feed steht:"
+
+#: src/Admin/EpisodesPage.php:1326
+msgid "Records that the episode has been listened to and found good. This does not publish anything — that is done by hand in Podlove."
+msgstr "Hält fest, dass die Folge gehört und für gut befunden wurde. Veröffentlicht wird dadurch nichts — das geschieht von Hand in Podlove."
+
+#. translators: %d: number of segments
+#: src/Admin/EpisodesPage.php:1347
+#, php-format
+msgid "Listen to individual segments (%d)"
+msgstr "Einzelne Segmente abhören (%d)"
+
+#. translators: %d: number of flagged segments
+#: src/Admin/EpisodesPage.php:1353
+#, php-format
+msgid "%d flagged"
+msgid_plural "%d flagged"
+msgstr[0] "%d beanstandet"
+msgstr[1] "%d beanstandet"
+
+#: src/Admin/EpisodesPage.php:1358
+msgid "Below each segment there is “Correct pronunciation\" — behind it are both options: a dictionary rule for every future episode, or re-speaking the sentence yourself (Voice Changer) for this one episode only. “Flag\" additionally marks the segment so it does not get lost while going through."
+msgstr "Unter jedem Segment steht „Aussprache korrigieren\" — dahinter liegen beide Wege: eine Wörterbuchregel für jede künftige Folge, oder den Satz selbst nachsprechen (Voice Changer) nur für diese eine. „Beanstanden\" markiert das Segment zusätzlich, damit es beim Durchgehen nicht untergeht."
+
+#: src/Admin/EpisodesPage.php:1389
+msgid "re-spoken"
+msgstr "nachgesprochen"
+
+#: src/Admin/EpisodesPage.php:1400
+msgid "not created yet"
+msgstr "noch nicht erzeugt"
+
+#: src/Admin/EpisodesPage.php:1412
+msgid "all good"
+msgstr "in Ordnung"
+
+#: src/Admin/EpisodesPage.php:1412
+msgid "flag"
+msgstr "beanstanden"
+
+#: src/Admin/EpisodesPage.php:1420
+msgid "regenerate"
+msgstr "neu erzeugen"
+
+#: src/Admin/EpisodesPage.php:1429
+msgid "Correct pronunciation — create a rule or re-speak the sentence yourself"
+msgstr "Aussprache korrigieren — Regel anlegen oder Satz selbst nachsprechen"
+
+#: src/Admin/EpisodesPage.php:1445
+msgid "what sounded wrong?"
+msgstr "was klang falsch?"
+
+#: src/Admin/EpisodesPage.php:1471
+msgid "Dictionary rule — applies to every future episode"
+msgstr "Wörterbuchregel — wirkt in jeder künftigen Folge"
+
+#: src/Admin/EpisodesPage.php:1472
+msgid "The right option for a recurring proper name. The phonetic transcription states exactly what should be spoken — the ˈ mark comes before the stressed syllable, ː lengthens the preceding vowel."
+msgstr "Für einen wiederkehrenden Eigennamen der richtige Weg. Die Lautschrift sagt genau, was gesprochen werden soll — das Zeichen ˈ steht vor der betonten Silbe, ː längt den Vokal davor."
+
+#. translators: 1: term, 2: existing pronunciation
+#: src/Admin/EpisodesPage.php:1480
+#, php-format
+msgid "There is already the rule \"%2$s\" for \"%1$s\". It will be replaced, not duplicated."
+msgstr "Für \"%1$s\" gibt es bereits die Regel \"%2$s\". Sie wird ersetzt, nicht gedoppelt."
+
+#: src/Admin/EpisodesPage.php:1489
+msgid "Term in the text"
+msgstr "Begriff im Text"
+
+#: src/Admin/EpisodesPage.php:1491
+msgid "Phonetic transcription (IPA)"
+msgstr "Lautschrift (IPA)"
+
+#: src/Admin/EpisodesPage.php:1493
+msgid "Respelling (fallback)"
+msgstr "Umschreibung (Rückfall)"
+
+#: src/Admin/EpisodesPage.php:1495
+msgid "Create rule"
+msgstr "Regel anlegen"
+
+#: src/Admin/EpisodesPage.php:1500
+msgid "The configured model understands phonetic transcription — it will be used. The respelling is stored as a comment in case you later switch to a model without phonetic support."
+msgstr "Das eingestellte Modell wertet Lautschrift aus — sie wird verwendet. Die Umschreibung wird als Kommentar mitgeschrieben, falls später auf ein Modell ohne Lautschrift gewechselt wird."
+
+#: src/Admin/EpisodesPage.php:1501
+msgid "The configured model silently discards phonetic transcription — the respelling will be used. The phonetic transcription is stored as a comment so that switching to Eleven v3 means no rework."
+msgstr "Das eingestellte Modell verwirft Lautschrift still — verwendet wird die Umschreibung. Die Lautschrift wird als Kommentar mitgeschrieben, damit ein Wechsel auf Eleven v3 keine Nacharbeit bedeutet."
+
+#: src/Admin/EpisodesPage.php:1506
+msgid "Re-speak the sentence — applies only to this episode"
+msgstr "Satz nachsprechen — wirkt nur in dieser Folge"
+
+#: src/Admin/EpisodesPage.php:1507
+msgid "Read the whole sentence aloud, not just the wrong word. The Voice Changer carries over the intonation of the recording; a word spoken on its own sounds noticeably out of place between two sentences."
+msgstr "Lies den ganzen Satz vor, nicht nur das falsche Wort. Der Voice Changer überträgt die Sprechmelodie der Aufnahme; ein einzeln gesprochenes Wort sitzt hörbar falsch zwischen zwei Sätzen."
+
+#: src/Admin/EpisodesPage.php:1512
+msgid "apply"
+msgstr "übernehmen"
+
+#: src/Admin/EpisodesPage.php:1541
+msgid "view on Auphonic"
+msgstr "bei Auphonic ansehen"
+
+#. translators: %s: error message
+#: src/Admin/EpisodesPage.php:1552
+#, php-format
+msgid "The status could not be retrieved: %s"
+msgstr "Der Stand ließ sich nicht abfragen: %s"
+
+#: src/Admin/EpisodesPage.php:1565
+msgid "Auphonic is done, but the episode is still marked as \"producing\". The callback is missing or fetching the result failed — \"Resume run\" catches up on it."
+msgstr "Auphonic ist fertig, die Folge steht aber noch auf \"produziert\". Der Rückruf fehlt oder das Abholen ist gescheitert — \"Lauf fortsetzen\" holt sie nach."
+
+#. translators: %s: state reported by Auphonic
+#: src/Admin/EpisodesPage.php:1573
+#, php-format
+msgid "Auphonic reports an error: %s"
+msgstr "Auphonic meldet einen Fehler: %s"
+
+#. translators: %s: state reported by Auphonic
+#: src/Admin/EpisodesPage.php:1582
+#, php-format
+msgid "Running — Auphonic reports \"%s\". The status is fetched again when the page is reloaded."
+msgstr "Läuft — Auphonic meldet \"%s\". Der Stand wird beim Neuladen der Seite geholt."
+
+#: src/Admin/EpisodesPage.php:1605
+msgid "Production"
+msgstr "Produktion"
+
+#: src/Admin/EpisodesPage.php:1608
+#: src/Admin/Workflow.php:64
+#: src/Settings/SettingsPage.php:194
+msgid "Auphonic"
+msgstr "Auphonic"
+
+#: src/Admin/EpisodesPage.php:1610
+msgid "not sent yet"
+msgstr "noch nicht gesendet"
+
+#: src/Admin/EpisodesPage.php:1616
+msgid "Callback URL"
+msgstr "Rückruf-Adresse"
+
+#: src/Admin/EpisodesPage.php:1618
+msgid "Auphonic calls this URL as soon as the production is finished. There is no polling."
+msgstr "Auphonic ruft diese Adresse auf, sobald die Produktion fertig ist. Es wird nicht gepollt."
+
+#: src/Admin/EpisodesPage.php:1621
+msgid "Podlove draft"
+msgstr "Podlove-Entwurf"
+
+#: src/Admin/EpisodesPage.php:1631
+msgid "no longer a draft"
+msgstr "nicht mehr Entwurf"
+
+#: src/Admin/EpisodesPage.php:1633
+msgid "The draft is never published automatically. Listen, review, then publish by hand."
+msgstr "Der Entwurf wird nie automatisch veröffentlicht. Anhören, prüfen, dann von Hand publizieren."
+
+#: src/Admin/EpisodesPage.php:1635
+msgid "created after the Auphonic callback"
+msgstr "entsteht nach dem Rückruf von Auphonic"
+
+#: src/Admin/EpisodesPage.php:1661
+msgid "Podlove slug"
+msgstr "Podlove-Kennung"
+
+#: src/Admin/EpisodesPage.php:1664
+msgid "send again"
+msgstr "erneut senden"
+
+#. translators: %s: file name
+#: src/Admin/EpisodesPage.php:1669
+#, php-format
+msgid "Determines the public file name: %s.mp3. Chapter marks and metadata are sent along; speech recognition must be switched off in the Auphonic preset."
+msgstr "Bestimmt den öffentlichen Dateinamen: %s.mp3. Kapitelmarken und Metadaten reisen mit; im Auphonic-Preset muss die Spracherkennung abgeschaltet sein."
+
+#: src/Admin/EpisodesPage.php:1691
+msgid "Usage"
+msgstr "Verbrauch"
+
+#. translators: %s: estimated cost in US cents
+#: src/Admin/EpisodesPage.php:1697
+#, php-format
+msgid "%s US cents"
+msgstr "%s US-Cent"
+
+#: src/Admin/EpisodesPage.php:1701
+#: src/Admin/Overview.php:94
+#: src/Admin/Overview.php:101
+msgid "ElevenLabs quota"
+msgstr "ElevenLabs-Kontingent"
+
+#: src/Admin/EpisodesPage.php:1707
+msgid "Storage used"
+msgstr "Belegter Speicher"
+
+#: src/Admin/EpisodesPage.php:1717
+msgid "Remove raw segment recordings"
+msgstr "Segment-Rohaufnahmen entfernen"
+
+#: src/Admin/EpisodesPage.php:1718
+msgid "Removes only the individual segments. The finished episode and the transcript remain. Deliberately not automatic — when the next problem comes up, you still want to have them."
+msgstr "Entfernt nur die einzelnen Segmente. Die fertige Folge und das Transkript bleiben. Bewusst nicht automatisch — beim nächsten Fehler will man sie noch haben."
+
+#: src/Admin/EpisodesPage.php:1749
+msgid "Run log"
+msgstr "Lauf-Log"
+
+#: src/Admin/EpisodesPage.php:1765
+msgid "Delete"
+msgstr "Entfernen"
+
+#: src/Admin/EpisodesPage.php:1766
+msgid "Delete this episode including its segments?"
+msgstr "Diese Folge samt Segmenten löschen?"
+
+#: src/Admin/EpisodesPage.php:1771
+msgid "Delete episode"
+msgstr "Folge löschen"
+
+#. translators: %s: name of the podcast
+#: src/Admin/Overview.php:35
+#, php-format
+msgid "%s — two approvals stay with you: text and audio."
+msgstr "%s — zwei Freigaben bleiben bei dir: Text und Audio."
+
+#: src/Admin/Overview.php:74
+#: src/Admin/Overview.php:79
+msgid "In progress"
+msgstr "In Arbeit"
+
+#: src/Admin/Overview.php:79
+#: src/Pipeline/Publish.php:122
+msgid "nothing"
+msgstr "nichts"
+
+#: src/Admin/Overview.php:79
+msgid "no open episode"
+msgstr "keine offene Folge"
+
+#. translators: %s: character limit of the ElevenLabs plan
+#: src/Admin/Overview.php:97
+#, php-format
+msgid "of %s characters in this billing month"
+msgstr "von %s Zeichen in diesem Abrechnungsmonat"
+
+#: src/Admin/Overview.php:101
+msgid "unavailable"
+msgstr "nicht abrufbar"
+
+#: src/Admin/Overview.php:107
+#: src/Admin/Overview.php:119
+msgid "Services"
+msgstr "Dienste"
+
+#: src/Admin/Overview.php:107
+msgid "not checked yet · check in the settings"
+msgstr "noch nicht geprüft · in den Einstellungen prüfen"
+
+#. translators: %s: time since the last check, e.g. "5 mins"
+#: src/Admin/Overview.php:123
+#, php-format
+msgid "all fine · checked %s ago"
+msgstr "alle in Ordnung · geprüft vor %s"
+
+#: src/Admin/Overview.php:145
+msgid "Open"
+msgstr "Öffnen"
+
+#: src/Admin/Overview.php:165
+msgid "No episode created yet."
+msgstr "Noch keine Folge angelegt."
+
+#: src/Admin/Overview.php:172
+msgid "No."
+msgstr "Nr."
+
+#: src/Admin/Overview.php:172
+msgid "Source"
+msgstr "Quelle"
+
+#: src/Admin/Overview.php:173
+#: src/Settings/SettingsPage.php:456
+msgid "Status"
+msgstr "Zustand"
+
+#: src/Admin/Overview.php:174
+msgid "Cost"
+msgstr "Kosten"
+
+#: src/Admin/Overview.php:174
+msgid "Created"
+msgstr "Angelegt"
+
+#: src/Admin/Overview.php:205
+#: src/Admin/Overview.php:221
+msgid "show"
+msgstr "einblenden"
+
+#: src/Admin/Overview.php:205
+msgid "hide"
+msgstr "ausblenden"
+
+#: src/Admin/Overview.php:215
+msgid "Hide hidden episodes again"
+msgstr "Ausgeblendete wieder verbergen"
+
+#. translators: %d: number of episodes
+#: src/Admin/Overview.php:219
+#, php-format
+msgid "%d episode is hidden"
+msgid_plural "%d episodes are hidden"
+msgstr[0] "%d Folge ist ausgeblendet"
+msgstr[1] "%d Folgen sind ausgeblendet"
+
+#. translators: %d: episode ID
+#: src/Admin/Overview.php:260
+#: src/Notify/Notifier.php:190
+#: src/Notify/Notifier.php:287
+#: src/Pipeline/Recovery.php:174
+#, php-format
+msgid "Episode %d"
+msgstr "Folge %d"
+
+#: src/Admin/PatchController.php:46
+msgid "This segment does not exist."
+msgstr "Dieses Segment gibt es nicht."
+
+#: src/Admin/PatchController.php:51
+msgid "No recording was received."
+msgstr "Es kam keine Aufnahme an."
+
+#. translators: 1: segment number, 2: previous duration in seconds, 3: new duration in seconds
+#: src/Admin/PatchController.php:86
+#, php-format
+msgid "Segment %1$d re-recorded. Before %2$s, now %3$s."
+msgstr "Segment %1$d nachgesprochen. Vorher %2$s, jetzt %3$s."
+
+#: src/Admin/PatchController.php:93
+msgid "Re-recorded. The mixdown has to be rendered again."
+msgstr "Nachgesprochen. Die Montage muss neu gerechnet werden."
+
+#. translators: 1: segment number, 2: error message
+#. translators: 1: segment index, 2: error message
+#: src/Admin/PatchController.php:100
+#: src/Pipeline/Synthesis.php:116
+#, php-format
+msgid "Segment %1$d failed: %2$s"
+msgstr "Segment %1$d fehlgeschlagen: %2$s"
+
+#: src/Admin/PromptsPage.php:34
+msgid "Podcast Forge — Prompts"
+msgstr "Podcast Forge — Prompts"
+
+#: src/Admin/PromptsPage.php:34
+#: src/Admin/PromptsPage.php:67
+msgid "Prompts"
+msgstr "Prompts"
+
+#: src/Admin/PromptsPage.php:48
+msgid "Spoken script"
+msgstr "Sprechskript"
+
+#: src/Admin/PromptsPage.php:48
+msgid "Turns the fact script into the text the voice speaks. The pronunciation dictionary list is appended automatically."
+msgstr "Macht aus dem Faktenskript den Text, den die Stimme spricht. Die Liste des Aussprachewörterbuchs wird automatisch angehängt."
+
+#: src/Admin/PromptsPage.php:49
+msgid "Publication data"
+msgstr "Veröffentlichungsdaten"
+
+#: src/Admin/PromptsPage.php:49
+msgid "Titles, descriptions, keywords, chapters and pronunciation candidates. The output format is fixed."
+msgstr "Titel, Beschreibungen, Schlagwörter, Kapitel und Aussprache-Kandidaten. Das Ausgabeformat ist fest vorgegeben."
+
+#: src/Admin/PromptsPage.php:50
+msgid "Compares the spoken script with the source for changed, missing and invented statements."
+msgstr "Vergleicht Sprechskript und Vorlage auf veränderte, fehlende und erfundene Aussagen."
+
+#: src/Admin/PromptsPage.php:51
+#: src/Health/Checks/DictionaryCheck.php:49
+msgid "Pronunciation dictionary"
+msgstr "Aussprachewörterbuch"
+
+#: src/Admin/PromptsPage.php:51
+msgid "Decides which terms get a pronunciation rule and suggests phonetic spellings."
+msgstr "Entscheidet, welche Begriffe eine Ausspracheregel bekommen, und schlägt Lautschrift vor."
+
+#: src/Admin/PromptsPage.php:68
+msgid "Placeholders: {podcast}, {host}, {editor}, {sign_off} — they are filled from the settings. A version saved here takes precedence over a file in the prompt directory and over the bundled one."
+msgstr "Platzhalter: {podcast}, {host}, {editor}, {sign_off} — sie werden aus den Einstellungen gefüllt. Eine hier gespeicherte Fassung gilt vor einer Datei im Prompt-Verzeichnis und vor der mitgelieferten."
+
+#: src/Admin/PromptsPage.php:79
+msgid "(podcast language)"
+msgstr "(Sprache des Podcasts)"
+
+#: src/Admin/PromptsPage.php:92
+msgid "edited in the admin"
+msgstr "im Backend bearbeitet"
+
+#. translators: %s: path of the prompt file
+#: src/Admin/PromptsPage.php:94
+#, php-format
+msgid "File in the prompt directory: %s"
+msgstr "Datei im Prompt-Verzeichnis: %s"
+
+#: src/Admin/PromptsPage.php:95
+msgid "bundled"
+msgstr "mitgeliefert"
+
+#: src/Admin/PromptsPage.php:109
+msgid "Discard edits and reset to the file or the default"
+msgstr "Bearbeitung verwerfen und auf die Datei bzw. den Standard zurücksetzen"
+
+#: src/Admin/PromptsPage.php:114
+msgid "Save prompts"
+msgstr "Prompts speichern"
+
+#: src/Admin/PromptsPage.php:124
+msgid "Unknown language."
+msgstr "Unbekannte Sprache."
+
+#: src/Admin/PromptsPage.php:153
+msgid "Prompts saved."
+msgstr "Prompts gespeichert."
+
+#: src/Admin/Workflow.php:58
+msgid "Sources"
+msgstr "Quellen"
+
+#: src/Admin/Workflow.php:62
+msgid "Text approval"
+msgstr "Textfreigabe"
+
+#: src/Admin/Workflow.php:65
+msgid "Podlove"
+msgstr "Podlove"
+
+#: src/Admin/Workflow.php:140
+msgid "done"
+msgstr "erledigt"
+
+#: src/Admin/Workflow.php:141
+msgid "your turn"
+msgstr "jetzt dran"
+
+#: src/Admin/Workflow.php:141
+msgid "running"
+msgstr "läuft"
+
+#: src/Admin/Workflow.php:142
+msgid "your approval"
+msgstr "deine Freigabe"
+
+#: src/Admin/Workflow.php:143
+#: src/Settings/SettingsPage.php:258
+msgid "automatic"
+msgstr "automatisch"
+
+#: src/Admin/Workflow.php:144
+msgid "open"
+msgstr "offen"
+
+#: src/Ai/AnthropicClient.php:39
+msgid "Anthropic credentials could not be read: "
+msgstr "Anthropic-Zugangsdaten nicht lesbar: "
+
+#: src/Ai/AnthropicClient.php:43
+msgid "No Anthropic API key has been configured."
+msgstr "Es ist kein Anthropic-API-Key hinterlegt."
+
+#: src/Ai/AnthropicClient.php:48
+msgid "No Anthropic model has been selected."
+msgstr "Es ist kein Anthropic-Modell eingestellt."
+
+#: src/Ai/AnthropicClient.php:123
+msgid "The batch was submitted, but no identifier was returned."
+msgstr "Der Batch wurde angenommen, aber ohne Kennung."
+
+#: src/Ai/AnthropicClient.php:149
+msgid "Unexpected address for batch results."
+msgstr "Unerwartete Adresse für Batch-Ergebnisse."
+
+#: src/Ai/AnthropicClient.php:154
+#: src/Ai/AnthropicClient.php:194
+#: src/Ai/AnthropicClient.php:259
+#: src/Auphonic/AuphonicClient.php:118
+#: src/Auphonic/AuphonicClient.php:258
+#: src/Auphonic/AuphonicClient.php:288
+#: src/Voice/DictionaryWriter.php:148
+#: src/Voice/DictionaryWriter.php:309
+#: src/Voice/TextToSpeech.php:160
+#: src/Voice/VoiceChanger.php:123
+msgid "Connection failed: "
+msgstr "Verbindungsfehler: "
+
+#. translators: %d: HTTP status code of the batch results request
+#: src/Ai/AnthropicClient.php:160
+#, php-format
+msgid "Batch results: HTTP %d."
+msgstr "Batch-Ergebnisse: HTTP %d."
+
+#: src/Ai/AnthropicClient.php:187
+#: src/Ai/AnthropicClient.php:249
+#: src/Voice/TextToSpeech.php:146
+msgid "The request could not be encoded as JSON."
+msgstr "Die Anfrage ließ sich nicht als JSON kodieren."
+
+#: src/Ai/AnthropicClient.php:203
+msgid "no readable response"
+msgstr "keine lesbare Antwort"
+
+#. translators: 1: HTTP status code, 2: error message from the API
+#. translators: 1: HTTP status code, 2: error message or start of the raw response
+#: src/Ai/AnthropicClient.php:206
+#: src/Ai/AnthropicClient.php:283
+#, php-format
+msgid "Anthropic responded with HTTP %1$d: %2$s"
+msgstr "Anthropic antwortet mit HTTP %1$d: %2$s"
+
+#: src/Ai/AnthropicClient.php:303
+#: src/Ai/BatchGate.php:106
+#: src/Ai/BatchGate.php:205
+#: src/Rest/AuphonicWebhook.php:91
+msgid "unknown"
+msgstr "unbekannt"
+
+#. translators: %s: refusal category reported by the API
+#: src/Ai/AnthropicClient.php:306
+#, php-format
+msgid "The request was not accepted (%s)."
+msgstr "Die Anfrage wurde abgelehnt (%s)."
+
+#. translators: 1: number of output tokens, 2: number of thinking tokens among them
+#: src/Ai/AnthropicClient.php:325
+#, php-format
+msgid "The response was aborted because the token limit was reached (%1$d output tokens, %2$d of them thinking)."
+msgstr "Die Antwort wurde abgeschnitten, weil die Token-Grenze erreicht wurde (%1$d Ausgabe-Token, davon %2$d Nachdenken)."
+
+#: src/Ai/AnthropicClient.php:339
+msgid "The response contains no text."
+msgstr "Die Antwort enthält keinen Text."
+
+#: src/Ai/BatchGate.php:106
+#: src/Ai/BatchGate.php:268
+msgid "Batch failed: "
+msgstr "Batch fehlgeschlagen: "
+
+#. translators: %s: batch ID
+#: src/Ai/BatchGate.php:110
+#, php-format
+msgid "Batch %s is still running."
+msgstr "Batch %s läuft noch."
+
+#. translators: 1: batch ID, 2: model name
+#: src/Ai/BatchGate.php:131
+#, php-format
+msgid "Submitted as a batch (%1$s, model %2$s). The result usually arrives within an hour, at half the price; after that it continues automatically."
+msgstr "Als Batch eingereicht (%1$s, Modell %2$s). Das Ergebnis kommt in der Regel binnen einer Stunde, zum halben Preis; danach geht es von selbst weiter."
+
+#. translators: %s: batch ID
+#: src/Ai/BatchGate.php:137
+#, php-format
+msgid "Batch %s submitted."
+msgstr "Batch %s eingereicht."
+
+#: src/Ai/BatchGate.php:165
+msgid "no result after 26 hours"
+msgstr "nach 26 Stunden ohne Ergebnis"
+
+#. translators: %s: human-readable waiting time since submission
+#: src/Ai/BatchGate.php:198
+#, php-format
+msgid "Batch result arrived after %s."
+msgstr "Batch-Ergebnis da nach %s."
+
+#: src/Ai/BatchGate.php:204
+msgid "Request missing from the result"
+msgstr "Anfrage nicht im Ergebnis"
+
+#. translators: %s: name of the prompt
+#: src/Ai/Prompts.php:43
+#, php-format
+msgid "The prompt \"%s\" is missing or empty."
+msgstr "Der Prompt \"%s\" fehlt oder ist leer."
+
+#. translators: %s: requested prompt name
+#: src/Ai/Prompts.php:122
+#, php-format
+msgid "Unknown prompt \"%s\"."
+msgstr "Unbekannter Prompt \"%s\"."
+
+#: src/Audio/AudioEngine.php:48
+msgid "ffmpeg, as set."
+msgstr "ffmpeg, wie eingestellt."
+
+#: src/Audio/AudioEngine.php:49
+msgid "ffmpeg is set, but cannot be called — assembly will fail."
+msgstr "ffmpeg ist eingestellt, lässt sich aber nicht aufrufen — die Montage wird scheitern."
+
+#: src/Audio/AudioEngine.php:52
+msgid "PHP with Auphonic, as set."
+msgstr "PHP mit Auphonic, wie eingestellt."
+
+#: src/Audio/AudioEngine.php:56
+msgid "Automatic: ffmpeg is available."
+msgstr "Automatisch: ffmpeg ist vorhanden."
+
+#: src/Audio/AudioEngine.php:57
+msgid "Automatic: ffmpeg is not available here, so segments are joined in PHP and Auphonic adds the music."
+msgstr "Automatisch: ffmpeg steht hier nicht zur Verfügung, deshalb werden die Segmente in PHP zusammengefügt und Auphonic fügt die Musik hinzu."
+
+#: src/Audio/Ffmpeg.php:305
+msgid "The music could not be mixed in: "
+msgstr "Die Musik ließ sich nicht einmischen: "
+
+#: src/Audio/Ffmpeg.php:324
+msgid "There is nothing to assemble."
+msgstr "Es gibt nichts zu montieren."
+
+#. translators: %s: path of the first audio file
+#: src/Audio/Ffmpeg.php:330
+#, php-format
+msgid "The first file could not be read: %s"
+msgstr "Die erste Datei ließ sich nicht lesen: %s"
+
+#: src/Audio/Ffmpeg.php:433
+msgid "ffmpeg failed: "
+msgstr "ffmpeg ist fehlgeschlagen: "
+
+#: src/Auphonic/AuphonicClient.php:45
+msgid "Auphonic credentials could not be read: "
+msgstr "Auphonic-Zugangsdaten nicht lesbar: "
+
+#: src/Auphonic/AuphonicClient.php:49
+msgid "No Auphonic token has been configured."
+msgstr "Es ist kein Auphonic-Token hinterlegt."
+
+#. translators: %s: path of the audio file
+#: src/Auphonic/AuphonicClient.php:72
+#: src/Auphonic/AuphonicClient.php:231
+#, php-format
+msgid "The audio file is not readable: %s"
+msgstr "Die Audiodatei ist nicht lesbar: %s"
+
+#: src/Auphonic/AuphonicClient.php:77
+#: src/Auphonic/AuphonicClient.php:156
+msgid "No Auphonic preset has been entered."
+msgstr "Es ist kein Auphonic-Preset eingetragen."
+
+#: src/Auphonic/AuphonicClient.php:99
+msgid "The audio file could not be read."
+msgstr "Die Audiodatei ließ sich nicht lesen."
+
+#. translators: 1: HTTP status code, 2: beginning of the response body
+#: src/Auphonic/AuphonicClient.php:127
+#: src/Auphonic/AuphonicClient.php:266
+#, php-format
+msgid "Auphonic responded with HTTP %1$d: %2$s"
+msgstr "Auphonic antwortet mit HTTP %1$d: %2$s"
+
+#: src/Auphonic/AuphonicClient.php:135
+#: src/Auphonic/AuphonicClient.php:202
+msgid "Auphonic did not return a production identifier."
+msgstr "Auphonic hat keine Produktionskennung zurückgegeben."
+
+#: src/Auphonic/AuphonicClient.php:293
+msgid "Unexpected response from Auphonic."
+msgstr "Unerwartete Antwort von Auphonic."
+
+#: src/Auphonic/AuphonicClient.php:323
+#: src/Auphonic/AuphonicClient.php:338
+msgid "Download failed: "
+msgstr "Herunterladen fehlgeschlagen: "
+
+#: src/Auphonic/AuphonicClient.php:331
+msgid "Auphonic redirects but does not specify a target."
+msgstr "Auphonic leitet weiter, nennt aber kein Ziel."
+
+#. translators: 1: HTTP status code, 2: optional note that authentication was rejected (or empty)
+#: src/Auphonic/AuphonicClient.php:349
+#, php-format
+msgid "Download failed, HTTP %1$d%2$s."
+msgstr "Herunterladen fehlgeschlagen, HTTP %1$d%2$s."
+
+#: src/Auphonic/AuphonicClient.php:351
+msgid " — the authentication was not accepted"
+msgstr " — die Anmeldung wurde nicht angenommen"
+
+#: src/Db/EpisodeStatus.php:45
+msgid "New"
+msgstr "Neu"
+
+#: src/Db/EpisodeStatus.php:46
+msgid "Preparing source"
+msgstr "Quelle wird vorbereitet"
+
+#: src/Db/EpisodeStatus.php:47
+msgid "Preparation failed"
+msgstr "Vorbereitung fehlgeschlagen"
+
+#: src/Db/EpisodeStatus.php:48
+msgid "Imported"
+msgstr "Eingelesen"
+
+#: src/Db/EpisodeStatus.php:49
+msgid "Editing in progress"
+msgstr "Redigat läuft"
+
+#: src/Db/EpisodeStatus.php:50
+msgid "Editing failed"
+msgstr "Redigat fehlgeschlagen"
+
+#: src/Db/EpisodeStatus.php:51
+msgid "Numbers differ"
+msgstr "Zahlen weichen ab"
+
+#: src/Db/EpisodeStatus.php:52
+msgid "Awaiting text approval"
+msgstr "Wartet auf Textfreigabe"
+
+#: src/Db/EpisodeStatus.php:53
+msgid "Text approved"
+msgstr "Text freigegeben"
+
+#: src/Db/EpisodeStatus.php:54
+msgid "Auphonic is producing"
+msgstr "Auphonic produziert"
+
+#: src/Db/EpisodeStatus.php:55
+msgid "Awaiting audio approval"
+msgstr "Wartet auf Audiofreigabe"
+
+#: src/Db/EpisodeStatus.php:56
+msgid "Completed"
+msgstr "Abgeschlossen"
+
+#: src/Health/AjaxController.php:39
+msgid "Unknown check."
+msgstr "Unbekannte Prüfung."
+
+#: src/Health/AjaxController.php:47
+#: src/Health/Registry.php:75
+msgid "The check aborted with an error."
+msgstr "Die Prüfung ist mit einem Fehler abgebrochen."
+
+#: src/Health/Checks/AnthropicCheck.php:39
+#: src/Health/Checks/AuphonicCheck.php:38
+#: src/Health/Checks/DictionaryCheck.php:57
+#: src/Health/Checks/ElevenLabsCheck.php:36
+msgid "Credentials could not be read."
+msgstr "Zugangsdaten nicht lesbar."
+
+#: src/Health/Checks/AnthropicCheck.php:43
+msgid "No API key stored."
+msgstr "Kein API-Key hinterlegt."
+
+#: src/Health/Checks/AnthropicCheck.php:48
+msgid "No model configured."
+msgstr "Kein Modell eingestellt."
+
+#: src/Health/Checks/AnthropicCheck.php:69
+msgid "Could not reach the service."
+msgstr "Nicht erreichbar."
+
+#: src/Health/Checks/AnthropicCheck.php:76
+#: src/Health/Checks/DictionaryCheck.php:107
+#: src/Health/Checks/ElevenLabsCheck.php:59
+msgid "API key not accepted (HTTP 401)."
+msgstr "API-Key wird abgelehnt (HTTP 401)."
+
+#. translators: %s: configured Anthropic model ID
+#: src/Health/Checks/AnthropicCheck.php:82
+#, php-format
+msgid "Key is valid, but model \"%s\" is unknown."
+msgstr "Schlüssel gültig, aber Modell \"%s\" ist unbekannt."
+
+#: src/Health/Checks/AnthropicCheck.php:83
+msgid "Check the model name in the settings."
+msgstr "Modellnamen in den Einstellungen prüfen."
+
+#: src/Health/Checks/AnthropicCheck.php:93
+msgid "The key is identity-bound and requires a workspace ID."
+msgstr "Der Schlüssel ist identitätsgebunden und braucht eine Workspace-ID."
+
+#: src/Health/Checks/AnthropicCheck.php:94
+msgid "Enter the workspace ID in the settings — it appears in the address bar of the Anthropic console when the workspace is open. Alternatively, create a key that is already bound to a workspace."
+msgstr "Die ID des Workspace in den Einstellungen eintragen — sie steht in der Adresszeile der Anthropic-Konsole, wenn der Workspace geöffnet ist. Alternativ einen Schlüssel anlegen, der bereits an einen Workspace gebunden ist."
+
+#. translators: %d: HTTP status code
+#: src/Health/Checks/AnthropicCheck.php:100
+#: src/Health/Checks/AuphonicCheck.php:67
+#: src/Health/Checks/DictionaryCheck.php:118
+#: src/Health/Checks/ElevenLabsCheck.php:64
+#, php-format
+msgid "Unexpected response (HTTP %d)."
+msgstr "Unerwartete Antwort (HTTP %d)."
+
+#. translators: %s: display name of the model
+#: src/Health/Checks/AnthropicCheck.php:106
+#, php-format
+msgid "Reachable, model \"%s\" available."
+msgstr "Erreichbar, Modell \"%s\" verfügbar."
+
+#: src/Health/Checks/AuphonicCheck.php:42
+msgid "No API token configured."
+msgstr "Kein API-Token hinterlegt."
+
+#: src/Health/Checks/AuphonicCheck.php:54
+#: src/Health/Checks/DictionaryCheck.php:101
+msgid "Not reachable."
+msgstr "Nicht erreichbar."
+
+#. translators: %d: HTTP status code
+#: src/Health/Checks/AuphonicCheck.php:62
+#, php-format
+msgid "API token not accepted (HTTP %d)."
+msgstr "API-Token wird abgelehnt (HTTP %d)."
+
+#. translators: %s: remaining Auphonic credit in hours
+#: src/Health/Checks/AuphonicCheck.php:76
+#, php-format
+msgid "Remaining credit: %s hours."
+msgstr "Restguthaben: %s Stunden."
+
+#. translators: %s: Auphonic username
+#: src/Health/Checks/AuphonicCheck.php:83
+#, php-format
+msgid "Reachable as \"%s\", but no preset configured."
+msgstr "Erreichbar als \"%s\", aber kein Preset eingetragen."
+
+#. translators: %s: remaining purchased Auphonic credit in hours
+#: src/Health/Checks/AuphonicCheck.php:100
+#, php-format
+msgid "Only %s hours of purchased credits left — Auphonic appends its jingle when using free credits."
+msgstr "Nur noch %s Stunden gekaufte Credits — Auphonic hängt bei Gratis-Credits seinen Jingle an."
+
+#: src/Health/Checks/AuphonicCheck.php:101
+msgid " One episode needs about half an hour. Buy more credits at Auphonic."
+msgstr " Eine Folge braucht rund eine halbe Stunde. Credits bei Auphonic nachkaufen."
+
+#. translators: %s: Auphonic username
+#: src/Health/Checks/AuphonicCheck.php:106
+#, php-format
+msgid "Reachable as \"%s\", preset found."
+msgstr "Erreichbar als \"%s\", Preset gefunden."
+
+#: src/Health/Checks/AuphonicCheck.php:123
+msgid "Account reachable, but the preset could not be checked."
+msgstr "Konto erreichbar, Preset nicht prüfbar."
+
+#. translators: %s: Auphonic preset UUID
+#: src/Health/Checks/AuphonicCheck.php:129
+#, php-format
+msgid "Account reachable, but preset \"%s\" does not exist."
+msgstr "Konto erreichbar, aber Preset \"%s\" existiert nicht."
+
+#. translators: %d: HTTP status code
+#: src/Health/Checks/AuphonicCheck.php:134
+#, php-format
+msgid "Account reachable, preset request responds with HTTP %d."
+msgstr "Konto erreichbar, Preset-Abfrage antwortet mit HTTP %d."
+
+#: src/Health/Checks/AuphonicCheck.php:146
+msgid "Speech recognition is switched on in the preset."
+msgstr "Im Preset ist die Spracherkennung eingeschaltet."
+
+#: src/Health/Checks/AuphonicCheck.php:147
+msgid "It costs credit and produces a faulty transcript. Chapters and transcript come from the assembly step and are exact. Switch it off in the Auphonic preset."
+msgstr "Sie kostet Guthaben und erzeugt ein fehlerhaftes Transkript. Kapitel und Transkript kommen aus der Montage und sind exakt. Im Auphonic-Preset abschalten."
+
+#: src/Health/Checks/DictionaryCheck.php:61
+msgid "No ElevenLabs API key configured."
+msgstr "Kein ElevenLabs-API-Key hinterlegt."
+
+#: src/Health/Checks/DictionaryCheck.php:66
+msgid "No dictionary configured."
+msgstr "Kein Wörterbuch hinterlegt."
+
+#: src/Health/Checks/DictionaryCheck.php:72
+msgid "No version pinned."
+msgstr "Keine Version gebunden."
+
+#: src/Health/Checks/DictionaryCheck.php:73
+msgid "Every request must pass the version_id explicitly. Without it, the latest version applies, and later maintenance retroactively changes the result of a re-run."
+msgstr "Bei jedem Aufruf muss die version_id ausdrücklich mitgegeben werden. Ohne sie greift die jeweils neueste, und eine spätere Pflege verändert rückwirkend das Ergebnis einer Wiederholung."
+
+#. translators: %s: dictionary ID
+#: src/Health/Checks/DictionaryCheck.php:112
+#, php-format
+msgid "Dictionary \"%s\" does not exist."
+msgstr "Wörterbuch \"%s\" existiert nicht."
+
+#: src/Health/Checks/DictionaryCheck.php:137
+msgid "Pinned version could not be retrieved."
+msgstr "Gebundene Version nicht abrufbar."
+
+#. translators: %s: pinned dictionary version ID
+#: src/Health/Checks/DictionaryCheck.php:145
+#, php-format
+msgid "The pinned version \"%s\" does not exist."
+msgstr "Die gebundene Version \"%s\" gibt es nicht."
+
+#: src/Health/Checks/DictionaryCheck.php:146
+msgid "Was the dictionary created anew instead of extended? Then all existing pins point to nothing."
+msgstr "Wurde das Wörterbuch neu angelegt statt ergänzt? Dann zeigen alle bisherigen Bindungen ins Leere."
+
+#. translators: %d: HTTP status code
+#: src/Health/Checks/DictionaryCheck.php:152
+#, php-format
+msgid "Pinned version responds with HTTP %d."
+msgstr "Gebundene Version antwortet mit HTTP %d."
+
+#: src/Health/Checks/DictionaryCheck.php:158
+msgid "The pinned version is not a readable PLS file."
+msgstr "Die gebundene Version ist keine lesbare PLS-Datei."
+
+#. translators: 1: dictionary name, 2: number of rules, 3: number of phonetic transcription rules, 4: number of terms
+#: src/Health/Checks/DictionaryCheck.php:173
+#, php-format
+msgid "Dictionary \"%1$s\", pinned version: %2$d rules, %3$d of them as phonetic transcription. %4$d terms for the system prompt."
+msgstr "Wörterbuch \"%1$s\", gebundene Version: %2$d Regeln, davon %3$d als Lautschrift. %4$d Begriffe für den System Prompt."
+
+#: src/Health/Checks/DictionaryCheck.php:185
+msgid "The local PLS file is not writable."
+msgstr "Die lokale PLS-Datei ist nicht beschreibbar."
+
+#. translators: 1: number of phonetic transcription rules, 2: model ID
+#: src/Health/Checks/DictionaryCheck.php:193
+#, php-format
+msgid "%1$d phonetic transcription rules are silently discarded by model \"%2$s\"."
+msgstr "%1$d Lautschrift-Regeln werden von Modell \"%2$s\" still verworfen."
+
+#: src/Health/Checks/DictionaryCheck.php:194
+msgid " Only alias rules take effect on this model."
+msgstr " Auf diesem Modell wirken nur Alias-Regeln."
+
+#. translators: %s: model ID
+#: src/Health/Checks/DictionaryCheck.php:201
+#, php-format
+msgid "Model \"%s\" evaluates phonetic transcription for English only."
+msgstr "Modell \"%s\" wertet Lautschrift nur für Englisch aus."
+
+#: src/Health/Checks/DictionaryCheck.php:202
+msgid " German phonetic transcription requires eleven_v3."
+msgstr " Für deutsche Lautschrift braucht es eleven_v3."
+
+#. translators: %d: number of affected rules
+#: src/Health/Checks/DictionaryCheck.php:221
+#, php-format
+msgid "%d rules contain characters that the voice mispronounces."
+msgstr "%d Regeln enthalten Zeichen, die die Stimme falsch ausspricht."
+
+#. translators: %s: comma-separated list of affected terms
+#: src/Health/Checks/DictionaryCheck.php:224
+#, php-format
+msgid " Affected: %s. The phonetic transcription must not contain ◌̯, ◌̩ or ç."
+msgstr " Betroffen: %s. Die Lautschrift darf ◌̯, ◌̩ und ç nicht enthalten."
+
+#: src/Health/Checks/DictionaryCheck.php:232
+msgid "There is a newer version than the pinned one."
+msgstr "Es gibt eine neuere Version als die gebundene."
+
+#. translators: %s: number of rules in the latest version, or "?" if unknown
+#: src/Health/Checks/DictionaryCheck.php:235
+#, php-format
+msgid " The latest version has %s rules. Until it is entered, every rule added since then has no effect anywhere."
+msgstr " Neueste Version hat %s Regeln. Solange sie nicht eingetragen ist, wirkt jede seither ergänzte Regel nirgends."
+
+#. translators: %s: path of the local PLS file
+#: src/Health/Checks/DictionaryCheck.php:242
+msgid "Pinned and up to date."
+msgstr "Gebunden und aktuell."
+
+#. translators: %s: path of the local PLS file
+#: src/Health/Checks/DictionaryCheck.php:242
+#, php-format
+msgid "Local file: %s"
+msgstr "Lokale Datei: %s"
+
+#. translators: %s: path of the local PLS file
+#: src/Health/Checks/DictionaryCheck.php:256
+#, php-format
+msgid "The file %s belongs to another user and could not be modified."
+msgstr "Die Datei %s gehört einem anderen Benutzer und lässt sich nicht ändern."
+
+#. translators: %s: directory path
+#: src/Health/Checks/DictionaryCheck.php:262
+#, php-format
+msgid "The directory %s does not exist."
+msgstr "Das Verzeichnis %s gibt es nicht."
+
+#. translators: %s: directory path
+#: src/Health/Checks/DictionaryCheck.php:268
+#, php-format
+msgid "The directory %s is not writable by the web server."
+msgstr "Das Verzeichnis %s ist für den Webserver nicht beschreibbar."
+
+#: src/Health/Checks/ElevenLabsCheck.php:40
+msgid "No API key configured."
+msgstr "Kein API-Key hinterlegt."
+
+#: src/Health/Checks/ElevenLabsCheck.php:52
+msgid "Could not be reached."
+msgstr "Nicht erreichbar."
+
+#. translators: 1: number of characters used, 2: character limit of the quota, 3: percentage of the quota used
+#: src/Health/Checks/ElevenLabsCheck.php:75
+#, php-format
+msgid "Quota: %1$s of %2$s characters used (%3$d %%)."
+msgstr "Kontingent: %1$s von %2$s Zeichen verbraucht (%3$d %%)."
+
+#: src/Health/Checks/ElevenLabsCheck.php:84
+msgid "Reachable, but no voice ID configured."
+msgstr "Erreichbar, aber keine Voice-ID hinterlegt."
+
+#. translators: %s: name of the ElevenLabs subscription plan
+#: src/Health/Checks/ElevenLabsCheck.php:89
+#, php-format
+msgid "Reachable (plan %s)."
+msgstr "Erreichbar (Tarif %s)."
+
+#. translators: %s: name of the ElevenLabs subscription plan
+#: src/Health/Checks/ElevenLabsCheck.php:89
+msgid "Reachable."
+msgstr "Erreichbar."
+
+#: src/Health/Checks/ElevenLabsCheck.php:104
+msgid "The format looks right — the key has probably expired or been revoked."
+msgstr "Die Form stimmt — vermutlich ist der Schlüssel abgelaufen oder wurde zurückgezogen."
+
+#. translators: %d: length of the stored API key in characters
+#: src/Health/Checks/ElevenLabsCheck.php:109
+#, php-format
+msgid "The stored value is %d characters long and does not start with \"sk_\". ElevenLabs keys start with \"sk_\". Is it perhaps a different value copied from the dashboard?"
+msgstr "Der gespeicherte Wert ist %d Zeichen lang und beginnt nicht mit \"sk_\". ElevenLabs-Schlüssel beginnen mit \"sk_\". Steht dort vielleicht ein anderer Wert aus der Oberfläche?"
+
+#: src/Health/Checks/FfmpegCheck.php:40
+msgid "Not needed: the assembly runs in PHP."
+msgstr "Nicht nötig: Die Montage läuft in PHP."
+
+#: src/Health/Checks/FfmpegCheck.php:45
+msgid "External programs cannot be called."
+msgstr "Externe Programme sind nicht aufrufbar."
+
+#: src/Health/Checks/FfmpegCheck.php:46
+msgid "Neither proc_open nor exec is available. Both are blocked in disable_functions."
+msgstr "Weder proc_open noch exec steht zur Verfügung. Beide sind in disable_functions gesperrt."
+
+#: src/Health/Checks/FfmpegCheck.php:58
+msgid "Neither ffmpeg nor ffprobe can be called."
+msgstr "Weder ffmpeg noch ffprobe aufrufbar."
+
+#. translators: 1: configured ffmpeg path or command, 2: configured ffprobe path or command
+#: src/Health/Checks/FfmpegCheck.php:60
+#, php-format
+msgid "Looked for \"%1$s\" and \"%2$s\"."
+msgstr "Gesucht wurde \"%1$s\" und \"%2$s\"."
+
+#. translators: %s: configured ffmpeg path or command
+#: src/Health/Checks/FfmpegCheck.php:66
+#, php-format
+msgid "ffmpeg cannot be called (\"%s\")."
+msgstr "ffmpeg nicht aufrufbar (\"%s\")."
+
+#. translators: %s: configured ffprobe path or command
+#: src/Health/Checks/FfmpegCheck.php:72
+#, php-format
+msgid "ffmpeg is available, but ffprobe cannot be called (\"%s\")."
+msgstr "ffmpeg vorhanden, aber ffprobe nicht aufrufbar (\"%s\")."
+
+#: src/Health/Checks/FfmpegCheck.php:73
+msgid "Without ffprobe, the segment durations and therefore the chapter times could not be measured."
+msgstr "Ohne ffprobe lassen sich die Segmentdauern und damit die Kapitelzeiten nicht messen."
+
+#. translators: %s: ffmpeg version string
+#: src/Health/Checks/FfmpegCheck.php:79
+#, php-format
+msgid "Available (%s)."
+msgstr "Vorhanden (%s)."
+
+#: src/Health/Checks/MontageCheck.php:24
+#: src/Settings/SettingsPage.php:257
+msgid "Assembly"
+msgstr "Montage"
+
+#: src/Health/Checks/MontageCheck.php:33
+#: src/Settings/SettingsPage.php:266
+msgid "ffmpeg"
+msgstr "ffmpeg"
+
+#: src/Health/Checks/MontageCheck.php:34
+msgid "ffmpeg is set but not available."
+msgstr "ffmpeg ist eingestellt, aber nicht vorhanden."
+
+#: src/Health/Checks/MontageCheck.php:41
+msgid "PHP — but opener, bridges and outro need Auphonic, and no Auphonic preset is set."
+msgstr "PHP — aber Opener, Brücken und Outro brauchen Auphonic, und es ist kein Auphonic-Preset eingetragen."
+
+#: src/Health/Checks/MontageCheck.php:46
+#: src/Settings/SettingsPage.php:260
+msgid "PHP, music via Auphonic"
+msgstr "PHP, Musik über Auphonic"
+
+#: src/Health/Checks/PodloveCheck.php:40
+msgid "Podlove Podcast Publisher is not active."
+msgstr "Podlove Podcast Publisher ist nicht aktiv."
+
+#: src/Health/Checks/PodloveCheck.php:45
+msgid "Podlove is active, but the PHP API is missing."
+msgstr "Podlove ist aktiv, aber die PHP-API fehlt."
+
+#. translators: 1: Podlove episode class name, 2: Podlove podcast class name
+#: src/Health/Checks/PodloveCheck.php:47
+#, php-format
+msgid "Expected the classes %1$s and %2$s."
+msgstr "Erwartet wurden die Klassen %1$s und %2$s."
+
+#: src/Health/Checks/PodloveCheck.php:62
+msgid "Podlove's media file base URL does not point to this site's uploads."
+msgstr "Die Medien-Basis-URL in Podlove zeigt nicht in den Uploads-Ordner dieser Website."
+
+#. translators: %s: URL to enter in Podlove
+#: src/Health/Checks/PodloveCheck.php:64
+#, php-format
+msgid "Finished episodes are stored in uploads/podcasts. Set the media file base URL in Podlove to %s."
+msgstr "Fertige Folgen werden in uploads/podcasts abgelegt. Bitte in Podlove die Medien-Basis-URL auf %s setzen."
+
+#: src/Health/Checks/PodloveCheck.php:68
+msgid "Podlove has no episode asset for MP3."
+msgstr "Podlove hat kein Episoden-Asset für MP3."
+
+#: src/Health/Checks/PodloveCheck.php:68
+msgid "Create an asset with the file type MP3 in Podlove, otherwise the audio file cannot be linked."
+msgstr "Bitte in Podlove ein Asset mit dem Dateityp MP3 anlegen, sonst lässt sich die Audiodatei nicht verknüpfen."
+
+#: src/Health/Checks/PodloveCheck.php:73
+msgid "No asset for WebVTT transcripts — transcripts are not linked."
+msgstr "Kein Asset für WebVTT-Transkripte — Transkripte werden nicht verknüpft."
+
+#. translators: %s: Podlove plugin version number
+#: src/Health/Checks/PodloveCheck.php:78
+#, php-format
+msgid "Active (version %s)."
+msgstr "Aktiv (Version %s)."
+
+#. translators: %s: Podlove plugin version number
+#: src/Health/Checks/PodloveCheck.php:78
+msgid "Active."
+msgstr "Aktiv."
+
+#. translators: %s: formatted number of published episodes
+#: src/Health/Checks/PodloveCheck.php:100
+#, php-format
+msgid "%s published episodes."
+msgstr "%s veröffentlichte Folgen."
+
+#. translators: %d: next episode number
+#: src/Health/Checks/PodloveCheck.php:106
+#, php-format
+msgid " Next episode number: %d."
+msgstr " Nächste Folgennummer: %d."
+
+#: src/Health/Checks/StorageCheck.php:28
+msgid "Audio storage"
+msgstr "Audio-Ablage"
+
+#. translators: %s: filesystem path of the audio storage directory
+#: src/Health/Checks/StorageCheck.php:35
+#, php-format
+msgid "Path: %s"
+msgstr "Pfad: %s"
+
+#: src/Health/Checks/StorageCheck.php:43
+msgid "Writable, but located inside the served directory."
+msgstr "Beschreibbar, liegt aber innerhalb des ausgelieferten Verzeichnisses."
+
+#: src/Health/Checks/StorageCheck.php:44
+msgid " Under Apache the generated .htaccess files protect it, under nginx they do not: there the raw recordings would be publicly accessible. Configure a path outside the web directory or block the folder in the web server."
+msgstr " Unter Apache schützen die angelegten .htaccess-Dateien, unter nginx nicht: dort wären die Rohaufnahmen öffentlich abrufbar. Einen Pfad außerhalb des Webverzeichnisses einstellen oder den Ordner im Webserver sperren."
+
+#: src/Health/Checks/StorageCheck.php:48
+msgid "Writable and outside the web directory."
+msgstr "Beschreibbar und außerhalb des Webverzeichnisses."
+
+#: src/Jobs/Scheduler.php:43
+#: src/Settings/SettingsPage.php:478
+msgid "Action Scheduler is not loaded."
+msgstr "Action Scheduler ist nicht geladen."
+
+#. translators: %d: Action Scheduler action ID of the scheduled test job
+#: src/Jobs/Scheduler.php:70
+#, php-format
+msgid "Test job scheduled as action #%d."
+msgstr "Testjob als Aktion #%d eingeplant."
+
+#. translators: %s: comma-separated list of recipient addresses
+#: src/Notify/Announcement.php:73
+#, php-format
+msgid "Announcement sent to %s."
+msgstr "Ankündigung an %s verschickt."
+
+#. translators: %s: comma-separated list of recipient addresses
+#: src/Notify/Announcement.php:81
+#, php-format
+msgid "Announcement to %s failed; it remains queued."
+msgstr "Ankündigung an %s fehlgeschlagen; sie bleibt liegen."
+
+#. translators: %s: episode title
+#: src/Notify/Notifier.php:69
+#, php-format
+msgid "The episode “%s” has been written and is awaiting your approval."
+msgstr "Die Folge „%s“ ist geschrieben und wartet auf deine Freigabe."
+
+#. translators: %d: version number of the episode text
+#: src/Notify/Notifier.php:72
+#, php-format
+msgid "This is version %d of this episode. Earlier mails about the text or audio approval of this episode are therefore outdated."
+msgstr "Das ist Fassung %d dieser Folge. Frühere Mails zur Text- oder Audiofreigabe dieser Folge sind damit überholt."
+
+#. translators: 1: number of characters in the speech script, 2: estimated spoken minutes
+#: src/Notify/Notifier.php:76
+#, php-format
+msgid "Length: %1$s characters of speech script, about %2$d minutes spoken."
+msgstr "Umfang: %1$s Zeichen Sprechskript, gesprochen etwa %2$d Minuten."
+
+#. translators: 1: number of invented figures, 2: number of missing figures, 3: number of changed figures
+#: src/Notify/Notifier.php:79
+#, php-format
+msgid "Number diff: %1$d invented, %2$d missing, %3$d changed."
+msgstr "Zahlen-Diff: %1$d erfunden, %2$d fehlend, %3$d geändert."
+
+#. translators: 1: total number of fact check findings, 2: number of severe findings
+#: src/Notify/Notifier.php:85
+#, php-format
+msgid "Fact check: %1$d findings, %2$d of them severe."
+msgstr "Faktenprüfung: %1$d Befunde, davon %2$d schwerwiegend."
+
+#: src/Notify/Notifier.php:93
+msgid "Approval is locked until the open issues have been resolved or confirmed."
+msgstr "Die Freigabe ist gesperrt, bis die offenen Punkte behoben oder bestätigt sind."
+
+#: src/Notify/Notifier.php:94
+msgid "The checks are clean. After approval everything runs on its own up to the Podlove draft; the audio approval comes as a separate mail."
+msgstr "Die Prüfungen sind sauber. Nach der Freigabe läuft alles bis zum Podlove-Entwurf von selbst; die Audiofreigabe kommt als eigene Mail."
+
+#: src/Notify/Notifier.php:96
+msgid "To approve: "
+msgstr "Zur Freigabe: "
+
+#. translators: 1: approval status label, 2: short episode name, 3: version number, 4: estimated spoken minutes
+#: src/Notify/Notifier.php:100
+#, php-format
+msgid "%1$s: %2$s · Version %3$d · ≈ %4$d min"
+msgstr "%1$s: %2$s · Fassung %3$d · ≈ %4$d min"
+
+#: src/Notify/Notifier.php:101
+msgid "Text locked, please review"
+msgstr "Text gesperrt, bitte prüfen"
+
+#: src/Notify/Notifier.php:101
+msgid "Text awaiting approval"
+msgstr "Text wartet auf Freigabe"
+
+#: src/Notify/Notifier.php:109
+msgid "Notification about the pending text approval sent."
+msgstr "Benachrichtigung über die wartende Textfreigabe verschickt."
+
+#. translators: %s: episode title
+#: src/Notify/Notifier.php:130
+#, php-format
+msgid "The episode “%s” has been mastered at Auphonic and is ready as a Podlove draft."
+msgstr "Die Folge „%s“ ist bei Auphonic gemastert und liegt als Podlove-Entwurf bereit."
+
+#. translators: %d: version number of the audio
+#: src/Notify/Notifier.php:138
+#, php-format
+msgid "This is version %d of the audio. Earlier mails about the audio approval of this episode are therefore outdated; the Podlove draft now contains this version."
+msgstr "Das ist Fassung %d des Audios. Frühere Mails zur Audiofreigabe dieser Folge sind damit überholt, der Podlove-Entwurf enthält jetzt diese Fassung."
+
+#. translators: 1: duration minutes, 2: duration seconds, 3: number of chapters
+#: src/Notify/Notifier.php:143
+#, php-format
+msgid "Duration: %1$d:%2$02d minutes, %3$d chapters."
+msgstr "Dauer: %1$d:%2$02d Minuten, %3$d Kapitel."
+
+#: src/Notify/Notifier.php:145
+msgid "Listen and approve: "
+msgstr "Anhören und freigeben: "
+
+#. translators: 1: short episode name, 2: version number, 3: duration minutes, 4: duration seconds
+#: src/Notify/Notifier.php:152
+#, php-format
+msgid "Audio awaiting approval: %1$s · Version %2$d · %3$d:%4$02d"
+msgstr "Audio wartet auf Freigabe: %1$s · Fassung %2$d · %3$d:%4$02d"
+
+#: src/Notify/Notifier.php:161
+msgid "Notification about the pending audio approval sent."
+msgstr "Benachrichtigung über die wartende Audiofreigabe verschickt."
+
+#. translators: %s: episode title
+#: src/Notify/Notifier.php:195
+#, php-format
+msgid "A step got stuck on “%s”."
+msgstr "Bei „%s“ ist ein Schritt hängengeblieben."
+
+#. translators: %s: name of the failed step
+#: src/Notify/Notifier.php:198
+#, php-format
+msgid "Step: %s"
+msgstr "Schritt: %s"
+
+#. translators: %s: error message
+#: src/Notify/Notifier.php:200
+#, php-format
+msgid "Message: %s"
+msgstr "Meldung: %s"
+
+#: src/Notify/Notifier.php:202
+msgid "The episode view has a “Resume run” button: "
+msgstr "In der Folgenansicht gibt es einen Knopf „Lauf fortsetzen“: "
+
+#. translators: 1: short episode name, 2: name of the failed step
+#: src/Notify/Notifier.php:206
+#, php-format
+msgid "Error in %1$s · step %2$s"
+msgstr "Fehler bei %1$s · Schritt %2$s"
+
+#. translators: %s: name of the failed step
+#: src/Notify/Notifier.php:208
+#, php-format
+msgid "Notification about the error in step “%s” sent."
+msgstr "Benachrichtigung über den Fehler im Schritt „%s“ verschickt."
+
+#: src/Notify/Notifier.php:235
+msgid "\n\n— Podcast Forge on "
+msgstr "\n\n— Podcast Forge auf "
+
+#. translators: %d: number of digit sequences found outside break tags
+#: src/Numbers/ScriptGuard.php:40
+#, php-format
+msgid "The speech script contains %d digit sequences outside the break tags. Numbers must be written out."
+msgstr "Im Sprechskript stehen %d Ziffernfolgen außerhalb der Break-Tags. Zahlen müssen ausgeschrieben werden."
+
+#. translators: %d: number of inserted "Uhr null" occurrences
+#: src/Numbers/ScriptGuard.php:53
+#, php-format
+msgid "The speech script contains an inserted \"Uhr null\" %d times. Correct would be, for example, \"zwanzig Uhr vier\"."
+msgstr "Das Sprechskript enthält %d mal ein eingeschobenes \"Uhr null\". Richtig wäre etwa \"zwanzig Uhr vier\"."
+
+#. translators: 1: number of break tags in the script, 2: maximum recommended number of break tags
+#: src/Numbers/ScriptGuard.php:66
+#, php-format
+msgid "The speech script has %1$d break tags. The system prompt allows at most %2$d, because more destabilise the model."
+msgstr "Das Sprechskript hat %1$d Break-Tags. Der System Prompt nennt höchstens %2$d, weil mehr das Modell destabilisieren."
+
+#. translators: 1: total number of segments, 2: number of newly created segments
+#: src/Pipeline/AutoChain.php:54
+#, php-format
+msgid "Continuing automatically: %1$d segments, %2$d of them new. Synthesis is running, then montage and Auphonic."
+msgstr "Automatisch weiter: %1$d Segmente, davon %2$d neu. Die Synthese läuft, danach Montage und Auphonic."
+
+#: src/Pipeline/AutoChain.php:84
+msgid "Montage complete, the episode is being sent to Auphonic automatically."
+msgstr "Montage fertig, die Folge geht automatisch an Auphonic."
+
+#: src/Pipeline/DictionaryUpdate.php:48
+msgid "All reported terms are already in the dictionary."
+msgstr "Alle gemeldeten Begriffe stehen bereits im Wörterbuch."
+
+#: src/Pipeline/DictionaryUpdate.php:70
+#: src/Pipeline/FactCheck.php:47
+#: src/Pipeline/Metadata.php:50
+msgid "The response was not JSON."
+msgstr "Die Antwort war kein JSON."
+
+#: src/Pipeline/DictionaryUpdate.php:75
+msgid "Proposal failed: "
+msgstr "Vorschlag fehlgeschlagen: "
+
+#. translators: %s: comma-separated list of checked terms
+#: src/Pipeline/DictionaryUpdate.php:86
+#, php-format
+msgid "No rule needed. Checked: %s."
+msgstr "Keine Regel nötig. Geprüft: %s."
+
+#. translators: %s: the dictionary term
+#: src/Pipeline/DictionaryUpdate.php:110
+#, php-format
+msgid "%s (not in the script)"
+msgstr "%s (steht nicht im Skript)"
+
+#. translators: 1: number of rules created, 2: list of added terms or empty, 3: note on terms left without a rule or empty, 4: note on terms that could not be created or empty, 5: ElevenLabs dictionary version ID
+#: src/Pipeline/DictionaryUpdate.php:139
+#, php-format
+msgid "%1$d rules created%2$s%3$s%4$s Bound version is now %5$s."
+msgstr "%1$d Regeln angelegt%2$s%3$s%4$s Gebundene Version jetzt %5$s."
+
+#: src/Pipeline/DictionaryUpdate.php:142
+msgid " Left without a rule: "
+msgstr " Ohne Regel gelassen: "
+
+#: src/Pipeline/DictionaryUpdate.php:143
+msgid " Could not create: "
+msgstr " Nicht angelegt: "
+
+#. translators: 1: number of fact-check findings, 2: number of severe findings, 3: input tokens, 4: output tokens, 5: estimated cost in US cents
+#: src/Pipeline/FactCheck.php:68
+#, php-format
+msgid "%1$d findings, %2$d of them severe. Tokens: %3$d in, %4$d out, estimated %5$s US cents."
+msgstr "%1$d Befunde, davon %2$d schwerwiegend. Token: %3$d ein, %4$d aus, geschätzt %5$s US-Cent."
+
+#: src/Pipeline/FactCheck.php:80
+#: src/Pipeline/Metadata.php:80
+#: src/Pipeline/Montage.php:218
+#: src/Pipeline/Production.php:99
+#: src/Pipeline/Publish.php:127
+#: src/Pipeline/Redigat.php:89
+msgid "Failed: "
+msgstr "Fehlgeschlagen: "
+
+#. translators: %d: episode ID
+#: src/Pipeline/Gate.php:32
+#: src/Podlove/EpisodeDraft.php:42
+#: src/Segments/Segmenter.php:42
+#, php-format
+msgid "Episode %d does not exist."
+msgstr "Folge %d gibt es nicht."
+
+#. translators: 1: number of chapters, 2: number of keywords, 3: input tokens, 4: output tokens, 5: estimated cost in US cents
+#: src/Pipeline/Metadata.php:70
+#, php-format
+msgid "Generated: %1$d chapters, %2$d keywords. Tokens: %3$d in, %4$d out, estimated %5$s US cents."
+msgstr "Erzeugt: %1$d Kapitel, %2$d Schlagwörter. Token: %3$d ein, %4$d aus, geschätzt %5$s US-Cent."
+
+#: src/Pipeline/Montage.php:41
+msgid "Skipped: the text has not been approved."
+msgstr "Übersprungen: Der Text ist nicht freigegeben."
+
+#: src/Pipeline/Montage.php:48
+#: src/Pipeline/Synthesis.php:50
+msgid "There are no segments."
+msgstr "Es gibt keine Segmente."
+
+#. translators: %s: comma-separated list of segment numbers
+#: src/Pipeline/Montage.php:63
+#, php-format
+msgid "Aborted: audio is missing for segment %s."
+msgstr "Abgebrochen, es fehlt Audio für Segment %s."
+
+#: src/Pipeline/Montage.php:249
+msgid "The speech assembly could not be renamed."
+msgstr "Die Sprachmontage ließ sich nicht umbenennen."
+
+#. translators: 1: list of music parts (opener, outro, separators), 2: time at which the voice starts
+#: src/Pipeline/Montage.php:262
+#, php-format
+msgid " With %1$s, voice starts at %2$s, stereo."
+msgstr " Mit %1$s, Stimme ab %2$s, stereo."
+
+#. translators: %d: number of separators
+#: src/Pipeline/Montage.php:267
+#, php-format
+msgid "%d separators"
+msgstr "%d Trennern"
+
+#: src/Pipeline/Montage.php:276
+msgid " Without music: "
+msgstr " Ohne Musik: "
+
+#: src/Pipeline/Montage.php:277
+msgid " The chapter pauses are still lengthened for the separator."
+msgstr " Die Kapitelpausen sind trotzdem für den Trenner verlängert."
+
+#. translators: 1: number of segments, 2: number of chapters, 3: measured duration, 4: calculated duration, 5: file size, 6: additional notes on loudness, pauses and music
+#: src/Pipeline/Montage.php:311
+#, php-format
+msgid "Done: %1$d segments, %2$d chapters, duration %3$s (calculated %4$s), %5$s.%6$s"
+msgstr "Fertig: %1$d Segmente, %2$d Kapitel, Dauer %3$s (gerechnet %4$s), %5$s.%6$s"
+
+#: src/Pipeline/Montage.php:317
+msgid " Loudness matched because re-recorded segments are included."
+msgstr " Lautheit angeglichen, weil nachgesprochene Segmente enthalten sind."
+
+#: src/Pipeline/Montage.php:319
+msgid " Joined in PHP (no ffmpeg), pauses are digital silence."
+msgstr " In PHP zusammengefügt (ohne ffmpeg), Pausen sind digitale Stille."
+
+#: src/Pipeline/Montage.php:320
+msgid " No quiet passage found for room tone, pauses are digital silence."
+msgstr " Keine ruhige Stelle für Raumton gefunden, Pausen sind Nullstille."
+
+#: src/Pipeline/Montage.php:320
+msgid " Pauses filled with room tone."
+msgstr " Pausen mit Raumton gefüllt."
+
+#: src/Pipeline/Montage.php:376
+msgid "opener"
+msgstr "Opener"
+
+#: src/Pipeline/Montage.php:377
+msgid "outro"
+msgstr "Outro"
+
+#. translators: %d: number of music bridges
+#: src/Pipeline/Montage.php:379
+#, php-format
+msgid "%d bridge"
+msgid_plural "%d bridges"
+msgstr[0] "%d Brücke"
+msgstr[1] "%d Brücken"
+
+#. translators: %s: list like "opener, outro, 5 bridges"
+#: src/Pipeline/Montage.php:391
+#, php-format
+msgid " Auphonic will add: %s."
+msgstr " Auphonic fügt hinzu: %s."
+
+#: src/Pipeline/Production.php:31
+msgid "Aborted: there is no assembled mix."
+msgstr "Abgebrochen: es gibt keine montierte Fassung."
+
+#: src/Pipeline/Production.php:38
+msgid "Aborted: the episode has no title."
+msgstr "Abgebrochen: die Folge hat keinen Titel."
+
+#. translators: 1: Auphonic production UUID, 2: uploaded file size, 3: webhook callback URL
+#: src/Pipeline/Production.php:93
+#, php-format
+msgid "Production %1$s started, %2$s uploaded. The callback will arrive at %3$s."
+msgstr "Produktion %1$s gestartet, %2$s hochgeladen. Der Rückruf kommt an %3$s."
+
+#. translators: %s: Auphonic production status
+#: src/Pipeline/Publish.php:41
+#, php-format
+msgid "Not finished yet, status \"%s\". Waiting for the next callback."
+msgstr "Noch nicht fertig, Zustand \"%s\". Es wird auf den nächsten Rückruf gewartet."
+
+#: src/Pipeline/Publish.php:50
+msgid "Auphonic does not list an output file."
+msgstr "Auphonic nennt keine Ausgabedatei."
+
+#: src/Pipeline/Publish.php:55
+msgid "The episode has no Podlove slug."
+msgstr "Die Folge hat keine Podlove-Kennung."
+
+#. translators: 1: bytes received, 2: expected bytes
+#: src/Pipeline/Publish.php:66
+#, php-format
+msgid "The file is incomplete: %1$d of %2$d bytes received."
+msgstr "Die Datei ist unvollständig: %1$d von %2$d Bytes angekommen."
+
+#: src/Pipeline/Publish.php:73
+msgid "The checksum of the downloaded file does not match."
+msgstr "Die Prüfsumme der heruntergeladenen Datei stimmt nicht."
+
+#. translators: %s: number of seconds
+#: src/Pipeline/Publish.php:104
+#, php-format
+msgid "Warning: the finished file is %s seconds longer than the mix. Auphonic probably appended its jingle because only free credits were left. Buy more credits and send the episode to Auphonic again."
+msgstr "Achtung: die fertige Datei ist %s Sekunden länger als die Montage. Vermutlich hat Auphonic seinen Jingle angehängt, weil nur Gratis-Credits übrig waren. Credits nachkaufen und die Folge neu an Auphonic senden."
+
+#. translators: 1: post ID, 2: file name, 3: file size, 4: transcript note, 5: list of linked assets
+#: src/Pipeline/Publish.php:117
+#, php-format
+msgid "Draft #%1$d created. File %2$s (%3$s)%4$s. Linked: %5$s."
+msgstr "Entwurf #%1$d angelegt. Datei %2$s (%3$s)%4$s. Verknüpft: %5$s."
+
+#: src/Pipeline/Publish.php:121
+msgid ", transcript included"
+msgstr ", Transkript übernommen"
+
+#: src/Pipeline/Publish.php:121
+msgid ", without transcript"
+msgstr ", ohne Transkript"
+
+#. translators: 1: chapters predicted, 2: chapter marks found in the file
+#: src/Pipeline/Publish.php:181
+#, php-format
+msgid "Timeline check skipped: %1$d chapters predicted, %2$d chapter marks in the finished file."
+msgstr "Zeitabgleich übersprungen: %1$d Kapitel vorhergesagt, %2$d Kapitelmarken in der fertigen Datei."
+
+#. translators: %d: milliseconds
+#: src/Pipeline/Publish.php:219
+#, php-format
+msgid "Timeline check: chapters and transcript follow the chapter marks in the finished file (prediction was off by up to %d ms)."
+msgstr "Zeitabgleich: Kapitel und Transkript folgen den Kapitelmarken der fertigen Datei (die Vorhersage lag um bis zu %d ms daneben)."
+
+#. translators: 1: source label, 2: human-readable time span
+#: src/Pipeline/Recovery.php:47
+#, php-format
+msgid "%1$s: no progress for %2$s."
+msgstr "%1$s: seit %2$s ohne Fortschritt."
+
+#. translators: %s: human-readable time span
+#: src/Pipeline/Recovery.php:53
+#, php-format
+msgid "The edit has been running for %s without progress."
+msgstr "Das Redigat läuft seit %s ohne Fortschritt."
+
+#. translators: %s: human-readable time span
+#: src/Pipeline/Recovery.php:69
+#, php-format
+msgid "Auphonic has not responded for %s."
+msgstr "Auphonic hat sich seit %s nicht gemeldet."
+
+#. translators: 1: open segments, 2: total segments, 3: human-readable time span
+#: src/Pipeline/Recovery.php:78
+#, php-format
+msgid "%1$d of %2$d segments are still missing, and nothing has been added for %3$s."
+msgstr "Es fehlen noch %1$d von %2$d Segmenten, und seit %3$s ist nichts dazugekommen."
+
+#: src/Pipeline/Recovery.php:87
+msgid "All segments are finished, but there is no assembled version."
+msgstr "Alle Segmente sind fertig, aber es gibt keine montierte Fassung."
+
+#: src/Pipeline/Recovery.php:103
+msgid "The episode does not exist."
+msgstr "Die Folge gibt es nicht."
+
+#: src/Pipeline/Recovery.php:111
+msgid "This source could not be resumed; create the episode again."
+msgstr "Diese Quelle lässt sich nicht fortsetzen; die Folge neu anlegen."
+
+#: src/Pipeline/Recovery.php:117
+msgid "The edit has been rescheduled."
+msgstr "Das Redigat wurde neu eingeplant."
+
+#: src/Pipeline/Recovery.php:125
+msgid "Checking with Auphonic whether the production is finished."
+msgstr "Bei Auphonic wird nachgefragt, ob die Produktion fertig ist."
+
+#: src/Pipeline/Recovery.php:131
+msgid "There are no segments yet — that is what the \"Generate audio\" button is for."
+msgstr "Es gibt noch keine Segmente — dafür ist der Knopf \"Audio erzeugen\" da."
+
+#. translators: %d: number of missing segments
+#: src/Pipeline/Recovery.php:138
+#, php-format
+msgid "The synthesis has been rescheduled, %d segments are still missing."
+msgstr "Die Synthese wurde neu eingeplant, %d Segmente fehlen noch."
+
+#: src/Pipeline/Recovery.php:143
+msgid "The assembly has been rescheduled."
+msgstr "Die Montage wurde neu eingeplant."
+
+#: src/Pipeline/Redigat.php:35
+msgid "The episode has no fact script."
+msgstr "Die Folge hat kein Faktenskript."
+
+#. translators: 1: model name, 2: length of the source text in characters
+#: src/Pipeline/Redigat.php:44
+#, php-format
+msgid "Calling %1$s, source text %2$d characters."
+msgstr "Aufruf an %1$s, Vorlage %2$d Zeichen."
+
+#. translators: 1: script length in characters, 2: input tokens, 3: output tokens, 4: estimated cost in US cents
+#: src/Pipeline/Redigat.php:74
+#, php-format
+msgid "Spoken script generated: %1$d characters. Tokens: %2$d in, %3$d out, estimated %4$s US cents."
+msgstr "Sprechskript erzeugt: %1$d Zeichen. Token: %2$d ein, %3$d aus, geschätzt %4$s US-Cent."
+
+#: src/Pipeline/Synthesis.php:43
+msgid "Could not be started: "
+msgstr "Nicht startbar: "
+
+#: src/Pipeline/Synthesis.php:71
+msgid "Paused: the text is no longer approved."
+msgstr "Angehalten: Der Text ist nicht mehr freigegeben."
+
+#. translators: %d: number of segments synthesized in this pass
+#: src/Pipeline/Synthesis.php:79
+#, php-format
+msgid "Time budget reached after %d segments, continuing."
+msgstr "Zeitbudget erreicht nach %d Segmenten, wird fortgesetzt."
+
+#: src/Pipeline/Synthesis.php:125
+msgid "Aborted after three errors."
+msgstr "Nach drei Fehlern abgebrochen."
+
+#. translators: 1: segments generated, 2: characters used, 3: segments ready, 4: total segments, 5: total duration
+#: src/Pipeline/Synthesis.php:142
+#, php-format
+msgid "%1$d segments generated, %2$d characters used. Status: %3$d of %4$d ready, total duration %5$s."
+msgstr "%1$d Segmente erzeugt, %2$d Zeichen verbraucht. Bestand: %3$d von %4$d fertig, Gesamtdauer %5$s."
+
+#: src/Plugin.php:107
+#: src/Settings/SettingsPage.php:38
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: src/Podlove/EpisodeDraft.php:36
+msgid "Podlove is not available."
+msgstr "Podlove ist nicht verfügbar."
+
+#: src/Podlove/EpisodeDraft.php:47
+msgid "The episode has no title."
+msgstr "Die Folge hat keinen Titel."
+
+#: src/Podlove/EpisodeDraft.php:69
+msgid "The post could not be created."
+msgstr "Der Beitrag ließ sich nicht anlegen."
+
+#. translators: %s: path of the podcast upload directory
+#. translators: %s: path of the episode directory
+#. translators: %s: path of the directory
+#. translators: %s: directory path of the dictionary file
+#: src/Podlove/MediaStore.php:111
+#: src/Storage/EpisodeStorage.php:74
+#: src/Storage/EpisodeStorage.php:124
+#: src/Voice/DictionaryWriter.php:512
+#, php-format
+msgid "Directory could not be created: %s"
+msgstr "Verzeichnis lässt sich nicht anlegen: %s"
+
+#. translators: %s: path of the media file being written
+#. translators: %s: absolute path of the file
+#: src/Podlove/MediaStore.php:118
+#: src/Storage/EpisodeStorage.php:129
+#, php-format
+msgid "File could not be written: %s"
+msgstr "Datei lässt sich nicht schreiben: %s"
+
+#. translators: %s: Auphonic production status reported in the callback
+#: src/Rest/AuphonicWebhook.php:90
+#, php-format
+msgid "Callback received, status \"%s\"."
+msgstr "Rückruf erhalten, Zustand \"%s\"."
+
+#: src/Segments/Segmenter.php:47
+msgid "The episode has no spoken script."
+msgstr "Die Folge hat kein Sprechskript."
+
+#: src/Segments/SegmentStatus.php:20
+msgid "pending"
+msgstr "offen"
+
+#: src/Segments/SegmentStatus.php:21
+msgid "generated"
+msgstr "erzeugt"
+
+#: src/Segments/SegmentStatus.php:23
+msgid "re-recorded"
+msgstr "nachgesprochen"
+
+#: src/Segments/SegmentStatus.php:24
+msgid "approved"
+msgstr "abgenommen"
+
+#. translators: %s: name of the settings field
+#: src/Settings/Options.php:114
+#, php-format
+msgid "\"%s\" is a secret and must be read via secret()."
+msgstr "\"%s\" ist ein Geheimnis und muss über secret() gelesen werden."
+
+#: src/Settings/Options.php:183
+msgid "our host"
+msgstr "unserer Sprecherin oder unserem Sprecher"
+
+#. translators: %s: name of the settings field
+#: src/Settings/Options.php:214
+#, php-format
+msgid "\"%s\" is not a secret."
+msgstr "\"%s\" ist kein Geheimnis."
+
+#. translators: %s: name of the credential settings field
+#: src/Settings/Options.php:227
+#, php-format
+msgid "The field \"%s\" is stored unencrypted in the database. Please enter it again in the settings."
+msgstr "Das Feld \"%s\" liegt unverschlüsselt in der Datenbank. Bitte in den Einstellungen neu eintragen."
+
+#: src/Settings/SettingsPage.php:37
+msgid "Podcast Forge — Settings"
+msgstr "Podcast Forge — Einstellungen"
+
+#: src/Settings/SettingsPage.php:82
+msgid "checking …"
+msgstr "wird geprüft …"
+
+#: src/Settings/SettingsPage.php:83
+msgid "Check failed."
+msgstr "Prüfung fehlgeschlagen."
+
+#: src/Settings/SettingsPage.php:123
+msgid "Credentials could not be stored yet."
+msgstr "Zugangsdaten lassen sich noch nicht speichern."
+
+#: src/Settings/SettingsPage.php:125
+msgid "Add this line to wp-config.php, above \"That's all, stop editing!\":"
+msgstr "Trage diese Zeile in wp-config.php ein, oberhalb von \"That's all, stop editing!\":"
+
+#: src/Settings/SettingsPage.php:127
+msgid "A new key is suggested on every page load. Once it is in wp-config.php, do not change it — otherwise the credentials already stored will no longer be readable."
+msgstr "Der Schlüssel wird bei jedem Aufruf neu vorgeschlagen. Sobald er in wp-config.php steht, nicht mehr ändern — sonst sind die bereits gespeicherten Zugangsdaten nicht mehr lesbar."
+
+#: src/Settings/SettingsPage.php:139
+msgid "Podcast"
+msgstr "Podcast"
+
+#: src/Settings/SettingsPage.php:140
+msgid "Details used in prompts, show notes, notices and file names."
+msgstr "Angaben, die in Prompts, Shownotes, Hinweisen und Dateinamen verwendet werden."
+
+#: src/Settings/SettingsPage.php:142
+msgid "Podcast name"
+msgstr "Name des Podcasts"
+
+#. translators: %s: derived name
+#: src/Settings/SettingsPage.php:144
+#, php-format
+msgid "Leave empty to use the title from Podlove or the site name. Currently: %s"
+msgstr "Leer lassen für den Titel aus Podlove bzw. den Namen der Website. Derzeit: %s"
+
+#: src/Settings/SettingsPage.php:147
+msgid "Podcast language"
+msgstr "Sprache des Podcasts"
+
+#. translators: %s: name of the site language (Deutsch or English)
+#: src/Settings/SettingsPage.php:149
+#, php-format
+msgid "same as the site (%s)"
+msgstr "wie die Website (%s)"
+
+#: src/Settings/SettingsPage.php:152
+msgid "Determines the bundled prompts and the number matching."
+msgstr "Bestimmt die mitgelieferten Prompts und den Zahlenabgleich."
+
+#: src/Settings/SettingsPage.php:153
+msgid "Host"
+msgstr "Sprecherin oder Sprecher"
+
+#: src/Settings/SettingsPage.php:153
+msgid "Whose voice reads as the clone. Appears in the AI notice ({host}) and in the greeting."
+msgstr "Wessen Stimme als Klon liest. Steht im KI-Hinweis ({host}) und in der Begrüßung."
+
+#: src/Settings/SettingsPage.php:154
+msgid "Editor"
+msgstr "Redaktion"
+
+#: src/Settings/SettingsPage.php:154
+msgid "Optional. Who writes the drafts; mentioned in the greeting ({editor})."
+msgstr "Optional. Wer die Vorlagen schreibt; wird in der Begrüßung genannt ({editor})."
+
+#: src/Settings/SettingsPage.php:155
+msgid "Sign-off"
+msgstr "Verabschiedung"
+
+#: src/Settings/SettingsPage.php:155
+msgid "Optional. A fixed farewell at the end of every episode ({sign_off})."
+msgstr "Optional. Ein fester Gruß am Ende jeder Folge ({sign_off})."
+
+#: src/Settings/SettingsPage.php:156
+msgid "File name prefix"
+msgstr "Vorsatz der Dateinamen"
+
+#. translators: %s: example
+#: src/Settings/SettingsPage.php:158
+#, php-format
+msgid "Letters and digits only. Empty: derived from the name. Example: %s"
+msgstr "Nur Buchstaben und Ziffern. Leer: aus dem Namen gebildet. Beispiel: %s"
+
+#: src/Settings/SettingsPage.php:165
+msgid "ElevenLabs"
+msgstr "ElevenLabs"
+
+#: src/Settings/SettingsPage.php:166
+msgid "Speech synthesis and Voice Changer."
+msgstr "Sprachsynthese und Voice Changer."
+
+#: src/Settings/SettingsPage.php:168
+#: src/Settings/SettingsPage.php:185
+msgid "API key"
+msgstr "API-Key"
+
+#: src/Settings/SettingsPage.php:169
+msgid "Voice ID"
+msgstr "Voice-ID"
+
+#: src/Settings/SettingsPage.php:169
+msgid "ID of the voice clone."
+msgstr "ID des Stimmklons."
+
+#: src/Settings/SettingsPage.php:170
+#: src/Settings/SettingsPage.php:186
+msgid "Model"
+msgstr "Modell"
+
+#: src/Settings/SettingsPage.php:170
+msgid "Recommended: eleven_v3 — only this model applies phonetic (IPA) pronunciation rules; eleven_multilingual_v2 ignores them."
+msgstr "Empfohlen: eleven_v3 — nur dieses Modell wendet Lautschrift-Regeln (IPA) an; eleven_multilingual_v2 ignoriert sie."
+
+#: src/Settings/SettingsPage.php:171
+msgid "Dictionary ID"
+msgstr "Wörterbuch-ID"
+
+#: src/Settings/SettingsPage.php:171
+msgid "There is exactly one dictionary, which grows through new versions. If it is created anew instead of extended, all existing bindings point to nothing."
+msgstr "Es gibt genau ein Wörterbuch, das über neue Versionen wächst. Wird es neu angelegt statt ergänzt, zeigen alle bisherigen Bindungen ins Leere."
+
+#: src/Settings/SettingsPage.php:172
+msgid "Local dictionary file"
+msgstr "Lokale Wörterbuchdatei"
+
+#. translators: %s: path
+#: src/Settings/SettingsPage.php:174
+#, php-format
+msgid "PLS file that every rule is written to first — a good candidate for version control. Empty: in the storage folder. Currently: %s"
+msgstr "PLS-Datei, in die jede Regel zuerst geschrieben wird — gut unter Versionsverwaltung. Leer: in der Ablage. Derzeit: %s"
+
+#: src/Settings/SettingsPage.php:177
+msgid "Dictionary version"
+msgstr "Wörterbuch-Version"
+
+#: src/Settings/SettingsPage.php:177
+msgid "Required. Passed explicitly with every request so that later maintenance does not retroactively change the result of a rerun."
+msgstr "Pflicht. Wird bei jedem Aufruf ausdrücklich mitgegeben, damit eine spätere Pflege nicht rückwirkend das Ergebnis einer Wiederholung verändert."
+
+#: src/Settings/SettingsPage.php:182
+msgid "Anthropic"
+msgstr "Anthropic"
+
+#: src/Settings/SettingsPage.php:183
+msgid "Editing the fact script into the spoken script."
+msgstr "Redigat des Faktenskripts zum Sprechskript."
+
+#: src/Settings/SettingsPage.php:186
+msgid "For extraction, script, editing, fact check, metadata and dictionary. Since 25.09.2026 claude-opus-5-5: better than Opus 5 and 20 % cheaper."
+msgstr "Für Auszug, Skript, Redigat, Faktenprüfung, Metadaten und Wörterbuch. Seit 25.09.2026 claude-opus-5-5: besser als Opus 5 und 20 % günstiger."
+
+#: src/Settings/SettingsPage.php:187
+msgid "Model for web research"
+msgstr "Modell für die Webrecherche"
+
+#: src/Settings/SettingsPage.php:187
+msgid "Research is supplementary; claude-sonnet-5 costs less than half."
+msgstr "Die Recherche ist Ergänzung; claude-sonnet-5 kostet weniger als die Hälfte."
+
+#: src/Settings/SettingsPage.php:188
+msgid "Batch API"
+msgstr "Batch-API"
+
+#: src/Settings/SettingsPage.php:188
+msgid "Model calls at half price via the Batch API. The result usually arrives within an hour instead of immediately; the chain then continues on its own. Web research always runs directly."
+msgstr "Modellaufrufe zum halben Preis über die Batch-API. Das Ergebnis kommt meist binnen einer Stunde statt sofort; die Kette läuft danach von selbst weiter. Die Webrecherche läuft immer direkt."
+
+#: src/Settings/SettingsPage.php:189
+msgid "Workspace ID"
+msgstr "Workspace-ID"
+
+#: src/Settings/SettingsPage.php:189
+msgid "Only needed if the key is identity-bound — then the API requires the anthropic-workspace-id header. Leave empty if the key is already bound to a workspace."
+msgstr "Nur nötig, wenn der Schlüssel identitätsgebunden ist — dann verlangt die API den Header anthropic-workspace-id. Leer lassen, wenn der Schlüssel bereits an einen Workspace gebunden ist."
+
+#: src/Settings/SettingsPage.php:195
+msgid "Production of the final file."
+msgstr "Produktion der fertigen Datei."
+
+#: src/Settings/SettingsPage.php:197
+msgid "API token"
+msgstr "API-Token"
+
+#: src/Settings/SettingsPage.php:198
+msgid "Preset UUID"
+msgstr "Preset-UUID"
+
+#: src/Settings/SettingsPage.php:198
+msgid "Speech recognition must be switched off in the preset — chapters and transcript come from the plugin."
+msgstr "Im Preset muss die Spracherkennung abgeschaltet sein — Kapitel und Transkript kommen aus dem Plugin."
+
+#: src/Settings/SettingsPage.php:204
+msgid "Appears at the end of every episode's show notes. The text is copied when an episode is created — so a later change only affects new episodes and does not rewrite drafts that already exist."
+msgstr "Steht am Ende der Shownotes jeder Folge. Beim Anlegen einer Folge wird der Text mitkopiert — eine spätere Änderung wirkt also nur auf neue Folgen und schreibt bereits erzeugte Entwürfe nicht um."
+
+#: src/Settings/SettingsPage.php:208
+msgid "Notice in the show notes"
+msgstr "Hinweis in den Shownotes"
+
+#: src/Settings/SettingsPage.php:210
+msgid "Leaving it empty suppresses the notice entirely."
+msgstr "Leer lassen unterdrückt den Hinweis vollständig."
+
+#: src/Settings/SettingsPage.php:214
+msgid "Notice in the audio as well"
+msgstr "Hinweis auch im Audio"
+
+#: src/Settings/SettingsPage.php:216
+msgid "Applies to episodes created afterwards. The sentence is spoken as a separate segment before the sign-off."
+msgstr "Gilt für Folgen, die danach angelegt werden. Der Satz wird als eigenes Segment vor der Verabschiedung gesprochen."
+
+#: src/Settings/SettingsPage.php:220
+msgid "Spoken notice"
+msgstr "Gesprochener Hinweis"
+
+#: src/Settings/SettingsPage.php:222
+msgid "Spoken verbatim. Write out abbreviations such as “AI”."
+msgstr "Wird wörtlich gesprochen. Abkürzungen wie „KI“ ausschreiben."
+
+#: src/Settings/SettingsPage.php:228
+msgid "Notifications"
+msgstr "Benachrichtigung"
+
+#: src/Settings/SettingsPage.php:231
+msgid "Notify"
+msgstr "Benachrichtigung an"
+
+#. translators: %s: address of the site admin
+#: src/Settings/SettingsPage.php:233
+#, php-format
+msgid "Separate multiple addresses with commas. Empty means: the admin address (%s). E-mails are sent when a text approval or an audio approval is pending and on errors — only for episodes that proceed automatically."
+msgstr "Mehrere Adressen durch Komma trennen. Leer heißt: an die Admin-Adresse (%s). Mails kommen bei wartender Textfreigabe, wartender Audiofreigabe und bei Fehlern — nur für Folgen, die automatisch weiterlaufen."
+
+#: src/Settings/SettingsPage.php:246
+msgid "Opener and outro"
+msgstr "Opener und Outro"
+
+#: src/Settings/SettingsPage.php:247
+msgid "The assembly places the audio logo before the episode and the outro after it, in stereo, and shifts chapters and transcript accordingly. The files are uploaded below."
+msgstr "Die Montage setzt das Audio-Logo vor die Folge und das Outro dahinter, stereo, und verschiebt Kapitel und Transkript mit. Die Dateien werden unten hochgeladen."
+
+#: src/Settings/SettingsPage.php:249
+msgid "Use"
+msgstr "Verwenden"
+
+#: src/Settings/SettingsPage.php:249
+msgid "Mix opener and outro into every new assembly."
+msgstr "Opener und Outro in jede neue Montage einmischen."
+
+#: src/Settings/SettingsPage.php:254
+msgid "Tools"
+msgstr "Werkzeuge"
+
+#: src/Settings/SettingsPage.php:255
+msgid "External programs for the assembly."
+msgstr "Externe Programme für die Montage."
+
+#: src/Settings/SettingsPage.php:259
+msgid "ffmpeg on this server"
+msgstr "ffmpeg auf diesem Server"
+
+#. translators: %s: why the current path is active
+#: src/Settings/SettingsPage.php:263
+#, php-format
+msgid "With ffmpeg, the plugin mixes the music itself (bridges fade under the next chapter). Without it, segments are joined in PHP and Auphonic adds opener, bridges and outro. Currently: %s"
+msgstr "Mit ffmpeg mischt das Plugin die Musik selbst (Brücken blenden unter das nächste Kapitel). Ohne ffmpeg werden die Segmente in PHP zusammengefügt, und Auphonic fügt Opener, Brücken und Outro hinzu. Derzeit: %s"
+
+#: src/Settings/SettingsPage.php:266
+msgid "Program name or absolute path."
+msgstr "Programmname oder absoluter Pfad."
+
+#: src/Settings/SettingsPage.php:267
+msgid "ffprobe"
+msgstr "ffprobe"
+
+#: src/Settings/SettingsPage.php:267
+msgid "Needed for the measured segment duration."
+msgstr "Wird für die gemessene Segmentdauer gebraucht."
+
+#: src/Settings/SettingsPage.php:270
+msgid "Pause between paragraphs (ms)"
+msgstr "Pause zwischen Absätzen (ms)"
+
+#: src/Settings/SettingsPage.php:272
+msgid "Without this pause one paragraph runs into the next. The model's own sentence pauses are two to four tenths of a second — the paragraph pause should be longer."
+msgstr "Ohne diese Pause läuft ein Absatz in den nächsten. Die Satzpausen des Modells selbst liegen bei zwei bis vier Zehntelsekunden — die Absatzpause sollte darüber liegen."
+
+#: src/Settings/SettingsPage.php:276
+msgid "Pause at chapter boundaries (ms)"
+msgstr "Pause an Kapitelgrenzen (ms)"
+
+#: src/Settings/SettingsPage.php:278
+msgid "Inserted as silence, not as a break tag — only this keeps the chapter time exact. Both pauses are filled with room tone from the recording itself and faded in and out softly at the edges."
+msgstr "Wird als Stille eingefügt, nicht als Break-Tag — nur so bleibt die Kapitelzeit exakt. Beide Pausen werden mit Raumton aus dem eigenen Material gefüllt und an den Rändern weich ein- und ausgeblendet."
+
+#: src/Settings/SettingsPage.php:282
+msgid "Delete everything on uninstall"
+msgstr "Beim Deinstallieren alles löschen"
+
+#: src/Settings/SettingsPage.php:284
+msgid "Removes tables and settings when the plugin is deleted. Off by default."
+msgstr "Entfernt Tabellen und Einstellungen, wenn das Plugin gelöscht wird. Standardmäßig aus."
+
+#: src/Settings/SettingsPage.php:301
+msgid "Opener, outro and separators: files"
+msgstr "Opener, Outro und Trenner: Dateien"
+
+#: src/Settings/SettingsPage.php:302
+msgid "Separators are short musical bridges between chapters (about 8 to 12 seconds). They start shortly after the last word; the next chapter begins 1.5 seconds before their end while the assembly fades them out. Up to five, used in rotation. Trim silence at the end of the file beforehand. Without separators the silent chapter pause is used."
+msgstr "Trenner sind kurze Musikbrücken zwischen den Kapiteln (etwa 8 bis 12 Sekunden). Sie setzen kurz nach dem letzten Wort ein; das nächste Kapitel beginnt 1,5 Sekunden vor ihrem Ende, während die Montage sie ausblendet. Bis zu fünf, sie wechseln der Reihe nach. Stille am Dateiende vorher abschneiden. Ohne Trenner bleibt es bei der stillen Kapitelpause."
+
+#: src/Settings/SettingsPage.php:309
+msgid "Opener (audio logo)"
+msgstr "Opener (Audio-Logo)"
+
+#: src/Settings/SettingsPage.php:310
+msgid "Outro"
+msgstr "Outro"
+
+#. translators: %d: separator number
+#: src/Settings/SettingsPage.php:314
+#, php-format
+msgid "Separator %d"
+msgstr "Trenner %d"
+
+#. translators: 1: duration of the audio file in seconds, 2: upload date
+#: src/Settings/SettingsPage.php:324
+#, php-format
+msgid "%1$s seconds, uploaded on %2$s."
+msgstr "%1$s Sekunden, hochgeladen am %2$s."
+
+#: src/Settings/SettingsPage.php:325
+msgid "Remove file"
+msgstr "Datei entfernen"
+
+#: src/Settings/SettingsPage.php:327
+msgid "No file yet."
+msgstr "Noch keine Datei."
+
+#: src/Settings/SettingsPage.php:334
+msgid "Upload files"
+msgstr "Dateien hochladen"
+
+#: src/Settings/SettingsPage.php:438
+msgid "saved"
+msgstr "gespeichert"
+
+#: src/Settings/SettingsPage.php:439
+msgid "Leaving it empty means: unchanged. To replace it, simply enter the new value."
+msgstr "Leer lassen heißt: unverändert. Zum Ersetzen einfach den neuen Wert eintragen."
+
+#: src/Settings/SettingsPage.php:441
+msgid "delete stored value"
+msgstr "gespeicherten Wert löschen"
+
+#: src/Settings/SettingsPage.php:443
+msgid "not set"
+msgstr "nicht hinterlegt"
+
+#: src/Settings/SettingsPage.php:451
+msgid "Service status"
+msgstr "Zustand der Dienste"
+
+#: src/Settings/SettingsPage.php:452
+msgid "Each check runs as a separate request. None of them uses up credit."
+msgstr "Jede Prüfung läuft als eigene Anfrage. Keine davon kostet Guthaben."
+
+#: src/Settings/SettingsPage.php:455
+msgid "Service"
+msgstr "Dienst"
+
+#: src/Settings/SettingsPage.php:462
+msgid "not checked yet"
+msgstr "noch nicht geprüft"
+
+#: src/Settings/SettingsPage.php:467
+msgid "Check now"
+msgstr "Jetzt prüfen"
+
+#: src/Settings/SettingsPage.php:475
+msgid "Background processing"
+msgstr "Hintergrundverarbeitung"
+
+#. translators: %s: version number
+#: src/Settings/SettingsPage.php:482
+#, php-format
+msgid "Action Scheduler %s is active."
+msgstr "Action Scheduler %s ist aktiv."
+
+#: src/Settings/SettingsPage.php:488
+msgid "Test job scheduled"
+msgstr "Testjob eingeplant"
+
+#: src/Settings/SettingsPage.php:495
+#: src/Settings/SettingsPage.php:509
+msgid "never"
+msgstr "noch nie"
+
+#: src/Settings/SettingsPage.php:499
+msgid "Test job executed"
+msgstr "Testjob ausgeführt"
+
+#: src/Settings/SettingsPage.php:507
+msgid "still pending — Action Scheduler processes the queue via WP-Cron, which takes up to a minute."
+msgstr "noch offen — Action Scheduler arbeitet die Warteschlange über WP-Cron ab, das dauert bis zu einer Minute."
+
+#: src/Settings/SettingsPage.php:518
+msgid "Schedule test job"
+msgstr "Testjob einplanen"
+
+#: src/Settings/SettingsPage.php:524
+msgid "Database"
+msgstr "Datenbank"
+
+#: src/Settings/SettingsPage.php:530
+msgid "present"
+msgstr "vorhanden"
+
+#: src/Settings/SettingsPage.php:532
+msgid "missing"
+msgstr "fehlt"
+
+#: src/Settings/SettingsPage.php:537
+msgid "Schema version"
+msgstr "Schemaversion"
+
+#. translators: %s: name of the settings field
+#: src/Settings/SettingsSanitizer.php:136
+#, php-format
+msgid "Invalid value for %s — the previous value is kept."
+msgstr "Ungültiger Wert für %s — der alte bleibt stehen."
+
+#: src/Settings/SettingsSanitizer.php:144
+msgid "At least one e-mail address was invalid and has been discarded."
+msgstr "Mindestens eine Mailadresse war ungültig und wurde verworfen."
+
+#: src/Settings/SettingsSanitizer.php:167
+#: src/Settings/SettingsSanitizer.php:177
+msgid " Nothing was saved."
+msgstr " Es wurde nichts gespeichert."
+
+#. translators: %s: label of the episode source
+#: src/Source/AbstractSource.php:20
+#, php-format
+msgid "%s is being prepared"
+msgstr "%s wird vorbereitet"
+
+#: src/Source/AbstractSource.php:21
+msgid "This runs in the background. Once the text is ready, it continues on its own."
+msgstr "Das läuft im Hintergrund. Wenn der Text bereit ist, geht es von selbst weiter."
+
+#. translators: 1: number of blocks, 2: number of headings, 3: number of body text characters, 4: optional " Source: " suffix with the source label, or empty
+#: src/Source/EpisodeFactory.php:43
+#, php-format
+msgid "%1$d blocks, including %2$d headings, %3$d characters of body text.%4$s"
+msgstr "%1$d Blöcke, davon %2$d Überschriften, %3$d Zeichen Fließtext.%4$s"
+
+#: src/Source/EpisodeFactory.php:47
+msgid " Source: "
+msgstr " Quelle: "
+
+#: src/Source/PostSource.php:33
+msgid "WordPress post"
+msgstr "WordPress-Beitrag"
+
+#: src/Source/PostSource.php:38
+msgid "A post or page of this website. Headings become chapters; images and embedded content are dropped."
+msgstr "Ein Beitrag oder eine Seite dieser Website. Überschriften werden zu Kapiteln, Bilder und eingebettete Inhalte fallen weg."
+
+#: src/Source/PostSource.php:57
+msgid "Post or page"
+msgstr "Beitrag oder Seite"
+
+#: src/Source/PostSource.php:59
+msgid "— select —"
+msgstr "— auswählen —"
+
+#: src/Source/PostSource.php:67
+msgid "untitled"
+msgstr "ohne Titel"
+
+#. translators: %d: number of posts shown in the selection list
+#: src/Source/PostSource.php:76
+#, php-format
+msgid "The %d most recently edited. An older post can be selected by its ID:"
+msgstr "Die %d zuletzt bearbeiteten. Ein älterer Beitrag lässt sich über seine ID wählen:"
+
+#: src/Source/PostSource.php:77
+msgid "Post ID"
+msgstr "Beitrags-ID"
+
+#: src/Source/PostSource.php:84
+msgid "Import post"
+msgstr "Beitrag einlesen"
+
+#. translators: %s: the rejected source identifier
+#: src/Source/Sources.php:34
+#, php-format
+msgid "Invalid source identifier \"%s\"."
+msgstr "Ungültige Quellen-Kennung \"%s\"."
+
+#: src/Source/UploadSource.php:27
+msgid "A finished fact script as a DOCX file or pasted text."
+msgstr "Ein fertiges Faktenskript als DOCX-Datei oder eingefügter Text."
+
+#: src/Source/UploadSource.php:37
+msgid "Fact script as DOCX"
+msgstr "Faktenskript als DOCX"
+
+#: src/Source/UploadSource.php:39
+msgid "Headings are carried along as chapter hints and never end up in the spoken text. The file is only read and not stored."
+msgstr "Überschriften werden als Kapitelhinweis mitgeführt und landen nie im Sprechtext. Die Datei wird nur gelesen und nicht abgelegt."
+
+#: src/Source/UploadSource.php:42
+msgid "or pasted text"
+msgstr "oder eingefügter Text"
+
+#: src/Source/UploadSource.php:43
+msgid "Separate paragraphs with blank lines. Lines starting with # are treated as headings."
+msgstr "Absätze durch Leerzeilen trennen. Zeilen mit # gelten als Überschrift."
+
+#: src/Source/UploadSource.php:49
+msgid "Import source"
+msgstr "Vorlage einlesen"
+
+#: src/Source/UploadSource.php:58
+msgid "After text approval"
+msgstr "Nach der Textfreigabe"
+
+#: src/Source/UploadSource.php:60
+msgid "continue automatically up to the Podlove draft and send an e-mail notification"
+msgstr "automatisch bis zum Podlove-Entwurf weiterlaufen und per Mail Bescheid geben"
+
+#: src/Storage/EpisodeStorage.php:197
+msgid "Will be created on the first run."
+msgstr "Wird beim ersten Lauf angelegt."
+
+#. translators: %s: path of the parent directory of the storage
+#: src/Storage/EpisodeStorage.php:199
+#, php-format
+msgid "The parent directory %s is not writable."
+msgstr "Das übergeordnete Verzeichnis %s ist nicht beschreibbar."
+
+#: src/Storage/EpisodeStorage.php:206
+msgid "Present and writable."
+msgstr "Vorhanden und beschreibbar."
+
+#: src/Storage/EpisodeStorage.php:206
+msgid "Present, but not writable."
+msgstr "Vorhanden, aber nicht beschreibbar."
+
+#. translators: 1: name of the constant, 2: underlying error message
+#: src/Support/KeyStore.php:47
+#, php-format
+msgid "The constant %1$s in wp-config.php is unusable: %2$s Expected are 32 random bytes in Base64."
+msgstr "Die Konstante %1$s in wp-config.php ist unbrauchbar: %2$s Erwartet werden 32 zufällige Byte in Base64."
+
+#. translators: %s: name of the constant
+#: src/Support/KeyStore.php:63
+#, php-format
+msgid "The encryption key %s is missing from wp-config.php. Without it, no credentials will be saved."
+msgstr "Der Verschlüsselungsschlüssel %s fehlt in wp-config.php. Ohne ihn werden keine Zugangsdaten gespeichert."
+
+#: src/Support/ProcessRunner.php:41
+msgid "No program specified."
+msgstr "Kein Programm angegeben."
+
+#: src/Support/ProcessRunner.php:52
+msgid "Neither proc_open nor exec is available — external programs could not be called."
+msgstr "Weder proc_open noch exec ist verfügbar — externe Programme sind nicht aufrufbar."
+
+#: src/Support/ProcessRunner.php:73
+msgid "The program could not be started."
+msgstr "Das Programm ließ sich nicht starten."
+
+#. translators: %s: file path of the DOCX file
+#: src/Text/DocxParser.php:31
+#, php-format
+msgid "DOCX file could not be read: %s"
+msgstr "DOCX-Datei nicht lesbar: %s"
+
+#: src/Text/DocxParser.php:37
+msgid "The DOCX file could not be opened: "
+msgstr "Die DOCX-Datei ließ sich nicht öffnen: "
+
+#. translators: %s: path of the file
+#: src/Text/Encoding.php:55
+#, php-format
+msgid "File is not readable: %s"
+msgstr "Datei nicht lesbar: %s"
+
+#. translators: %s: path of the file
+#: src/Text/Encoding.php:61
+#, php-format
+msgid "File could not be read: %s"
+msgstr "Datei konnte nicht gelesen werden: %s"
+
+#: src/Voice/DictionaryWriter.php:84
+msgid "The term the rule should apply to is missing."
+msgstr "Es fehlt der Begriff, für den die Regel gelten soll."
+
+#: src/Voice/DictionaryWriter.php:98
+msgid "Both the phonetic transcription and the respelling are missing."
+msgstr "Es fehlt sowohl die Lautschrift als auch die Umschreibung."
+
+#: src/Voice/DictionaryWriter.php:108
+#: src/Voice/DictionaryWriter.php:248
+msgid "No dictionary is configured."
+msgstr "Es ist kein Wörterbuch eingetragen."
+
+#. translators: 1: HTTP status code, 2: error detail from ElevenLabs
+#: src/Voice/DictionaryWriter.php:160
+#, php-format
+msgid "ElevenLabs responds with HTTP %1$d. %2$s"
+msgstr "ElevenLabs antwortet mit HTTP %1$d. %2$s"
+
+#: src/Voice/DictionaryWriter.php:235
+msgid "An empty rule set would empty the dictionary."
+msgstr "Ein leerer Regelsatz würde das Wörterbuch leeren."
+
+#. translators: %d: HTTP status code
+#: src/Voice/DictionaryWriter.php:279
+#, php-format
+msgid "Old rules cannot be removed, HTTP %d."
+msgstr "Alte Regeln nicht entfernbar, HTTP %d."
+
+#. translators: 1: HTTP status code, 2: start of the response body from ElevenLabs
+#: src/Voice/DictionaryWriter.php:318
+#, php-format
+msgid "New rules not accepted, HTTP %1$d: %2$s"
+msgstr "Neue Regeln nicht angenommen, HTTP %1$d: %2$s"
+
+#: src/Voice/DictionaryWriter.php:357
+msgid "Old rule cannot be removed: "
+msgstr "Alte Regel nicht entfernbar: "
+
+#. translators: %d: HTTP status code
+#: src/Voice/DictionaryWriter.php:365
+#, php-format
+msgid "Old rule cannot be removed, HTTP %d."
+msgstr "Alte Regel nicht entfernbar, HTTP %d."
+
+#: src/Voice/DictionaryWriter.php:439
+msgid "No dictionary version is bound."
+msgstr "Es ist keine Wörterbuchversion gebunden."
+
+#: src/Voice/DictionaryWriter.php:448
+msgid "The bound dictionary version could not be loaded."
+msgstr "Die gebundene Wörterbuchfassung ließ sich nicht laden."
+
+#: src/Voice/DictionaryWriter.php:496
+msgid "The PLS file has no closing lexicon element."
+msgstr "Die PLS-Datei hat kein schließendes lexicon-Element."
+
+#. translators: %s: path of the dictionary file
+#: src/Voice/DictionaryWriter.php:517
+#, php-format
+msgid "The file %s could not be written."
+msgstr "Die Datei %s lässt sich nicht schreiben."
+
+#: src/Voice/DictionaryWriter.php:526
+#: src/Voice/TextToSpeech.php:56
+#: src/Voice/VoiceChanger.php:47
+msgid "ElevenLabs credentials could not be read: "
+msgstr "ElevenLabs-Zugangsdaten nicht lesbar: "
+
+#: src/Voice/DictionaryWriter.php:530
+msgid "No ElevenLabs API key is stored."
+msgstr "Es ist kein ElevenLabs-API-Key hinterlegt."
+
+#: src/Voice/TextToSpeech.php:60
+msgid "No ElevenLabs API key has been stored."
+msgstr "Es ist kein ElevenLabs-API-Key hinterlegt."
+
+#: src/Voice/TextToSpeech.php:65
+msgid "No voice ID has been stored."
+msgstr "Es ist keine Voice-ID hinterlegt."
+
+#: src/Voice/TextToSpeech.php:73
+msgid "The dictionary is entered without a version. Without an explicit version, "
+msgstr "Das Wörterbuch ist ohne Version eingetragen. Ohne ausdrückliche Version würde eine "
+
+#: src/Voice/TextToSpeech.php:74
+msgid "later maintenance would retroactively change the result of a rerun."
+msgstr "spätere Pflege das Ergebnis einer Wiederholung rückwirkend verändern."
+
+#. translators: 1: HTTP status code, 2: error detail returned by ElevenLabs
+#: src/Voice/TextToSpeech.php:177
+#, php-format
+msgid "ElevenLabs request failed with HTTP %1$d. %2$s"
+msgstr "ElevenLabs antwortet mit HTTP %1$d. %2$s"
+
+#: src/Voice/TextToSpeech.php:182
+msgid "Synthesis failed: the response contains no audio."
+msgstr "Die Antwort enthält kein Audio."
+
+#: src/Voice/VoiceChanger.php:51
+msgid "No ElevenLabs API key has been configured."
+msgstr "Es ist kein ElevenLabs-API-Key hinterlegt."
+
+#: src/Voice/VoiceChanger.php:56
+msgid "No voice ID has been configured."
+msgstr "Es ist keine Voice-ID hinterlegt."
+
+#: src/Voice/VoiceChanger.php:80
+msgid "The recording is empty."
+msgstr "Die Aufnahme ist leer."
+
+#: src/Voice/VoiceChanger.php:84
+msgid "The recording is too large."
+msgstr "Die Aufnahme ist zu groß."
+
+#. translators: 1: HTTP status code, 2: error detail from ElevenLabs
+#: src/Voice/VoiceChanger.php:138
+#, php-format
+msgid "ElevenLabs responded with HTTP %1$d. %2$s"
+msgstr "ElevenLabs antwortet mit HTTP %1$d. %2$s"
+
+#: src/Voice/VoiceChanger.php:142
+msgid "The response contains no audio."
+msgstr "Die Antwort enthält kein Audio."

@@ -1,0 +1,12 @@
+/.git
+/.github
+/.gitignore
+/.distignore
+/.phpunit.cache
+/bin
+/docs
+/tests
+/phpunit.xml.dist
+/composer.lock
+/CONTRIBUTING.md
+/README.md

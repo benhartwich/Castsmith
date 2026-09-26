@@ -1,0 +1,32 @@
+{
+    "name": "benhartwich/podcast-forge",
+    "description": "WordPress plugin: turns a fact script or a post into a finished podcast episode spoken with your own voice clone, with a number check and two human approvals.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.2",
+        "ext-json": "*",
+        "ext-sodium": "*",
+        "phpoffice/phpword": "^1.4",
+        "woocommerce/action-scheduler": "4.0.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PodcastForge\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PodcastForge\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "homepage": "https://github.com/benhartwich/podcast-forge"
+}
