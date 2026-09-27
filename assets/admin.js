@@ -67,9 +67,8 @@
 		} );
 	}
 
-	/* Nacheinander, nicht gleichzeitig: parallele Anfragen belegen je einen
-	   FPM-Prozess, und der Pool dieser Website läuft ohnehin regelmäßig an
-	   pm.max_children. */
+	/* One after another, not in parallel: every concurrent request occupies a
+	   PHP-FPM worker, and small hosting pools run out of them quickly. */
 	function runAll( rows, index, button ) {
 		if ( index >= rows.length ) {
 			button.disabled = false;
@@ -96,7 +95,7 @@
 			runAll( rows, 0, button );
 		} );
 
-		// Beim Öffnen der Seite einmal von selbst prüfen.
+		// Run the checks once when the page opens.
 		button.disabled = true;
 		runAll( rows, 0, button );
 	} );

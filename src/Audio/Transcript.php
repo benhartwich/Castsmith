@@ -81,7 +81,7 @@ final class Transcript
                 $buffer .= $character;
 
                 // A period only ends the sentence if it is followed by whitespace.
-                // Otherwise "Astronomie.at" would split the subtitle mid-word.
+                // Otherwise "example.org" would split the subtitle mid-word.
                 $next = (string) ($characters[$position + 1] ?? '');
                 $followedByBreak = $next === '' || trim($next) === '';
 

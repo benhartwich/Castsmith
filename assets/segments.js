@@ -13,7 +13,7 @@
 		el.className = 'aaspf-meldung ' + ( fehler ? 'aaspf-meldung-fehler' : 'aaspf-meldung-ok' );
 	}
 
-	/* ── Weg B: Wörterbuchregel ───────────────────────────────────────── */
+	/* ── Option B: dictionary rule ────────────────────────────────────── */
 
 	function regelAnlegen( bereich ) {
 		var knopf = bereich.querySelector( '[data-aaspf="regel-senden"]' );
@@ -22,8 +22,8 @@
 		var ipaFeld = bereich.querySelector( '[data-aaspf="regel-ipa"]' );
 		var ipa = ipaFeld ? ipaFeld.value.trim() : '';
 
-		/* Eine der beiden Formen genügt — welche verwendet wird, entscheidet
-		   das eingestellte Modell. */
+		/* One of the two forms is enough — the configured model decides which
+		   one is used. */
 		if ( ! begriff || ( ! ipa && ! alias ) ) {
 			meldung( bereich, aaspfSegmente.strings.regelUnvollstaendig, true );
 			return;
@@ -56,7 +56,7 @@
 			} );
 	}
 
-	/* ── Weg A: Satz nachsprechen ─────────────────────────────────────── */
+	/* ── Option A: re-record the sentence ─────────────────────────────── */
 
 	function aufnahmeStoppen() {
 		if ( ! aufnahme ) {
@@ -178,7 +178,7 @@
 			} );
 	}
 
-	/* ── Kapitelsprünge im Player der ganzen Folge ────────────────────── */
+	/* ── Chapter jumps in the player of the whole episode ─────────────── */
 
 	function springe( knopf ) {
 		var spieler = document.getElementById( 'aaspf-folge' );
@@ -189,11 +189,11 @@
 		spieler.currentTime = parseFloat( knopf.getAttribute( 'data-sekunde' ) ) || 0;
 
 		if ( spieler.paused ) {
-			spieler.play().catch( function () { /* Autoplay abgelehnt, egal. */ } );
+			spieler.play().catch( function () { /* Autoplay refused, never mind. */ } );
 		}
 	}
 
-	/* Hebt hervor, in welchem Kapitel der Player gerade steht. */
+	/* Highlights the chapter the player is currently in. */
 	function kapitelMitlaufen() {
 		var spieler = document.getElementById( 'aaspf-folge' );
 		var knoepfe = Array.prototype.slice.call( document.querySelectorAll( '[data-aaspf="sprung"]' ) );

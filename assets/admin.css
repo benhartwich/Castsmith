@@ -16,7 +16,7 @@
 	vertical-align: top;
 }
 
-/* Der Zustand steht immer als Wort da. Farbe kommt dazu, sie trägt nicht allein. */
+/* The state is always spelled out as a word. Colour is added, it never carries meaning alone. */
 .aaspf-status {
 	font-weight: 600;
 }
@@ -60,7 +60,7 @@
 .aaspf-segments tr.aaspf-flagged td { background: #fcf0ef; }
 .aaspf-segments tr.aaspf-flagged td:first-child { box-shadow: inset 4px 0 0 #a00806; }
 
-/* ── Segmentliste ─────────────────────────────────────────────────────── */
+/* ── Segment list ─────────────────────────────────────────────────────── */
 
 .aaspf-segment {
 	border: 1px solid #c3c4c7;
@@ -117,7 +117,7 @@
 	margin-bottom: 10px;
 }
 
-/* ── Schaltflächenleiste ──────────────────────────────────────────────── */
+/* ── Button bar ───────────────────────────────────────────────────────── */
 
 .aaspf-aktionen {
 	display: flex;
@@ -168,7 +168,7 @@
 	.aaspf-laeuft .aaspf-punkt { animation: none; }
 }
 
-/* ── Korrekturbereich ─────────────────────────────────────────────────── */
+/* ── Correction area ──────────────────────────────────────────────────── */
 
 .aaspf-korrektur {
 	margin-top: 14px;
@@ -210,7 +210,7 @@
 .aaspf-felder { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
 .aaspf-felder label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 3px; }
 
-/* Der vorzulesende Satz — bewusst groß, er wird laut gelesen. */
+/* The sentence to read aloud — large on purpose, it is read out loud. */
 .aaspf-vorlesen {
 	font-size: 18px;
 	line-height: 1.7;
@@ -228,7 +228,7 @@
 .aaspf-meldung-ok   { color: #1a6b2f; }
 .aaspf-meldung-fehler { color: #a00806; }
 
-/* ── Abnahme der ganzen Folge ─────────────────────────────────────────── */
+/* ── Approval of the whole episode ────────────────────────────────────── */
 
 .aaspf-abnahme {
 	border: 2px solid #2271b1;
@@ -294,7 +294,7 @@
 
 .aaspf-badge-warn { background: #fcf0ef; color: #a00806; }
 
-/* ── Folgenansicht: Gerüst ────────────────────────────────────────────── */
+/* ── Episode view: layout ─────────────────────────────────────────────── */
 
 .aaspf-zurueck { margin: 0 0 2px; }
 
@@ -312,7 +312,7 @@
 	border-radius: 5px;
 	padding: 16px 20px 20px;
 	margin: 0 0 18px;
-	/* Sprungziel der Schrittleiste — nicht unter die Adminleiste rutschen. */
+	/* Jump target of the step bar — must not slide under the admin bar. */
 	scroll-margin-top: 46px;
 }
 
@@ -327,7 +327,7 @@
 .aaspf-karte h3:first-of-type { margin-top: 4px; }
 .aaspf-karte h4 { font-size: 14px; margin: 14px 0 4px; }
 
-/* Lange Titel, URLs und Kennungen dürfen die Karte nicht aufspreizen. */
+/* Long titles, URLs and IDs must not stretch the card. */
 .aaspf-karte table th,
 .aaspf-karte table td { overflow-wrap: anywhere; }
 
@@ -344,7 +344,7 @@
 .aaspf-karte-zu > summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
 .aaspf-karte-inhalt { margin-top: 10px; }
 
-/* ── Schrittleiste ────────────────────────────────────────────────────── */
+/* ── Step bar ─────────────────────────────────────────────────────────── */
 
 .aaspf-leiste { margin: 0 0 16px; }
 
@@ -402,7 +402,7 @@
 .aaspf-schritt[data-zustand="offen"] a { border-top-color: #c3c4c7; }
 .aaspf-schritt[data-zustand="offen"] .aaspf-schritt-zustand::before { content: "\2013 "; }
 
-/* ── Was als Nächstes dran ist ────────────────────────────────────────── */
+/* ── What comes next ──────────────────────────────────────────────────── */
 
 .aaspf-naechstes {
 	border: 1px solid #2271b1;
@@ -437,7 +437,7 @@
 	background: #f2f9f3;
 }
 
-/* ── Eingabefelder ────────────────────────────────────────────────────── */
+/* ── Input fields ─────────────────────────────────────────────────────── */
 
 .aaspf-felder > div { flex: 1 1 13em; min-width: 0; }
 .aaspf-felder > div:last-child { flex: 0 0 auto; }
@@ -451,7 +451,7 @@
 
 .aaspf-vorschau-player { width: 100%; max-width: 34em; margin-top: 10px; }
 
-/* ── Korrekturbereich aufklappen ──────────────────────────────────────── */
+/* ── Expandable correction area ───────────────────────────────────────── */
 
 .aaspf-korrektur-auf {
 	margin-top: 12px;
@@ -471,14 +471,14 @@
 .aaspf-korrektur-auf > summary:focus-visible { outline: 2px solid #2271b1; outline-offset: 2px; }
 .aaspf-korrektur-auf > .aaspf-korrektur { border-top: 0; padding-top: 4px; }
 
-/* ── Schmale Fenster ──────────────────────────────────────────────────── */
+/* ── Narrow windows ───────────────────────────────────────────────────── */
 
 @media screen and (max-width: 782px) {
 	.aaspf-karte { padding: 14px 14px 16px; border-radius: 4px; }
 	.aaspf-karte > h2 { font-size: 17px; }
 
-	/* Sechs Kacheln nebeneinander sind auf dem Telefon unlesbar schmal —
-	   darunter wird die Leiste zur Liste. */
+	/* Six tiles side by side are unreadably narrow on a phone —
+	   below this width the bar becomes a list. */
 	.aaspf-schritt { flex: 1 1 100%; }
 	.aaspf-schritt a {
 		flex-direction: row;
@@ -513,7 +513,7 @@
 	.aaspf-sprung { font-size: 13px; }
 }
 
-/* Himmelsvorschau ------------------------------------------------------- */
+/* Collapsible panels, templates, lists ---------------------------------- */
 
 .aaspf-einklappen {
 	margin: 1em 0;
@@ -557,7 +557,7 @@
 	vertical-align: middle;
 }
 
-/* ══ Aufbau seit 25.09.2026: angelehnt an die Übersicht des Galerie-Plugins ══ */
+/* ══ Overview layout ══ */
 
 .aaspf-wrap .description { font-size: 13px; }
 
@@ -582,7 +582,7 @@
 
 .aaspf-meta { margin: 4px 0 16px; color: #50575e; }
 
-/* Pillen: Zustand als Wort, Farbe kommt dazu. */
+/* Pills: state as a word, colour on top. */
 .aaspf-pille {
 	display: inline-block;
 	padding: 3px 12px;
@@ -597,7 +597,7 @@
 .aaspf-pille-fail   { background: #fbe0de; color: #8a0605; }
 .aaspf-pille-laeuft { background: #dbe9f7; color: #0a4b78; }
 
-/* Karten wie .asg-card im Galerie-Plugin */
+/* Cards */
 .aaspf-panel,
 .aaspf-kennzahl,
 .aaspf-jetzt {
@@ -677,7 +677,7 @@
 .aaspf-kurztabelle th,
 .aaspf-kurztabelle td { padding: 6px 8px 6px 0; text-align: left; border-bottom: 1px solid #f0f0f1; }
 
-/* Schrittleiste */
+/* Step bar */
 .aaspf-schritte {
 	list-style: none;
 	margin: 12px 0 16px;
@@ -709,7 +709,7 @@
 
 .aaspf-schritte-kurz { display: none; }
 
-/* Kasten "Jetzt dran" */
+/* "Up next" box */
 .aaspf-jetzt {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
@@ -763,7 +763,7 @@
 
 .aaspf-fortschritt { width: 100%; height: 12px; margin-top: 6px; }
 
-/* Reiter */
+/* Tabs */
 .aaspf-reiter { margin: 8px 0 0; }
 
 .aaspf-reiter-leiste {
@@ -806,7 +806,7 @@
 
 .aaspf-reiter-panel > h3:first-child { margin-top: 0; }
 
-/* Seitenleiste */
+/* Sidebar */
 .aaspf-seitenkarte h2 { font-size: 15px; }
 
 .aaspf-seitenkarte-hinweis { background: #fcf9e8; border-color: #dba617; }
@@ -837,12 +837,12 @@
 	margin-top: 4px;
 }
 
-/* ── mittlere Breiten: Seitenleiste unter den Inhalt ── */
+/* ── medium widths: sidebar below the content ── */
 @media (max-width: 1180px) {
 	.aaspf-raster-mit-seite { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* ── schmal, ab dem WordPress-Umbruch für Mobilgeräte ── */
+/* ── narrow, from the WordPress mobile breakpoint ── */
 @media (max-width: 782px) {
 	.aaspf-titelzeile h1 { font-size: 21px; flex-basis: 100%; }
 

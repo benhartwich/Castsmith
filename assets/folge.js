@@ -1,11 +1,10 @@
 /*
- * Reiter der Folgenansicht.
+ * Tabs of the episode view.
  *
- * Ohne JavaScript stehen alle Bereiche untereinander — nichts geht verloren.
- * Mit JavaScript ist genau einer sichtbar; welcher, steht im Adressfragment
- * (#reiter-audio), damit Links aus Mails und das Zurückspringen nach dem
- * Speichern den richtigen Reiter öffnen. Auf schmalen Bildschirmen ersetzt
- * eine Auswahlliste die Reiterleiste.
+ * Without JavaScript all panels are stacked — nothing is lost. With
+ * JavaScript exactly one is visible; which one is kept in the URL fragment
+ * (#reiter-audio), so links from mails and the return after saving open the
+ * right tab. On narrow screens a select list replaces the tab bar.
  */
 (function () {
 	'use strict';
@@ -82,7 +81,7 @@
 		});
 	}
 
-	// Links wie "Zu den offenen Punkten" öffnen ihren Reiter und scrollen hin.
+	// Links such as "to the open items" open their tab and scroll to the target.
 	document.addEventListener('click', function (event) {
 		var link = event.target.closest ? event.target.closest('[data-aaspf-reiter-sprung]') : null;
 		if (!link) {
@@ -102,11 +101,10 @@
 })();
 
 /*
- * Live-Stand: solange ein Schritt von selbst läuft, alle fünfzehn Sekunden
- * nachfragen. Fortschritt aktualisieren; ist eine andere Station dran oder
- * wird ein Mensch gebraucht, die Seite neu laden (der Reiter bleibt, er steht
- * im Adressfragment). Im Hintergrund-Tab wird nicht gefragt, nach drei
- * Stunden hört es auf.
+ * Live status: while a step runs on its own, poll every fifteen seconds.
+ * Update the progress; when another stage is up or a human is needed, reload
+ * the page (the tab stays, it lives in the URL fragment). Background tabs do
+ * not poll, and polling stops after three hours.
  */
 (function () {
 	'use strict';
@@ -155,7 +153,7 @@
 					balken.value = data.fertig;
 				}
 			})
-			.catch(function () { /* nächster Versuch in fünfzehn Sekunden */ });
+			.catch(function () { /* next attempt in fifteen seconds */ });
 	}
 
 	var timer = window.setInterval(ask, 15000);

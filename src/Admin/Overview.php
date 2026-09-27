@@ -261,7 +261,7 @@ final class Overview
     }
 
     /**
-     * Short name of the source (e.g. "Himmelsvorschau Oktober 2026"), otherwise the title.
+     * Short name of the source (e.g. "Sky preview October 2026"), otherwise the title.
      *
      * @param array<string,mixed> $episode
      */

@@ -13,7 +13,7 @@ namespace PodcastForge\Voice;
  * sounded wrong — the two subscript combining characters and the ich-sound.
  * The other eleven rules were flawless, even though they include characters
  * that do not exist in English (ʁ in Eratosthenes, y in Typhon) and even
- * though one of them spans several words and a glottal stop (Astronomie.at).
+ * though one of them spans several words and a glottal stop (a club domain name).
  * This rules out model language, spaces and glottal stop as the cause; it is
  * exactly these three characters.
  *
