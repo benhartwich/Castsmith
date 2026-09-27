@@ -47,6 +47,22 @@ final class SlugBuilder
         return $fallback === '' ? $prefix : $prefix . $fallback;
     }
 
+    /**
+     * A configured prefix, made file-safe without touching its spelling:
+     * "AASPodcast" stays "AASPodcast" (asciify() would turn it into
+     * "Aaspodcast"). Umlauts are folded, everything else but letters and
+     * digits is dropped.
+     */
+    public static function prefix(string $text): string
+    {
+        $text = strtr($text, [
+            'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss',
+            'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue',
+        ]);
+
+        return preg_replace('/[^A-Za-z0-9]/', '', $text) ?? '';
+    }
+
     public static function asciify(string $text): string
     {
         $text = strtr($text, [

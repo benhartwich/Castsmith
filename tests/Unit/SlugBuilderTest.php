@@ -58,6 +58,14 @@ final class SlugBuilderTest extends TestCase
         self::assertSame('TestSeptember2026', SlugBuilder::fromTitle('Etwas — September 2026', 'Test'));
     }
 
+    public function testConfiguredPrefixKeepsItsSpelling(): void
+    {
+        self::assertSame('AASPodcast', SlugBuilder::prefix('AASPodcast'));
+        self::assertSame('MeinPodcast', SlugBuilder::prefix('Mein Podcast'));
+        self::assertSame('SternueberWien', SlugBuilder::prefix('Stern über-Wien!'));
+        self::assertSame('', SlugBuilder::prefix(' — '));
+    }
+
     public function testAsciifyFoldsUmlauts(): void
     {
         self::assertSame('AergerUeberOefen', SlugBuilder::asciify('Ärger über Öfen'));

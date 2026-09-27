@@ -160,7 +160,7 @@ final class Options
      */
     public static function filePrefix(): string
     {
-        $prefix = \PodcastForge\Podlove\SlugBuilder::asciify(self::get('file_prefix'));
+        $prefix = \PodcastForge\Podlove\SlugBuilder::prefix(self::get('file_prefix'));
         if ($prefix === '') {
             $prefix = \PodcastForge\Podlove\SlugBuilder::asciify(self::podcastName());
         }
