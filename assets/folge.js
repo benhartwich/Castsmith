@@ -158,3 +158,13 @@
 
 	var timer = window.setInterval(ask, 15000);
 })();
+
+/*
+ * Forms with data-aaspf-confirm ask before they are sent (deleting an episode).
+ */
+document.addEventListener('submit', function (event) {
+	var message = event.target && event.target.getAttribute ? event.target.getAttribute('data-aaspf-confirm') : null;
+	if (message && !window.confirm(message)) {
+		event.preventDefault();
+	}
+});

@@ -91,7 +91,7 @@ final class MusicBed
 
     public static function dir(): string
     {
-        return wp_upload_dir()['basedir'] . '/aaspf-musik';
+        return \PodcastForge\Storage\EpisodeStorage::uploads()['dir'] . '/music';
     }
 
     public static function file(string $slot): string
@@ -103,7 +103,7 @@ final class MusicBed
     {
         $path = self::file($slot);
 
-        return wp_upload_dir()['baseurl'] . '/aaspf-musik/' . $slot . '.mp3' . (is_readable($path) ? '?v=' . filemtime($path) : '');
+        return \PodcastForge\Storage\EpisodeStorage::uploads()['url'] . '/music/' . $slot . '.mp3' . (is_readable($path) ? '?v=' . filemtime($path) : '');
     }
 
     /**

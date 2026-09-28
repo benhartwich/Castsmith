@@ -31,18 +31,23 @@ final class DictionaryWriter
     private const BASE = 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/';
 
     /**
-     * The local dictionary file: the configured path, otherwise in the storage directory.
+     * The local dictionary file, in the storage directory.
      * Not in the plugin directory — it would be lost there on the next update.
      * If it is missing, the bound version is loaded from ElevenLabs.
      */
     public static function path(): string
     {
-        $configured = trim(Options::get('dictionary_file'));
-        if ($configured !== '') {
-            return $configured;
-        }
+        $default = \PodcastForge\Storage\EpisodeStorage::baseDir() . '/' . self::FILE;
 
-        return \PodcastForge\Storage\EpisodeStorage::baseDir() . '/' . self::FILE;
+        /**
+         * Filters the path of the local pronunciation dictionary (PLS), for
+         * example to keep it under version control.
+         *
+         * @param string $path Absolute path of the PLS file.
+         */
+        $path = apply_filters('podcast_forge_dictionary_file', $default);
+
+        return is_string($path) && trim($path) !== '' ? trim($path) : $default;
     }
 
     /**
@@ -506,6 +511,10 @@ final class DictionaryWriter
 
         $path = self::path();
         $directory = dirname($path);
+
+        if ($directory === \PodcastForge\Storage\EpisodeStorage::baseDir()) {
+            \PodcastForge\Storage\EpisodeStorage::ensureBaseDir();
+        }
 
         if (!is_dir($directory) && !wp_mkdir_p($directory)) {
             /* translators: %s: directory path of the dictionary file */

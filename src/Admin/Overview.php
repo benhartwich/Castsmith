@@ -53,8 +53,7 @@ final class Overview
         do_action('podcast_forge_overview_panels');
         $panels = trim((string) ob_get_clean());
         if ($panels !== '') {
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Panels of add-ons, escaped by them.
-            echo '<div class="aaspf-zweispaltig">' . $panels . '</div>'; // already escaped by the add-ons
+            echo '<div class="aaspf-zweispaltig">' . wp_kses($panels, Html::allowed()) . '</div>';
         }
 
         self::renderTable($episodes, $hidden, $showHidden);
@@ -140,8 +139,7 @@ final class Overview
         echo '<section class="aaspf-panel aaspf-aktiv">';
         echo '<div class="aaspf-panel-kopf">';
         echo '<h2>' . esc_html(self::title($episode)) . '</h2>';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- statusPill() escapes its label and class.
-        echo EpisodesPage::statusPill($episode);
+        echo wp_kses(EpisodesPage::statusPill($episode), Html::allowed());
         echo '<a class="button button-primary" href="' . esc_url(Urls::episode($id)) . '">' . esc_html__('Open', 'podcast-forge') . '</a>';
         echo '</div>';
 
@@ -192,8 +190,7 @@ final class Overview
             echo '<td>' . esc_html((string) $id) . '</td>';
             echo '<td><a href="' . esc_url(Urls::episode($id)) . '"><strong>' . esc_html(self::title($episode)) . '</strong></a></td>';
             echo '<td class="aaspf-schmal-weg">' . esc_html(\PodcastForge\Source\Sources::forEpisode($episode)->label()) . '</td>';
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- statusPill() escapes its label and class.
-            echo '<td>' . EpisodesPage::statusPill($episode) . '</td>';
+            echo '<td>' . wp_kses(EpisodesPage::statusPill($episode), Html::allowed()) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(EpisodesPage::lengthLabel($episode)) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(number_format_i18n((float) $episode['cost_cents'] / 100, 2) . ' $') . '</td>';
             echo '<td class="aaspf-schmal-weg">' . esc_html(mysql2date('d.m.Y', (string) $episode['created_at'])) . '</td>';

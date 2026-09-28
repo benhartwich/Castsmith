@@ -65,8 +65,6 @@ final class Options
                 : 'One more note: this episode was created with the help of artificial intelligence, and the voice you are hearing is a synthetic replica of my own. Before an episode goes online, I check the text and the audio myself.',
             'notify_email'         => '',
             'prompt_dir'           => '',
-            'dictionary_file'      => '',
-            'storage_dir'          => '',
             'voice_stability'      => '0.5',
             'voice_similarity'     => '0.75',
             'voice_style'          => '0',

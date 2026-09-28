@@ -169,11 +169,6 @@ final class SettingsPage
                 self::textRow('elevenlabs_voice_id', __('Voice ID', 'podcast-forge'), $values, __('ID of the voice clone.', 'podcast-forge')),
                 self::textRow('elevenlabs_model_id', __('Model', 'podcast-forge'), $values, __('Recommended: eleven_v3 — only this model applies phonetic (IPA) pronunciation rules; eleven_multilingual_v2 ignores them.', 'podcast-forge')),
                 self::textRow('elevenlabs_dictionary_id', __('Dictionary ID', 'podcast-forge'), $values, __('There is exactly one dictionary, which grows through new versions. If it is created anew instead of extended, all existing bindings point to nothing.', 'podcast-forge')),
-                self::textRow('dictionary_file', __('Local dictionary file', 'podcast-forge'), $values, sprintf(
-                    /* translators: %s: path */
-                    __('PLS file that every rule is written to first — a good candidate for version control. Empty: in the storage folder. Currently: %s', 'podcast-forge'),
-                    \PodcastForge\Voice\DictionaryWriter::path()
-                )),
                 self::textRow('elevenlabs_dictionary_version_id', __('Dictionary version', 'podcast-forge'), $values, __('Required. Passed explicitly with every request so that later maintenance does not retroactively change the result of a rerun.', 'podcast-forge')),
             ]
         );
@@ -345,8 +340,7 @@ final class SettingsPage
             echo '<p class="description">' . esc_html($description) . '</p>';
         }
         echo '<table class="form-table" role="presentation"><tbody>';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The rows are escaped in the row helpers.
-        echo implode('', $rows); // The rows are already escaped in the helper methods.
+        echo wp_kses(implode('', $rows), \PodcastForge\Admin\Html::allowed());
         echo '</tbody></table>';
     }
 
@@ -514,8 +508,9 @@ final class SettingsPage
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field(AdminActions::NONCE_ACTION);
         echo '<input type="hidden" name="action" value="' . esc_attr(AdminActions::ACTION) . '">';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button(__('Schedule test job', 'podcast-forge'), 'secondary', 'submit', false) . '</p>';
+        echo '<p>';
+        submit_button(__('Schedule test job', 'podcast-forge'), 'secondary', 'submit', false);
+        echo '</p>';
         echo '</form>';
     }
 

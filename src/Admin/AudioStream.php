@@ -147,18 +147,11 @@ final class AudioStream
             exit;
         }
 
-        fseek($handle, $start);
-        $remaining = $end - $start + 1;
-
-        while ($remaining > 0 && !feof($handle)) {
-            $chunk = fread($handle, (int) min(65536, $remaining));
-            if ($chunk === false) {
-                break;
-            }
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Binary audio stream, not HTML.
-            echo $chunk;
-            flush();
-            $remaining -= strlen($chunk);
+        // Binary audio, copied straight to the response.
+        $output = fopen('php://output', 'wb');
+        if ($output !== false) {
+            stream_copy_to_stream($handle, $output, $end - $start + 1, $start);
+            fclose($output);
         }
 
         fclose($handle);

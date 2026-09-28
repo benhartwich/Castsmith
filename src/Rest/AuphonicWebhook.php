@@ -40,9 +40,14 @@ final class AuphonicWebhook
         register_rest_route(self::NAMESPACE, self::ROUTE, [
             'methods'             => 'POST',
             'callback'            => [self::class, 'handle'],
-            'permission_callback' => '__return_true',
+            // Auphonic cannot log in; it proves itself with the secret token
+            // that is part of the callback URL.
+            'permission_callback' => [self::class, 'authorize'],
             'args'                => [
-                'token' => ['required' => true, 'type' => 'string'],
+                'token'         => ['required' => true, 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field'],
+                'uuid'          => ['type' => 'string', 'sanitize_callback' => 'sanitize_text_field'],
+                'status'        => ['sanitize_callback' => 'sanitize_text_field'],
+                'status_string' => ['type' => 'string', 'sanitize_callback' => 'sanitize_text_field'],
             ],
         ]);
     }
@@ -66,12 +71,19 @@ final class AuphonicWebhook
         return $token;
     }
 
+    /**
+     * Only a request with the stored token gets through. Without a stored
+     * token nothing does — the token is created when a production is started.
+     */
+    public static function authorize(\WP_REST_Request $request): bool
+    {
+        $token = Options::get('auphonic_webhook_token');
+
+        return $token !== '' && hash_equals($token, (string) $request->get_param('token'));
+    }
+
     public static function handle(\WP_REST_Request $request): \WP_REST_Response
     {
-        if (!hash_equals(self::token(), (string) $request['token'])) {
-            return new \WP_REST_Response(['ok' => false], 403);
-        }
-
         $uuid = trim((string) ($request->get_param('uuid') ?? ''));
         if ($uuid === '') {
             return new \WP_REST_Response(['ok' => false, 'grund' => 'missing uuid'], 400);

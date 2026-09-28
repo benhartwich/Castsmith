@@ -15,6 +15,7 @@ use PodcastForge\Settings\SettingsPage;
 use PodcastForge\Text\DocxParser;
 use PodcastForge\Text\PlainTextParser;
 use PodcastForge\Text\SourceDocument;
+use PodcastForge\Text\Sanitizer;
 
 /**
  * The form actions of the episode view.
@@ -158,10 +159,10 @@ final class EpisodeActions
         self::guard(self::ACTION_SAVE_SCRIPT);
         $id = self::episodeId();
 
-        // Not sanitised: the spoken script contains <break> tags that the
-        // speech synthesis needs; it is only ever output escaped.
+        // Allowlist sanitiser: plain text plus the <break> tags the speech
+        // synthesis needs (see Sanitizer).
         $script = isset($_POST['script_text'])
-            ? trim(str_replace(["\r\n", "\r"], "\n", (string) wp_unslash($_POST['script_text']))) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+            ? Sanitizer::script((string) wp_unslash($_POST['script_text'])) // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised by Sanitizer::script()
             : '';
 
         // Overridden deviations: only those that can be overridden at all.
@@ -562,7 +563,7 @@ final class EpisodeActions
         }
 
         // Plain text that is parsed, never output unescaped.
-        $pasted = isset($_POST['source_text']) ? (string) wp_unslash($_POST['source_text']) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+        $pasted = isset($_POST['source_text']) ? Sanitizer::plain((string) wp_unslash($_POST['source_text'])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised by Sanitizer::plain()
         if (trim($pasted) === '') {
             throw new \RuntimeException(__('Neither a file nor pasted text.', 'podcast-forge'));
         }

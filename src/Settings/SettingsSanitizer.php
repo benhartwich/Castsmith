@@ -50,8 +50,6 @@ final class SettingsSanitizer
         'anthropic_workspace_id',
         'auphonic_preset',
         'prompt_dir',
-        'dictionary_file',
-        'storage_dir',
         'voice_stability',
         'voice_similarity',
         'voice_style',

@@ -8,47 +8,83 @@ namespace PodcastForge\Storage;
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_rmdir -- Removing the plugin's own episode directory.
 // phpcs:disable WordPress.WP.AlternativeFunctions.unlink_unlink -- Removing files in the plugin's own storage directory.
 
-use PodcastForge\Settings\Options;
-
 /**
- * Storage for the segment audio files, above the document root.
+ * Storage for the segment audio files, transcripts and the local
+ * pronunciation dictionary.
  *
- * Under nginx everything inside the WordPress installation is served,
- * including `uploads/`, and `.htaccess` has no effect there. The raw recordings
- * must not be public. Therefore, in this order:
+ * By default a folder in uploads, `uploads/podcast-forge/data-<random>`,
+ * protected by an .htaccess and an index.php. The random part is generated
+ * once, so nobody can guess the folder. Under Apache the .htaccess blocks
+ * direct access; nginx ignores it — the storage health check tests this with
+ * a probe file and says what to do.
  *
- * 1. the configured path (setting "Storage"),
- * 2. `podcast-forge-data` one level above the WordPress installation, if it
- *    exists or can be created — outside of what the web server serves,
- * 3. otherwise `wp-content/podcast-forge-data-<random>` with protection files.
- *    These only work under Apache; the random name part, generated once,
- *    ensures that nobody can guess the folder. The health check still warns.
+ * A site that keeps private files elsewhere (for example above the web
+ * root) can move the storage with the filter `podcast_forge_storage_dir`.
  *
  * The database stores relative paths. Moving the root directory therefore
  * does not invalidate any row.
  */
 final class EpisodeStorage
 {
-    public static function baseDir(): string
+    /** Name of the plugin's folder in uploads. */
+    public const UPLOADS_FOLDER = 'podcast-forge';
+
+    /**
+     * The plugin's folder in uploads, as path and URL. Public files (music)
+     * live here; the protected data folder is inside it.
+     *
+     * @return array{dir:string,url:string}
+     */
+    public static function uploads(): array
     {
-        $configured = trim(Options::get('storage_dir'));
-        if ($configured !== '') {
-            return untrailingslashit($configured);
-        }
+        $uploads = wp_upload_dir(null, false);
 
-        $parent = dirname(untrailingslashit(ABSPATH));
-        $outside = $parent . '/podcast-forge-data';
-        if (is_dir($outside) || (is_dir($parent) && is_writable($parent))) {
-            return $outside;
-        }
+        return [
+            'dir' => untrailingslashit((string) $uploads['basedir']) . '/' . self::UPLOADS_FOLDER,
+            'url' => untrailingslashit((string) $uploads['baseurl']) . '/' . self::UPLOADS_FOLDER,
+        ];
+    }
 
+    public static function defaultDir(): string
+    {
         $suffix = (string) get_option('aaspf_storage_suffix', '');
         if ($suffix === '') {
             $suffix = strtolower(wp_generate_password(16, false));
             add_option('aaspf_storage_suffix', $suffix, '', false);
         }
 
-        return untrailingslashit(WP_CONTENT_DIR) . '/podcast-forge-data-' . $suffix;
+        return self::uploads()['dir'] . '/data-' . $suffix;
+    }
+
+    public static function baseDir(): string
+    {
+        $default = self::defaultDir();
+
+        /**
+         * Filters the directory for episode audio, transcripts and the local
+         * pronunciation dictionary.
+         *
+         * @param string $dir Absolute path without trailing slash.
+         */
+        $dir = apply_filters('podcast_forge_storage_dir', $default);
+
+        return untrailingslashit(is_string($dir) && trim($dir) !== '' ? trim($dir) : $default);
+    }
+
+    /**
+     * URL of the storage folder, if it lies in uploads — for the health check.
+     */
+    public static function url(): ?string
+    {
+        $uploads = wp_upload_dir(null, false);
+        $basedir = untrailingslashit((string) $uploads['basedir']);
+        $base = self::baseDir();
+
+        if (!str_starts_with($base . '/', $basedir . '/')) {
+            return null;
+        }
+
+        return untrailingslashit((string) $uploads['baseurl']) . substr($base, strlen($basedir));
     }
 
     public static function episodeDir(int $episodeId): string
@@ -56,29 +92,46 @@ final class EpisodeStorage
         return self::baseDir() . '/' . $episodeId;
     }
 
+    /** Blocks direct access under Apache 2.2 and 2.4 alike. */
+    private const HTACCESS = "<IfModule mod_authz_core.c>\n\tRequire all denied\n</IfModule>\n<IfModule !mod_authz_core.c>\n\tOrder deny,allow\n\tDeny from all\n</IfModule>\n";
+
     /**
-     * Creates the directory and additionally secures it.
+     * Creates the storage directory with its protection files.
      *
-     * The protection files have no effect under nginx, but they cost nothing
-     * and take effect if the storage ever moves to Apache or into the
-     * document root.
+     * The protection files block direct access under Apache; nginx ignores
+     * them (see the storage health check).
      *
+     * @throws \RuntimeException
+     */
+    public static function ensureBaseDir(): string
+    {
+        $base = self::baseDir();
+
+        if (!is_dir($base) && !wp_mkdir_p($base)) {
+            /* translators: %s: path of the storage directory */
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'podcast-forge'), $base));
+        }
+
+        foreach ([$base . '/index.php' => "<?php\n// Silence is golden.\n", $base . '/.htaccess' => self::HTACCESS] as $file => $content) {
+            if (!file_exists($file)) {
+                @file_put_contents($file, $content);
+            }
+        }
+
+        return $base;
+    }
+
+    /**
      * @throws \RuntimeException
      */
     public static function ensureEpisodeDir(int $episodeId): string
     {
+        self::ensureBaseDir();
         $dir = self::episodeDir($episodeId);
 
         if (!is_dir($dir) && !wp_mkdir_p($dir)) {
             /* translators: %s: path of the episode directory */
             throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'podcast-forge'), $dir));
-        }
-
-        $base = self::baseDir();
-        foreach ([$base . '/index.php' => "<?php\n// Nichts zu sehen.\n", $base . '/.htaccess' => "Require all denied\n"] as $file => $content) {
-            if (!file_exists($file)) {
-                @file_put_contents($file, $content);
-            }
         }
 
         return $dir;
@@ -116,6 +169,7 @@ final class EpisodeStorage
      */
     public static function write(string $relative, string $bytes): void
     {
+        self::ensureBaseDir();
         $path = self::absolutePath($relative);
         $dir = dirname($path);
 

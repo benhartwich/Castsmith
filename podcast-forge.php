@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/benhartwich/podcast-forge
  * Description:       Turns a fact script, a post or a custom source into a finished podcast episode: speaking script via language model, number and fact checking, speech synthesis with your own voice clone, assembly, mastering and a Podlove draft — with two human approvals.
  * Version:           0.2.0
- * Requires at least: 6.5
+ * Requires at least: 6.9
  * Requires PHP:      8.2
  * Author:            Benjamin Hartwich
  * Author URI:        https://astroblog.org
@@ -24,7 +24,7 @@ define('AASPF_VERSION', '0.2.0');
 define('AASPF_PLUGIN_FILE', __FILE__);
 define('AASPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('AASPF_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('AASPF_DB_VERSION', '10');
+define('AASPF_DB_VERSION', '11');
 
 /**
  * Check the PHP version first, before the autoloader.

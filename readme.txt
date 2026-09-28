@@ -1,7 +1,7 @@
 === Podcast Forge ===
 Contributors: benhartwich
 Tags: podcast, text to speech, voice clone, podlove, auphonic
-Requires at least: 6.5
+Requires at least: 6.9
 Tested up to: 7.1
 Requires PHP: 8.2
 Stable tag: 0.2.0

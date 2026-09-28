@@ -60,11 +60,8 @@ final class Plugin
         add_action('update_option_' . \PodcastForge\Settings\Options::OPTION, [\PodcastForge\Audio\AudioEngine::class, 'forget'], 10, 0);
         // Publishing also happens from within the Podlove backend, so this is not admin-only.
         \PodcastForge\Notify\Announcement::register();
-        // The only frontend output: the player with the latest episode.
-        \PodcastForge\Podlove\LatestEpisodeShortcode::register();
 
-        // Otherwise the plugin produces no frontend output. Translations are
-        // therefore only loaded where text is actually displayed.
+        // The plugin has no frontend output; the screens are admin-only.
         if (is_admin()) {
             SettingsPage::register();
             EpisodesPage::register();

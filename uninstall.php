@@ -22,7 +22,7 @@ $aaspf_purge = is_array($aaspf_settings) && !empty($aaspf_settings['delete_data_
 if ($aaspf_purge) {
     global $wpdb;
 
-    foreach ([$wpdb->prefix . 'aas_segments', $wpdb->prefix . 'aas_episodes'] as $aaspf_table) {
+    foreach ([$wpdb->prefix . 'aaspf_segments', $wpdb->prefix . 'aaspf_episodes'] as $aaspf_table) {
         $wpdb->query("DROP TABLE IF EXISTS {$aaspf_table}");
     }
 

@@ -198,8 +198,7 @@ final class EpisodesPage
 
         echo '<div class="aaspf-titelzeile">';
         echo '<h1>' . esc_html(Overview::title($episode)) . '</h1>';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- statusPill() escapes its label and class.
-        echo self::statusPill($episode);
+        echo wp_kses(self::statusPill($episode), Html::allowed());
         echo '</div>';
 
         $meta = [];
@@ -286,8 +285,7 @@ final class EpisodesPage
             self::renderAudio($episode);
             $html = (string) ob_get_clean();
             echo trim($html) !== ''
-                // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $html is the output of renderAudio(), escaped there.
-                ? $html
+                ? wp_kses($html, Html::allowed())
                 : '<p class="description">' . esc_html__('The audio is created after the text approval.', 'podcast-forge') . '</p>';
         });
 
@@ -300,8 +298,7 @@ final class EpisodesPage
         echo '</div>';
 
         if ($aside !== '') {
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- renderAside() output of the source, escaped there.
-            echo '<aside class="aaspf-raster-seite">' . $aside . '</aside>'; // already escaped by the source
+            echo '<aside class="aaspf-raster-seite">' . wp_kses($aside, Html::allowed()) . '</aside>';
         }
 
         echo '</div>';
@@ -513,8 +510,7 @@ final class EpisodesPage
         echo '</div>';
 
         if ($action !== '') {
-            // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- captureForm() output, escaped there.
-            echo '<div class="aaspf-jetzt-aktion">' . $action . '</div>';
+            echo '<div class="aaspf-jetzt-aktion">' . wp_kses($action, Html::allowed()) . '</div>';
         }
 
         echo '</section>';
@@ -787,8 +783,9 @@ final class EpisodesPage
             ? __('Start editing', 'podcast-forge')
             : __('Repeat editing', 'podcast-forge');
 
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button($label, 'primary', 'submit', false) . '</p>';
+        echo '<p>';
+        submit_button($label, 'primary', 'submit', false);
+        echo '</p>';
 
         if ($script !== '') {
             echo '<p class="description">' . esc_html__('Repeating overwrites the speech script and costs tokens again.', 'podcast-forge') . '</p>';
@@ -1004,8 +1001,9 @@ final class EpisodesPage
             __('%d characters. The number diff is recalculated after saving.', 'podcast-forge'),
             mb_strlen($script)
         )) . '</p>';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button(__('Save and check speech script', 'podcast-forge'), 'secondary', 'submit', false) . '</p>';
+        echo '<p>';
+        submit_button(__('Save and check speech script', 'podcast-forge'), 'secondary', 'submit', false);
+        echo '</p>';
         echo '</form>';
     }
 
@@ -1042,8 +1040,9 @@ final class EpisodesPage
         wp_nonce_field(EpisodeActions::ACTION_APPROVE);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_APPROVE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button(__('Approve text', 'podcast-forge'), 'primary', 'submit', false) . '</p>';
+        echo '<p>';
+        submit_button(__('Approve text', 'podcast-forge'), 'primary', 'submit', false);
+        echo '</p>';
         echo '</form>';
     }
 
@@ -1141,15 +1140,16 @@ final class EpisodesPage
         wp_nonce_field(EpisodeActions::ACTION_AUDIO);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_AUDIO) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button(
+        echo '<p>';
+        submit_button(
             $segments === []
                 ? __('Create audio', 'podcast-forge')
                 : __('Create missing segments', 'podcast-forge'),
             'primary',
             'submit',
             false
-        ) . '</p>';
+        );
+        echo '</p>';
         if ($segments !== []) {
             echo '<p class="description">' . esc_html__('Unchanged segments keep their audio and cost nothing. Only what has changed is created.', 'podcast-forge') . '</p>';
         }
@@ -1763,12 +1763,13 @@ final class EpisodesPage
     private static function renderDangerZone(int $id): void
     {
         echo '<h3>' . esc_html__('Delete', 'podcast-forge') . '</h3>';
-        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" onsubmit="return confirm(' . esc_attr("'" . __('Delete this episode including its segments?', 'podcast-forge') . "'") . ');">';
+        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-aaspf-confirm="' . esc_attr__('Delete this episode including its segments?', 'podcast-forge') . '">';
         wp_nonce_field(EpisodeActions::ACTION_DELETE);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_DELETE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-        // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- get_submit_button() returns escaped markup.
-        echo '<p>' . get_submit_button(__('Delete episode', 'podcast-forge'), 'delete', 'submit', false) . '</p>';
+        echo '<p>';
+        submit_button(__('Delete episode', 'podcast-forge'), 'delete', 'submit', false);
+        echo '</p>';
         echo '</form>';
     }
 

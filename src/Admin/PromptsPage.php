@@ -8,6 +8,7 @@ namespace PodcastForge\Admin;
 
 use PodcastForge\Ai\Prompts;
 use PodcastForge\Settings\Options;
+use PodcastForge\Text\Sanitizer;
 
 /**
  * View and edit the prompts.
@@ -124,30 +125,28 @@ final class PromptsPage
             wp_die(esc_html__('Unknown language.', 'podcast-forge'), '', ['response' => 400]);
         }
 
-        // Prompts are instructions for a language model, not HTML; control
-        // characters are removed below, the text is only ever output escaped.
-        $texts = isset($_POST['prompt']) && is_array($_POST['prompt']) ? wp_unslash($_POST['prompt']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-        $reset = isset($_POST['zuruecksetzen']) && is_array($_POST['zuruecksetzen']) ? array_map('sanitize_key', array_keys(array_filter(wp_unslash($_POST['zuruecksetzen'])))) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- keys are sanitised
-
         foreach (Prompts::NAMES as $name) {
-            if (in_array($name, $reset, true)) {
+            if (!empty($_POST['zuruecksetzen'][$name])) {
                 Prompts::saveOverride($name, $language, '');
                 continue;
             }
-            if (!isset($texts[$name])) {
+            if (!isset($_POST['prompt'][$name]) || !is_string($_POST['prompt'][$name])) {
                 continue;
             }
 
-            // Unchanged compared to the file or default: do not save a custom version.
+            // Prompts are instructions for a model, not HTML: the allowlist
+            // keeps text and pause tags (see Sanitizer).
+            $submitted = Sanitizer::script(wp_unslash($_POST['prompt'][$name])); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised by Sanitizer::script()
+
+            // Unchanged compared to the file or default: do not save a custom
+            // version. Compared after sanitising, so that a file with other
+            // markup does not turn into an override just by saving the page.
             $current = Prompts::raw($name, $language);
-            $submitted = trim(str_replace(["\r\n", "\r"], "\n", (string) $texts[$name]));
-            if ($current['source'] !== 'override' && $submitted === trim(str_replace(["\r\n", "\r"], "\n", $current['text']))) {
+            if ($current['source'] !== 'override' && $submitted === Sanitizer::script($current['text'])) {
                 continue;
             }
 
-            // Prompts are instructions for a model, not HTML: only strip control characters.
-            $clean = (string) preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', $submitted);
-            Prompts::saveOverride($name, $language, $clean);
+            Prompts::saveOverride($name, $language, $submitted);
         }
 
         EpisodeActions::notice('success', __('Prompts saved.', 'podcast-forge'));

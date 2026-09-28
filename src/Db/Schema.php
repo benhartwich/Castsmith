@@ -28,9 +28,10 @@ namespace PodcastForge\Db;
  * short key of the source — the month of a sky preview, the ID of a post —,
  * and `source_json` holds its intermediate state. A separate table per source
  * is not worth it: the data is always read as a whole, and it belongs to
- * exactly one episode. Up to schema version 8 these were called
- * `sky_month`/`sky_json` and only knew the sky preview; the migration to 9
- * copies the data.
+ * exactly one episode.
+ *
+ * A fresh installation only creates the tables. The steps in upgrade() are
+ * for installations of earlier versions and only run there.
  *
  * Timestamps are deliberately nullable instead of '0000-00-00 00:00:00', so
  * that the schema also holds up under a strict sql_mode.
@@ -41,14 +42,14 @@ final class Schema
     {
         global $wpdb;
 
-        return $wpdb->prefix . 'aas_episodes';
+        return $wpdb->prefix . 'aaspf_episodes';
     }
 
     public static function segmentsTable(): string
     {
         global $wpdb;
 
-        return $wpdb->prefix . 'aas_segments';
+        return $wpdb->prefix . 'aaspf_segments';
     }
 
     /**
@@ -151,32 +152,104 @@ final class Schema
 	KEY hash (hash)
 ) {$charset};";
 
+        $previous = get_option('aaspf_db_version');
+        if ($previous !== false) {
+            // Before dbDelta: renamed tables must exist under their new name,
+            // otherwise dbDelta would create empty ones next to them.
+            self::upgrade((int) $previous, $episodes, $segments);
+        }
+
         dbDelta($sqlEpisodes);
         dbDelta($sqlSegments);
 
-        // dbDelta does not remove columns. The former combined column
-        // `dict_version` was split into provenance and fingerprint.
-        $wpdb->query("ALTER TABLE {$segments} DROP COLUMN IF EXISTS dict_version");
-
-        self::migrateToSources($episodes);
+        // The version is only recorded once both tables are there; otherwise
+        // the next request tries again.
+        if (in_array(false, self::status(), true)) {
+            return;
+        }
 
         // Autoloaded: maybeInstall() compares it on every request.
         update_option('aaspf_db_version', AASPF_DB_VERSION, true);
     }
 
     /**
+     * Steps for installations of earlier schema versions. Each step checks
+     * the actual state first and can run more than once.
+     */
+    private static function upgrade(int $from, string $episodes, string $segments): void
+    {
+        global $wpdb;
+
+        // Version 11: the tables were called {prefix}aas_episodes and
+        // {prefix}aas_segments.
+        foreach ([$wpdb->prefix . 'aas_episodes' => $episodes, $wpdb->prefix . 'aas_segments' => $segments] as $old => $new) {
+            if (self::tableExists($old) && !self::tableExists($new)) {
+                $wpdb->query("RENAME TABLE {$old} TO {$new}");
+            }
+        }
+
+        // The former combined column `dict_version` was split into
+        // provenance and fingerprint; dbDelta does not remove columns.
+        if (self::tableExists($segments) && self::columnExists($segments, 'dict_version')) {
+            $wpdb->query("ALTER TABLE {$segments} DROP COLUMN dict_version");
+        }
+
+        if ($from < 9 && self::tableExists($episodes)) {
+            self::migrateToSources($episodes);
+        }
+
+        if ($from < 11) {
+            self::moveMusic();
+
+            // Storage paths are no longer settings (see EpisodeStorage).
+            $settings = get_option(\PodcastForge\Settings\Options::OPTION);
+            if (is_array($settings) && (isset($settings['storage_dir']) || isset($settings['dictionary_file']))) {
+                unset($settings['storage_dir'], $settings['dictionary_file']);
+                update_option(\PodcastForge\Settings\Options::OPTION, $settings, false);
+            }
+        }
+    }
+
+    /**
+     * Version 11: music moved from uploads/aaspf-musik into the plugin's
+     * uploads folder.
+     */
+    private static function moveMusic(): void
+    {
+        $uploads = wp_upload_dir(null, false);
+        $old = untrailingslashit((string) $uploads['basedir']) . '/aaspf-musik';
+        $new = \PodcastForge\Audio\MusicBed::dir();
+
+        if (is_dir($old) && !file_exists($new) && wp_mkdir_p(dirname($new))) {
+            @rename($old, $new); // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- moving the plugin's own folder within uploads.
+        }
+    }
+
+    private static function tableExists(string $table): bool
+    {
+        global $wpdb;
+
+        return $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->esc_like($table))) === $table;
+    }
+
+    private static function columnExists(string $table, string $column): bool
+    {
+        global $wpdb;
+
+        return $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$table} LIKE %s", $column)) !== null;
+    }
+
+    /**
      * Schema version 9: the sky preview was the only source with its own
-     * columns. Its data moves into the generic source columns, and its two
-     * states now have generic names. The old columns stay in place for now —
-     * nothing is deleted until the new version has been confirmed in
-     * production. Repeatable: only what is still missing gets copied.
+     * columns (`sky_month`/`sky_json`). Its data moves into the generic
+     * source columns, and its two states now have generic names. Only what
+     * is still missing gets copied.
      */
     private static function migrateToSources(string $episodes): void
     {
         global $wpdb;
 
-        $hasSky = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM {$episodes} LIKE %s", 'sky_month')) !== null;
-        if ($hasSky) {
+        if (self::columnExists($episodes, 'sky_month')) {
             $wpdb->query("UPDATE {$episodes} SET source_type = 'sky', source_ref = sky_month, source_json = sky_json WHERE sky_month <> '' AND source_json IS NULL");
         }
 
@@ -193,9 +266,7 @@ final class Schema
 
         $result = [];
         foreach ([self::episodesTable(), self::segmentsTable()] as $table) {
-            // $table comes from $wpdb->prefix and a literal, not from user input.
-            $found = $wpdb->get_var($wpdb->prepare('SHOW TABLES LIKE %s', $table));
-            $result[$table] = ($found === $table);
+            $result[$table] = self::tableExists($table);
         }
 
         return $result;
