@@ -10,10 +10,9 @@ use Castsmith\Settings\Options;
 /**
  * What happens when the plugin is activated and deactivated.
  *
- * Deliberately not included: creating a directory for segment audio files.
- * Under nginx, uploads/ is publicly readable and .htaccess has no effect.
- * EpisodeStorage chooses the directory when it is first needed, and the
- * storage health check tells whether it is reachable from the web.
+ * Activation only creates the tables. The storage directory is created when
+ * it is first needed (see EpisodeStorage), and the storage health check
+ * tells whether it is reachable from the web.
  */
 final class Activation
 {
@@ -26,5 +25,12 @@ final class Activation
     public static function deactivate(): void
     {
         Scheduler::unscheduleAll();
+
+        // The bundled Action Scheduler runs its queue from a WP-Cron event
+        // with its own one-minute schedule. Once this plugin is gone, the
+        // schedule is gone too and WP-Cron would log an error on every run.
+        // Other plugins that use Action Scheduler add the event again on
+        // their next request.
+        wp_clear_scheduled_hook('action_scheduler_run_queue', ['WP Cron']);
     }
 }

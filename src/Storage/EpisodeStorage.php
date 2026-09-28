@@ -242,7 +242,11 @@ final class EpisodeStorage
         $base = self::baseDir();
 
         if (!is_dir($base)) {
+            // The nearest folder that exists decides whether it can be created.
             $parent = dirname($base);
+            while (!is_dir($parent) && dirname($parent) !== $parent) {
+                $parent = dirname($parent);
+            }
 
             return [
                 'writable' => is_writable($parent),
