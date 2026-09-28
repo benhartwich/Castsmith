@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Source;
+namespace Castsmith\Source;
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Settings\Options;
-use PodcastForge\Text\SourceDocument;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Settings\Options;
+use Castsmith\Text\SourceDocument;
 
 /**
  * Creates an episode from a fact script that has already been fully read in.
@@ -40,11 +40,11 @@ final class EpisodeFactory
 
         EpisodeRepository::log($id, 'einlesen', sprintf(
             /* translators: 1: number of blocks, 2: number of headings, 3: number of body text characters, 4: optional " Source: " suffix with the source label, or empty */
-            __( '%1$d blocks, including %2$d headings, %3$d characters of body text.%4$s', 'podcast-forge' ),
+            __( '%1$d blocks, including %2$d headings, %3$d characters of body text.%4$s', 'castsmith' ),
             count($document->blocks),
             count($document->headings()),
             $document->characterCount(),
-            $label !== '' ? __( ' Source: ', 'podcast-forge' ) . $label : ''
+            $label !== '' ? __( ' Source: ', 'castsmith' ) . $label : ''
         ));
 
         return $id;

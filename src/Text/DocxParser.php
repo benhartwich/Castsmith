@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Text;
+namespace Castsmith\Text;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
@@ -34,12 +34,12 @@ final class DocxParser
     {
         if (!is_readable($path)) {
             /* translators: %s: file path of the DOCX file */
-            throw new \RuntimeException(sprintf(__('DOCX file could not be read: %s', 'podcast-forge'), $path));
+            throw new \RuntimeException(sprintf(__('DOCX file could not be read: %s', 'castsmith'), $path));
         }
 
         $document = self::part($path, 'word/document.xml');
         if ($document === null) {
-            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'podcast-forge') . __('it contains no word/document.xml.', 'podcast-forge'));
+            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'castsmith') . __('it contains no word/document.xml.', 'castsmith'));
         }
 
         return self::fromXml($document, self::part($path, 'word/styles.xml') ?? '');
@@ -52,7 +52,7 @@ final class DocxParser
     {
         $dom = self::load($documentXml);
         if ($dom === null) {
-            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'podcast-forge') . __('word/document.xml is not valid XML.', 'podcast-forge'));
+            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'castsmith') . __('word/document.xml is not valid XML.', 'castsmith'));
         }
 
         $levels = self::styleLevels($stylesXml);

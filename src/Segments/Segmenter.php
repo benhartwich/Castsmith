@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Segments;
+namespace Castsmith\Segments;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Voice\PronunciationDictionary;
-use PodcastForge\Voice\VoiceSettings;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Voice\PronunciationDictionary;
+use Castsmith\Voice\VoiceSettings;
 
 /**
  * Segmentation: paragraphs become segments.
@@ -39,17 +39,17 @@ final class Segmenter
         $episode = EpisodeRepository::find($episodeId);
         if ($episode === null) {
             /* translators: %d: episode ID */
-            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'podcast-forge'), $episodeId));
+            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'castsmith'), $episodeId));
         }
 
         $script = (string) ($episode['script_text'] ?? '');
         if (trim($script) === '') {
-            throw new \RuntimeException(__('The episode has no spoken script.', 'podcast-forge'));
+            throw new \RuntimeException(__('The episode has no spoken script.', 'castsmith'));
         }
 
         $chapters = EpisodeRepository::decodeList($episode['chapters'] ?? null);
         $disclosure = (int) ($episode['ai_disclosure_in_audio'] ?? 0) === 1
-            ? trim(\PodcastForge\Settings\Options::get('ai_disclosure_audio_text'))
+            ? trim(\Castsmith\Settings\Options::get('ai_disclosure_audio_text'))
             : '';
         $planned = self::plan($script, $chapters, $disclosure);
 
@@ -117,17 +117,17 @@ final class Segmenter
             if ($index >= count($planned)) {
                 SegmentRepository::update((int) $segment['id'], ['episode_id' => 0]);
                 global $wpdb;
-                $wpdb->delete(\PodcastForge\Db\Schema::segmentsTable(), ['id' => (int) $segment['id']]);
+                $wpdb->delete(\Castsmith\Db\Schema::segmentsTable(), ['id' => (int) $segment['id']]);
                 $removed++;
             }
         }
 
         EpisodeRepository::update($episodeId, [
-            'voice_id'       => \PodcastForge\Settings\Options::get('elevenlabs_voice_id'),
+            'voice_id'       => \Castsmith\Settings\Options::get('elevenlabs_voice_id'),
             'voice_settings' => (string) wp_json_encode($voice->toArray()),
             'tts_model_id'   => $modelId,
-            'dict_id'        => \PodcastForge\Settings\Options::get('elevenlabs_dictionary_id'),
-            'dict_version_id'=> \PodcastForge\Settings\Options::get('elevenlabs_dictionary_version_id'),
+            'dict_id'        => \Castsmith\Settings\Options::get('elevenlabs_dictionary_id'),
+            'dict_version_id'=> \Castsmith\Settings\Options::get('elevenlabs_dictionary_version_id'),
         ]);
 
         return [
@@ -269,7 +269,7 @@ final class Segmenter
 
     private static function modelId(): string
     {
-        $model = \PodcastForge\Settings\Options::get('elevenlabs_model_id');
+        $model = \Castsmith\Settings\Options::get('elevenlabs_model_id');
 
         return $model !== '' ? $model : 'eleven_multilingual_v2';
     }

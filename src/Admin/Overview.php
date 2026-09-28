@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Health\Registry;
-use PodcastForge\Settings\Options;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Health\Registry;
+use Castsmith\Settings\Options;
 
 /**
  * The overview: key figures, episodes in progress, add-on panels, all
@@ -26,13 +26,13 @@ final class Overview
         $hidden = self::hiddenIds();
         $episodes = EpisodeRepository::recent(60);
 
-        echo '<h1 class="wp-heading-inline">' . esc_html__('Podcast Forge — Overview', 'podcast-forge') . '</h1> ';
+        echo '<h1 class="wp-heading-inline">' . esc_html__('Castsmith — Overview', 'castsmith') . '</h1> ';
         echo '<a class="page-title-action" href="' . esc_url(Urls::episodes(['neu' => 1])) . '">'
-            . esc_html__('New episode', 'podcast-forge') . '</a>';
+            . esc_html__('New episode', 'castsmith') . '</a>';
         echo '<hr class="wp-header-end">';
         echo '<p class="description">' . esc_html(sprintf(
             /* translators: %s: name of the podcast */
-            __('%s — two approvals stay with you: text and audio.', 'podcast-forge'),
+            __('%s — two approvals stay with you: text and audio.', 'castsmith'),
             Options::podcastName()
         )) . '</p>';
 
@@ -47,10 +47,10 @@ final class Overview
             self::renderActive($episode);
         }
 
-        // Add-ons can show their own panels here (action `podcast_forge_overview_panels`,
+        // Add-ons can show their own panels here (action `castsmith_overview_panels`,
         // one <section class="aaspf-panel"> per panel).
         ob_start();
-        do_action('podcast_forge_overview_panels');
+        do_action('castsmith_overview_panels');
         $panels = trim((string) ob_get_clean());
         if ($panels !== '') {
             echo '<div class="aaspf-zweispaltig">' . wp_kses($panels, Html::allowed()) . '</div>';
@@ -70,18 +70,18 @@ final class Overview
         if ($first !== null) {
             $current = Workflow::current(Workflow::stations($first));
             self::card(
-                __('In progress', 'podcast-forge'),
+                __('In progress', 'castsmith'),
                 self::shortTitle($first),
                 $current !== null ? sprintf('%s · %s', $current['titel'], $current['wort']) : EpisodeStatus::label((string) $first['status'])
             );
         } else {
-            self::card(__('In progress', 'podcast-forge'), __('nothing', 'podcast-forge'), __('no open episode', 'podcast-forge'));
+            self::card(__('In progress', 'castsmith'), __('nothing', 'castsmith'), __('no open episode', 'castsmith'));
         }
 
         /**
          * Filter: additional key figures for the overview, each as [title, value, subline, tone ''|'warn'].
          */
-        foreach ((array) apply_filters('podcast_forge_overview_cards', []) as $extra) {
+        foreach ((array) apply_filters('castsmith_overview_cards', []) as $extra) {
             if (is_array($extra) && count($extra) >= 3) {
                 self::card((string) $extra[0], (string) $extra[1], (string) $extra[2], (string) ($extra[3] ?? ''));
             }
@@ -90,20 +90,20 @@ final class Overview
         $quota = self::elevenLabsQuota();
         if ($quota !== null) {
             self::card(
-                __('ElevenLabs quota', 'podcast-forge'),
+                __('ElevenLabs quota', 'castsmith'),
                 number_format_i18n($quota['genutzt']),
                 /* translators: %s: character limit of the ElevenLabs plan */
-                sprintf(__('of %s characters in this billing month', 'podcast-forge'), number_format_i18n($quota['grenze'])),
+                sprintf(__('of %s characters in this billing month', 'castsmith'), number_format_i18n($quota['grenze'])),
                 $quota['grenze'] > 0 && $quota['genutzt'] / $quota['grenze'] > 0.85 ? 'warn' : ''
             );
         } else {
-            self::card(__('ElevenLabs quota', 'podcast-forge'), '—', __('unavailable', 'podcast-forge'));
+            self::card(__('ElevenLabs quota', 'castsmith'), '—', __('unavailable', 'castsmith'));
         }
 
         $results = Registry::lastResults();
         $total = count(Registry::all());
         if ($results === []) {
-            self::card(__('Services', 'podcast-forge'), '—', __('not checked yet · check in the settings', 'podcast-forge'));
+            self::card(__('Services', 'castsmith'), '—', __('not checked yet · check in the settings', 'castsmith'));
         } else {
             $ok = count(array_filter($results, static fn (array $r): bool => $r['status'] === 'ok'));
             $problem = null;
@@ -115,11 +115,11 @@ final class Overview
             }
             $oldest = min(array_map(static fn (array $r): int => (int) $r['zeit'], $results));
             self::card(
-                __('Services', 'podcast-forge'),
+                __('Services', 'castsmith'),
                 /* translators: 1: number of services working fine, 2: total number of services */
-                sprintf(__('%1$d of %2$d', 'podcast-forge'), $ok, $total),
+                sprintf(__('%1$d of %2$d', 'castsmith'), $ok, $total),
                 /* translators: %s: time since the last check, e.g. "5 mins" */
-                $problem ?? sprintf(__('all fine · checked %s ago', 'podcast-forge'), human_time_diff($oldest)),
+                $problem ?? sprintf(__('all fine · checked %s ago', 'castsmith'), human_time_diff($oldest)),
                 $ok === $total && count($results) === $total ? 'ok' : 'warn'
             );
         }
@@ -140,7 +140,7 @@ final class Overview
         echo '<div class="aaspf-panel-kopf">';
         echo '<h2>' . esc_html(self::title($episode)) . '</h2>';
         echo wp_kses(EpisodesPage::statusPill($episode), Html::allowed());
-        echo '<a class="button button-primary" href="' . esc_url(Urls::episode($id)) . '">' . esc_html__('Open', 'podcast-forge') . '</a>';
+        echo '<a class="button button-primary" href="' . esc_url(Urls::episode($id)) . '">' . esc_html__('Open', 'castsmith') . '</a>';
         echo '</div>';
 
         EpisodesPage::renderSteps($stations, true);
@@ -157,19 +157,19 @@ final class Overview
      */
     private static function renderTable(array $episodes, array $hidden, bool $showHidden): void
     {
-        echo '<h2 class="aaspf-abschnitt">' . esc_html__('All episodes', 'podcast-forge') . '</h2>';
+        echo '<h2 class="aaspf-abschnitt">' . esc_html__('All episodes', 'castsmith') . '</h2>';
 
         if ($episodes === []) {
-            echo '<p>' . esc_html__('No episode created yet.', 'podcast-forge') . '</p>';
+            echo '<p>' . esc_html__('No episode created yet.', 'castsmith') . '</p>';
 
             return;
         }
 
         echo '<table class="widefat striped aaspf-folgen"><thead><tr>';
         foreach ([
-            [__('No.', 'podcast-forge'), ''], [__('Title', 'podcast-forge'), ''], [__('Source', 'podcast-forge'), 'aaspf-schmal-weg'],
-            [__('Status', 'podcast-forge'), ''], [__('Length', 'podcast-forge'), 'aaspf-rechts aaspf-schmal-weg'],
-            [__('Cost', 'podcast-forge'), 'aaspf-rechts aaspf-schmal-weg'], [__('Created', 'podcast-forge'), 'aaspf-schmal-weg'], ['', ''],
+            [__('No.', 'castsmith'), ''], [__('Title', 'castsmith'), ''], [__('Source', 'castsmith'), 'aaspf-schmal-weg'],
+            [__('Status', 'castsmith'), ''], [__('Length', 'castsmith'), 'aaspf-rechts aaspf-schmal-weg'],
+            [__('Cost', 'castsmith'), 'aaspf-rechts aaspf-schmal-weg'], [__('Created', 'castsmith'), 'aaspf-schmal-weg'], ['', ''],
         ] as [$head, $class]) {
             echo '<th scope="col" class="' . esc_attr($class) . '">' . esc_html($head) . '</th>';
         }
@@ -189,7 +189,7 @@ final class Overview
             echo '<tr' . ($isHidden ? ' class="aaspf-ausgeblendet"' : '') . '>';
             echo '<td>' . esc_html((string) $id) . '</td>';
             echo '<td><a href="' . esc_url(Urls::episode($id)) . '"><strong>' . esc_html(self::title($episode)) . '</strong></a></td>';
-            echo '<td class="aaspf-schmal-weg">' . esc_html(\PodcastForge\Source\Sources::forEpisode($episode)->label()) . '</td>';
+            echo '<td class="aaspf-schmal-weg">' . esc_html(\Castsmith\Source\Sources::forEpisode($episode)->label()) . '</td>';
             echo '<td>' . wp_kses(EpisodesPage::statusPill($episode), Html::allowed()) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(EpisodesPage::lengthLabel($episode)) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(number_format_i18n((float) $episode['cost_cents'] / 100, 2) . ' $') . '</td>';
@@ -199,7 +199,7 @@ final class Overview
             wp_nonce_field(EpisodeActions::ACTION_HIDE);
             echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_HIDE) . '">';
             echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-            echo '<button type="submit" class="button-link">' . esc_html($isHidden ? __('show', 'podcast-forge') : __('hide', 'podcast-forge')) . '</button>';
+            echo '<button type="submit" class="button-link">' . esc_html($isHidden ? __('show', 'castsmith') : __('hide', 'castsmith')) . '</button>';
             echo '</form></td>';
             echo '</tr>';
         }
@@ -209,13 +209,13 @@ final class Overview
         if ($hiddenCount > 0) {
             echo '<p class="description">';
             if ($showHidden) {
-                echo '<a href="' . esc_url(Urls::episodes()) . '">' . esc_html__('Hide hidden episodes again', 'podcast-forge') . '</a>';
+                echo '<a href="' . esc_url(Urls::episodes()) . '">' . esc_html__('Hide hidden episodes again', 'castsmith') . '</a>';
             } else {
                 echo esc_html(sprintf(
                     /* translators: %d: number of episodes */
-                    _n('%d episode is hidden', '%d episodes are hidden', $hiddenCount, 'podcast-forge'),
+                    _n('%d episode is hidden', '%d episodes are hidden', $hiddenCount, 'castsmith'),
                     $hiddenCount
-                )) . ' · <a href="' . esc_url(Urls::episodes(['alle' => 1])) . '">' . esc_html__('show', 'podcast-forge') . '</a>';
+                )) . ' · <a href="' . esc_url(Urls::episodes(['alle' => 1])) . '">' . esc_html__('show', 'castsmith') . '</a>';
             }
             echo '</p>';
         }
@@ -254,7 +254,7 @@ final class Overview
         }
 
         /* translators: %d: episode ID */
-        return sprintf(__('Episode %d', 'podcast-forge'), (int) $episode['id']);
+        return sprintf(__('Episode %d', 'castsmith'), (int) $episode['id']);
     }
 
     /**
@@ -264,7 +264,7 @@ final class Overview
      */
     private static function shortTitle(array $episode): string
     {
-        $fromSource = \PodcastForge\Source\Sources::forEpisode($episode)->shortName($episode);
+        $fromSource = \Castsmith\Source\Sources::forEpisode($episode)->shortName($episode);
         if ($fromSource !== '') {
             return mb_strimwidth($fromSource, 0, 32, '…');
         }

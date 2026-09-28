@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Numbers\NumberDiff;
+use Castsmith\Numbers\NumberDiff;
 use PHPUnit\Framework\TestCase;
 
 final class NumberDiffTest extends TestCase

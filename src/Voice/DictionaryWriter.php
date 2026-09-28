@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\CryptoException;
-use PodcastForge\Support\PlsDocument;
-use PodcastForge\Text\Encoding;
+use Castsmith\Settings\Options;
+use Castsmith\Support\CryptoException;
+use Castsmith\Support\PlsDocument;
+use Castsmith\Text\Encoding;
 
 /**
  * The permanent path: a rule that takes effect in every future episode.
@@ -37,7 +37,7 @@ final class DictionaryWriter
      */
     public static function path(): string
     {
-        $default = \PodcastForge\Storage\EpisodeStorage::baseDir() . '/' . self::FILE;
+        $default = \Castsmith\Storage\EpisodeStorage::baseDir() . '/' . self::FILE;
 
         /**
          * Filters the path of the local pronunciation dictionary (PLS), for
@@ -45,7 +45,7 @@ final class DictionaryWriter
          *
          * @param string $path Absolute path of the PLS file.
          */
-        $path = apply_filters('podcast_forge_dictionary_file', $default);
+        $path = apply_filters('castsmith_dictionary_file', $default);
 
         return is_string($path) && trim($path) !== '' ? trim($path) : $default;
     }
@@ -86,7 +86,7 @@ final class DictionaryWriter
         $alias = trim($alias);
 
         if ($grapheme === '') {
-            throw new \RuntimeException(__('The term the rule should apply to is missing.', 'podcast-forge'));
+            throw new \RuntimeException(__('The term the rule should apply to is missing.', 'castsmith'));
         }
 
         $art = self::preferredRuleType();
@@ -100,7 +100,7 @@ final class DictionaryWriter
         }
 
         if ($wert === '') {
-            throw new \RuntimeException(__('Both the phonetic transcription and the respelling are missing.', 'podcast-forge'));
+            throw new \RuntimeException(__('Both the phonetic transcription and the respelling are missing.', 'castsmith'));
         }
 
         // Filter out characters that the voice demonstrably renders incorrectly.
@@ -110,7 +110,7 @@ final class DictionaryWriter
 
         $dictionaryId = Options::get('elevenlabs_dictionary_id');
         if ($dictionaryId === '') {
-            throw new \RuntimeException(__('No dictionary is configured.', 'podcast-forge'));
+            throw new \RuntimeException(__('No dictionary is configured.', 'castsmith'));
         }
 
         $key = self::apiKey();
@@ -150,7 +150,7 @@ final class DictionaryWriter
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -162,7 +162,7 @@ final class DictionaryWriter
                 : '';
 
             /* translators: 1: HTTP status code, 2: error detail from ElevenLabs */
-            throw new \RuntimeException(sprintf(__('ElevenLabs responds with HTTP %1$d. %2$s', 'podcast-forge'), $code, $detail));
+            throw new \RuntimeException(sprintf(__('ElevenLabs responds with HTTP %1$d. %2$s', 'castsmith'), $code, $detail));
         }
 
         // 4. Bind the new version immediately. Otherwise the rule has no effect anywhere.
@@ -237,7 +237,7 @@ final class DictionaryWriter
     public static function replaceAll(array $rules): array
     {
         if ($rules === []) {
-            throw new \RuntimeException(__('An empty rule set would empty the dictionary.', 'podcast-forge'));
+            throw new \RuntimeException(__('An empty rule set would empty the dictionary.', 'castsmith'));
         }
 
         // Clean up once right at the start, so that the local file and the service
@@ -250,7 +250,7 @@ final class DictionaryWriter
 
         $dictionaryId = Options::get('elevenlabs_dictionary_id');
         if ($dictionaryId === '') {
-            throw new \RuntimeException(__('No dictionary is configured.', 'podcast-forge'));
+            throw new \RuntimeException(__('No dictionary is configured.', 'castsmith'));
         }
 
         $key = self::apiKey();
@@ -281,7 +281,7 @@ final class DictionaryWriter
             $code = is_wp_error($response) ? 0 : (int) wp_remote_retrieve_response_code($response);
             if ($code !== 200 && $code !== 404) {
                 /* translators: %d: HTTP status code */
-                throw new \RuntimeException(sprintf(__('Old rules cannot be removed, HTTP %d.', 'podcast-forge'), $code));
+                throw new \RuntimeException(sprintf(__('Old rules cannot be removed, HTTP %d.', 'castsmith'), $code));
             }
             $entfernt = count($bisher);
         }
@@ -311,7 +311,7 @@ final class DictionaryWriter
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -320,7 +320,7 @@ final class DictionaryWriter
         if ($code !== 200 || !is_array($body) || !isset($body['version_id'])) {
             throw new \RuntimeException(sprintf(
                 /* translators: 1: HTTP status code, 2: start of the response body from ElevenLabs */
-                __('New rules not accepted, HTTP %1$d: %2$s', 'podcast-forge'),
+                __('New rules not accepted, HTTP %1$d: %2$s', 'castsmith'),
                 $code,
                 mb_substr((string) wp_remote_retrieve_body($response), 0, 300)
             ));
@@ -359,7 +359,7 @@ final class DictionaryWriter
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Old rule cannot be removed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Old rule cannot be removed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -367,7 +367,7 @@ final class DictionaryWriter
         // 404 means the rule does not exist there at all. No reason to complain.
         if ($code !== 200 && $code !== 404) {
             /* translators: %d: HTTP status code */
-            throw new \RuntimeException(sprintf(__('Old rule cannot be removed, HTTP %d.', 'podcast-forge'), $code));
+            throw new \RuntimeException(sprintf(__('Old rule cannot be removed, HTTP %d.', 'castsmith'), $code));
         }
     }
 
@@ -441,7 +441,7 @@ final class DictionaryWriter
 
         $version = Options::get('elevenlabs_dictionary_version_id');
         if ($version === '') {
-            throw new \RuntimeException(__('No dictionary version is bound.', 'podcast-forge'));
+            throw new \RuntimeException(__('No dictionary version is bound.', 'castsmith'));
         }
 
         $response = wp_remote_get(
@@ -450,7 +450,7 @@ final class DictionaryWriter
         );
 
         if (is_wp_error($response) || (int) wp_remote_retrieve_response_code($response) !== 200) {
-            throw new \RuntimeException(__('The bound dictionary version could not be loaded.', 'podcast-forge'));
+            throw new \RuntimeException(__('The bound dictionary version could not be loaded.', 'castsmith'));
         }
 
         return (string) wp_remote_retrieve_body($response);
@@ -498,7 +498,7 @@ final class DictionaryWriter
 
         $position = strripos($xml, '</lexicon>');
         if ($position === false) {
-            throw new \RuntimeException(__('The PLS file has no closing lexicon element.', 'podcast-forge'));
+            throw new \RuntimeException(__('The PLS file has no closing lexicon element.', 'castsmith'));
         }
 
         return substr($xml, 0, $position) . $lexeme . substr($xml, $position);
@@ -512,18 +512,18 @@ final class DictionaryWriter
         $path = self::path();
         $directory = dirname($path);
 
-        if ($directory === \PodcastForge\Storage\EpisodeStorage::baseDir()) {
-            \PodcastForge\Storage\EpisodeStorage::ensureBaseDir();
+        if ($directory === \Castsmith\Storage\EpisodeStorage::baseDir()) {
+            \Castsmith\Storage\EpisodeStorage::ensureBaseDir();
         }
 
         if (!is_dir($directory) && !wp_mkdir_p($directory)) {
             /* translators: %s: directory path of the dictionary file */
-            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'podcast-forge'), $directory));
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'castsmith'), $directory));
         }
 
         if (file_put_contents($path, $xml) === false) {
             /* translators: %s: path of the dictionary file */
-            throw new \RuntimeException(sprintf(__('The file %s could not be written.', 'podcast-forge'), $path));
+            throw new \RuntimeException(sprintf(__('The file %s could not be written.', 'castsmith'), $path));
         }
     }
 
@@ -532,11 +532,11 @@ final class DictionaryWriter
         try {
             $key = Options::secret('elevenlabs_api_key');
         } catch (CryptoException $e) {
-            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'podcast-forge') . $e->getMessage(), 0, $e);
+            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'castsmith') . $e->getMessage(), 0, $e);
         }
 
         if ($key === '') {
-            throw new \RuntimeException(__('No ElevenLabs API key is stored.', 'podcast-forge'));
+            throw new \RuntimeException(__('No ElevenLabs API key is stored.', 'castsmith'));
         }
 
         return $key;

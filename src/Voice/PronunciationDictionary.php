@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\CryptoException;
-use PodcastForge\Support\PlsDocument;
-use PodcastForge\Support\PlsException;
+use Castsmith\Settings\Options;
+use Castsmith\Support\CryptoException;
+use Castsmith\Support\PlsDocument;
+use Castsmith\Support\PlsException;
 
 /**
  * Loads the pinned version of the pronunciation dictionary.
@@ -124,7 +124,7 @@ final class PronunciationDictionary
     {
         $graphemes = self::graphemes();
 
-        if (\PodcastForge\Settings\Options::language() === 'en') {
+        if (\Castsmith\Settings\Options::language() === 'en') {
             if ($graphemes === []) {
                 return "## PRONUNCIATION DICTIONARY\n\n"
                     . "No pronunciation dictionary is connected at the moment.\n\n"

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Ai;
+namespace Castsmith\Ai;
 
 /**
  * Suggests pronunciation rules for the terms that the edited script flagged
@@ -32,7 +32,7 @@ final class DictionaryPrompt
      */
     public static function user(array $candidates, array $existing): string
     {
-        $en = \PodcastForge\Settings\Options::language() === 'en';
+        $en = \Castsmith\Settings\Options::language() === 'en';
 
         return ($en ? "Already in the dictionary, do not add again:\n\n" : "Bereits im Wörterbuch, nicht noch einmal aufnehmen:\n\n")
             . ($existing === [] ? ($en ? '(nothing yet)' : '(noch nichts)') : implode(', ', $existing))

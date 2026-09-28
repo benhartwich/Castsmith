@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 /**
  * The markup of the plugin's own admin screens, for wp_kses().

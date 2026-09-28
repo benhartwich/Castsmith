@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Support\PlsDocument;
-use PodcastForge\Voice\DictionaryWriter;
+use Castsmith\Support\PlsDocument;
+use Castsmith\Voice\DictionaryWriter;
 use PHPUnit\Framework\TestCase;
 
 /**

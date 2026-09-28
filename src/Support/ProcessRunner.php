@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Support;
+namespace Castsmith\Support;
 
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 
@@ -38,7 +38,7 @@ final class ProcessRunner
     public static function run(array $command): array
     {
         if ($command === []) {
-            return self::failure(__('No program specified.', 'podcast-forge'));
+            return self::failure(__('No program specified.', 'castsmith'));
         }
 
         if (function_exists('proc_open')) {
@@ -49,7 +49,7 @@ final class ProcessRunner
             return self::viaExec($command);
         }
 
-        return self::failure(__('Neither proc_open nor exec is available — external programs could not be called.', 'podcast-forge'));
+        return self::failure(__('Neither proc_open nor exec is available — external programs could not be called.', 'castsmith'));
     }
 
     /**
@@ -70,7 +70,7 @@ final class ProcessRunner
         // phpcs:ignore Generic.PHP.ForbiddenFunctions.Found -- optional: runs ffmpeg for the assembly; without it the plugin uses the PHP path
         $process = @proc_open($command, $descriptors, $pipes);
         if (!is_resource($process)) {
-            return self::failure(__('The program could not be started.', 'podcast-forge'));
+            return self::failure(__('The program could not be started.', 'castsmith'));
         }
 
         fclose($pipes[0]);

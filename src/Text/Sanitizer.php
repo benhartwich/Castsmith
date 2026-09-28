@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Text;
+namespace Castsmith\Text;
 
 /**
  * Sanitises the long texts that are typed or pasted in the admin: the fact

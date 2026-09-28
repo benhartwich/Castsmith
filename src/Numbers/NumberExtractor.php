@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Numbers;
+namespace Castsmith\Numbers;
 
 /**
  * Reads every numeric value in a text, whether written as digits or as words.

@@ -11,6 +11,6 @@ One file per prompt and language:
 
 Placeholders filled from the settings: `{podcast}`, `{host}`, `{editor}`, `{sign_off}` (an em dash when empty).
 
-Do not edit these files in place — updates overwrite them. Instead edit a prompt in the backend (*Podcast Forge → Prompts*), or copy the files to a directory of your own and set it as *Prompt directory* in the settings; a file there wins over the bundled one.
+Do not edit these files in place — updates overwrite them. Instead edit a prompt in the backend (*Castsmith → Prompts*), or copy the files to a directory of your own and set it as *Prompt directory* in the settings; a file there wins over the bundled one.
 
 The number rules in `script.md` must match what the number check can read back. Change them only together with `src/Numbers`.

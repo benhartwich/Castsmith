@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Podlove\SlugBuilder;
+use Castsmith\Podlove\SlugBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

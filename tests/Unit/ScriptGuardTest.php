@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Numbers\ScriptGuard;
+use Castsmith\Numbers\ScriptGuard;
 use PHPUnit\Framework\TestCase;
 
 final class ScriptGuardTest extends TestCase

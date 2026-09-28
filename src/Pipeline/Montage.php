@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Pipeline;
+namespace Castsmith\Pipeline;
 
 // phpcs:disable WordPress.WP.AlternativeFunctions.rename_rename -- Atomic rename within the plugin's own storage directory.
 
-use PodcastForge\Audio\Ffmpeg;
-use PodcastForge\Audio\MusicBed;
-use PodcastForge\Audio\Transcript;
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Segments\SegmentKind;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Settings\Options;
-use PodcastForge\Storage\EpisodeStorage;
+use Castsmith\Audio\Ffmpeg;
+use Castsmith\Audio\MusicBed;
+use Castsmith\Audio\Transcript;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Segments\SegmentKind;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Settings\Options;
+use Castsmith\Storage\EpisodeStorage;
 
 /**
  * Assembly, chapter times and transcript.
@@ -38,14 +38,14 @@ final class Montage
         // A text that has not (or no longer) been approved is not assembled —
         // otherwise an outdated version would be sent to Auphonic.
         if (in_array((string) $episode['status'], EpisodeStatus::BEFORE_TEXT_APPROVAL, true)) {
-            EpisodeRepository::log($episodeId, 'montage', __('Skipped: the text has not been approved.', 'podcast-forge'));
+            EpisodeRepository::log($episodeId, 'montage', __('Skipped: the text has not been approved.', 'castsmith'));
 
             return;
         }
 
         $segments = SegmentRepository::forEpisode($episodeId);
         if ($segments === []) {
-            EpisodeRepository::log($episodeId, 'montage', __('There are no segments.', 'podcast-forge'));
+            EpisodeRepository::log($episodeId, 'montage', __('There are no segments.', 'castsmith'));
 
             return;
         }
@@ -60,7 +60,7 @@ final class Montage
         if ($missing !== []) {
             EpisodeRepository::log($episodeId, 'montage', sprintf(
                 /* translators: %s: comma-separated list of segment numbers */
-                __('Aborted: audio is missing for segment %s.', 'podcast-forge'),
+                __('Aborted: audio is missing for segment %s.', 'castsmith'),
                 implode(', ', array_slice($missing, 0, 10))
             ));
 
@@ -89,12 +89,12 @@ final class Montage
         $music = MusicBed::active();
         $separatorMs = [];
         foreach ($music['trenner'] as $file) {
-            $separatorMs[] = (int) (\PodcastForge\Audio\AudioEngine::durationMs($file) ?? 0);
+            $separatorMs[] = (int) (\Castsmith\Audio\AudioEngine::durationMs($file) ?? 0);
         }
         $separatorAt = [];
         $boundary = 0;
         // Without ffmpeg Auphonic inserts the bridges; nothing overlaps.
-        $php = \PodcastForge\Audio\AudioEngine::mode() === \PodcastForge\Audio\AudioEngine::MODE_PHP;
+        $php = \Castsmith\Audio\AudioEngine::mode() === \Castsmith\Audio\AudioEngine::MODE_PHP;
         $insertPlan = []; // [position after which, separator variant]
         $chapterPositions = [];
 
@@ -189,7 +189,7 @@ final class Montage
             if ($php) {
                 // Frame by frame; the pauses land on the frame grid (26 ms), so
                 // offsets are recomputed from what was actually written.
-                $written = \PodcastForge\Audio\Mp3::concat($files, $pausesAfter, $output);
+                $written = \Castsmith\Audio\Mp3::concat($files, $pausesAfter, $output);
                 $real = [];
                 $sum = 0;
                 foreach ($written as $position => $ms) {
@@ -215,7 +215,7 @@ final class Montage
                 Ffmpeg::concat($files, $pausesAfter, $output, $hasPatched, $roomTone, $dauern);
             }
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'montage', __('Failed: ', 'podcast-forge') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'montage', __('Failed: ', 'castsmith') . $e->getMessage());
 
             return;
         }
@@ -246,12 +246,12 @@ final class Montage
             $speechFile = EpisodeStorage::absolutePath($episodeId . '/sprache.mp3');
             try {
                 if (!@rename($output, $speechFile)) {
-                    throw new \RuntimeException(__('The speech assembly could not be renamed.', 'podcast-forge'));
+                    throw new \RuntimeException(__('The speech assembly could not be renamed.', 'castsmith'));
                 }
 
-                $speechMs = \PodcastForge\Audio\AudioEngine::durationMs($speechFile) ?? $offset;
-                $openerMs = $music['opener'] !== null ? (int) (\PodcastForge\Audio\AudioEngine::durationMs($music['opener']) ?? 0) : 0;
-                $outroMs = $music['outro'] !== null ? (int) (\PodcastForge\Audio\AudioEngine::durationMs($music['outro']) ?? 0) : 0;
+                $speechMs = \Castsmith\Audio\AudioEngine::durationMs($speechFile) ?? $offset;
+                $openerMs = $music['opener'] !== null ? (int) (\Castsmith\Audio\AudioEngine::durationMs($music['opener']) ?? 0) : 0;
+                $outroMs = $music['outro'] !== null ? (int) (\Castsmith\Audio\AudioEngine::durationMs($music['outro']) ?? 0) : 0;
                 $plan = MusicBed::plan($openerMs, $speechMs, $outroMs);
 
                 Ffmpeg::wrapWithMusic($speechFile, $music['opener'], $music['outro'], $output, $plan, $openerMs, MusicBed::OVERLAP_MS, $music['trenner'], $separatorAt);
@@ -259,12 +259,12 @@ final class Montage
                 $shift = $plan['speech'];
                 $musicNote = sprintf(
                     /* translators: 1: list of music parts (opener, outro, separators), 2: time at which the voice starts */
-                    __(' With %1$s, voice starts at %2$s, stereo.', 'podcast-forge'),
+                    __(' With %1$s, voice starts at %2$s, stereo.', 'castsmith'),
                     implode(', ', array_filter([
                         $music['opener'] !== null ? 'Opener' : '',
                         $music['outro'] !== null ? 'Outro' : '',
                         /* translators: %d: number of separators */
-                        $separatorAt !== [] ? sprintf(__('%d separators', 'podcast-forge'), count($separatorAt)) : '',
+                        $separatorAt !== [] ? sprintf(__('%d separators', 'castsmith'), count($separatorAt)) : '',
                     ])),
                     Synthesis::formatDuration($shift)
                 );
@@ -273,8 +273,8 @@ final class Montage
                     @rename($speechFile, $output);
                 }
                 $shift = 0;
-                $musicNote = __(' Without music: ', 'podcast-forge') . $e->getMessage()
-                    . ($separatorAt !== [] ? __(' The chapter pauses are still lengthened for the separator.', 'podcast-forge') : '');
+                $musicNote = __(' Without music: ', 'castsmith') . $e->getMessage()
+                    . ($separatorAt !== [] ? __(' The chapter pauses are still lengthened for the separator.', 'castsmith') : '');
             }
         }
 
@@ -291,7 +291,7 @@ final class Montage
             unset($chapter);
         }
 
-        $measured = \PodcastForge\Audio\AudioEngine::durationMs($output) ?? $offset;
+        $measured = \Castsmith\Audio\AudioEngine::durationMs($output) ?? $offset;
         // Without ffmpeg the mix is the speech alone; the episode will be as long as
         // speech plus the music Auphonic adds.
         $expected = $php ? $measured + (int) ($montage['added_ms'] ?? 0) : $measured;
@@ -308,16 +308,16 @@ final class Montage
 
         EpisodeRepository::log($episodeId, 'montage', sprintf(
             /* translators: 1: number of segments, 2: number of chapters, 3: measured duration, 4: calculated duration, 5: file size, 6: additional notes on loudness, pauses and music */
-            __('Done: %1$d segments, %2$d chapters, duration %3$s (calculated %4$s), %5$s.%6$s', 'podcast-forge'),
+            __('Done: %1$d segments, %2$d chapters, duration %3$s (calculated %4$s), %5$s.%6$s', 'castsmith'),
             count($files),
             count($chapters),
             Synthesis::formatDuration($measured),
             Synthesis::formatDuration($offset),
             size_format(EpisodeStorage::size($relative)),
-            ($hasPatched ? __(' Loudness matched because re-recorded segments are included.', 'podcast-forge') : '')
+            ($hasPatched ? __(' Loudness matched because re-recorded segments are included.', 'castsmith') : '')
             . ($php
-                ? __(' Joined in PHP (no ffmpeg), pauses are digital silence.', 'podcast-forge')
-                : ($roomTone === null ? __(' No quiet passage found for room tone, pauses are digital silence.', 'podcast-forge') : __(' Pauses filled with room tone.', 'podcast-forge')))
+                ? __(' Joined in PHP (no ffmpeg), pauses are digital silence.', 'castsmith')
+                : ($roomTone === null ? __(' No quiet passage found for room tone, pauses are digital silence.', 'castsmith') : __(' Pauses filled with room tone.', 'castsmith')))
             . $musicNote
         ));
 
@@ -343,7 +343,7 @@ final class Montage
     {
         $intro = null;
         if ($music['opener'] !== null) {
-            $ms = (int) (\PodcastForge\Audio\AudioEngine::durationMs($music['opener']) ?? 0);
+            $ms = (int) (\Castsmith\Audio\AudioEngine::durationMs($music['opener']) ?? 0);
             if ($ms > 0) {
                 $intro = ['file' => $music['opener'], 'ms' => $ms, 'overlap_ms' => min(MusicBed::AUPHONIC_INTRO_OVERLAP_MS, intdiv($ms, 2))];
             }
@@ -351,7 +351,7 @@ final class Montage
 
         $outro = null;
         if ($music['outro'] !== null) {
-            $ms = (int) (\PodcastForge\Audio\AudioEngine::durationMs($music['outro']) ?? 0);
+            $ms = (int) (\Castsmith\Audio\AudioEngine::durationMs($music['outro']) ?? 0);
             if ($ms > 0) {
                 $outro = ['file' => $music['outro'], 'ms' => $ms, 'overlap_ms' => max(0, self::TAIL_MS - MusicBed::GAP_MS)];
             }
@@ -373,10 +373,10 @@ final class Montage
         $added = $introShift + array_sum(array_column($inserts, 'ms')) + ($outro !== null ? $outro['ms'] - $outro['overlap_ms'] : 0);
 
         $parts = array_filter([
-            $intro !== null ? __('opener', 'podcast-forge') : '',
-            $outro !== null ? __('outro', 'podcast-forge') : '',
+            $intro !== null ? __('opener', 'castsmith') : '',
+            $outro !== null ? __('outro', 'castsmith') : '',
             /* translators: %d: number of music bridges */
-            $inserts !== [] ? sprintf(_n('%d bridge', '%d bridges', count($inserts), 'podcast-forge'), count($inserts)) : '',
+            $inserts !== [] ? sprintf(_n('%d bridge', '%d bridges', count($inserts), 'castsmith'), count($inserts)) : '',
         ]);
 
         return [
@@ -388,7 +388,7 @@ final class Montage
             'summary'        => $parts === []
                 ? ''
                 /* translators: %s: list like "opener, outro, 5 bridges" */
-                : sprintf(__(' Auphonic will add: %s.', 'podcast-forge'), implode(', ', $parts)),
+                : sprintf(__(' Auphonic will add: %s.', 'castsmith'), implode(', ', $parts)),
         ];
     }
 

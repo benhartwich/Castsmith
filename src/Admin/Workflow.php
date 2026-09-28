@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Storage\EpisodeStorage;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Storage\EpisodeStorage;
 
 /**
  * The stations of an episode, derived from the data — not from the
@@ -54,16 +54,16 @@ final class Workflow
         ], true);
 
         $raw = [];
-        if (\PodcastForge\Source\Sources::forEpisode($episode)->preparesText()) {
-            $raw[self::QUELLEN] = [__('Sources', 'podcast-forge'), trim((string) ($episode['source_text'] ?? '')) !== ''];
+        if (\Castsmith\Source\Sources::forEpisode($episode)->preparesText()) {
+            $raw[self::QUELLEN] = [__('Sources', 'castsmith'), trim((string) ($episode['source_text'] ?? '')) !== ''];
         }
 
-        $raw[self::SKRIPT] = [__('Script', 'podcast-forge'), trim((string) ($episode['script_text'] ?? '')) !== ''];
-        $raw[self::TEXTFREIGABE] = [__('Text approval', 'podcast-forge'), $afterApproval];
-        $raw[self::AUDIO] = [__('Audio', 'podcast-forge'), $mix !== '' && EpisodeStorage::exists($mix) && (int) $summary['offen'] === 0];
-        $raw[self::AUPHONIC] = [__('Auphonic', 'podcast-forge'), (string) ($episode['auphonic_production_uuid'] ?? '') !== ''];
-        $raw[self::PODLOVE] = [__('Podlove', 'podcast-forge'), in_array($status, [EpisodeStatus::AWAITING_AUDIO, EpisodeStatus::DONE], true)];
-        $raw[self::AUDIOFREIGABE] = [__('Audio approval', 'podcast-forge'), $status === EpisodeStatus::DONE];
+        $raw[self::SKRIPT] = [__('Script', 'castsmith'), trim((string) ($episode['script_text'] ?? '')) !== ''];
+        $raw[self::TEXTFREIGABE] = [__('Text approval', 'castsmith'), $afterApproval];
+        $raw[self::AUDIO] = [__('Audio', 'castsmith'), $mix !== '' && EpisodeStorage::exists($mix) && (int) $summary['offen'] === 0];
+        $raw[self::AUPHONIC] = [__('Auphonic', 'castsmith'), (string) ($episode['auphonic_production_uuid'] ?? '') !== ''];
+        $raw[self::PODLOVE] = [__('Podlove', 'castsmith'), in_array($status, [EpisodeStatus::AWAITING_AUDIO, EpisodeStatus::DONE], true)];
+        $raw[self::AUDIOFREIGABE] = [__('Audio approval', 'castsmith'), $status === EpisodeStatus::DONE];
 
         $stations = [];
         $current = false;
@@ -137,11 +137,11 @@ final class Workflow
     private static function word(string $state, bool $human): string
     {
         return match ($state) {
-            'fertig'      => __('done', 'podcast-forge'),
-            'dran'        => $human ? __('your turn', 'podcast-forge') : __('running', 'podcast-forge'),
-            'freigabe'    => __('your approval', 'podcast-forge'),
-            'automatisch' => __('automatic', 'podcast-forge'),
-            default       => __('open', 'podcast-forge'),
+            'fertig'      => __('done', 'castsmith'),
+            'dran'        => $human ? __('your turn', 'castsmith') : __('running', 'castsmith'),
+            'freigabe'    => __('your approval', 'castsmith'),
+            'automatisch' => __('automatic', 'castsmith'),
+            default       => __('open', 'castsmith'),
         };
     }
 }

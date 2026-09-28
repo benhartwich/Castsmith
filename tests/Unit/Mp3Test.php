@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Audio\Mp3;
+use Castsmith\Audio\Mp3;
 use PHPUnit\Framework\TestCase;
 
 /**

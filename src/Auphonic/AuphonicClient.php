@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Auphonic;
+namespace Castsmith\Auphonic;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\CryptoException;
+use Castsmith\Settings\Options;
+use Castsmith\Support\CryptoException;
 
 /**
  * Production via the Auphonic JSON API.
@@ -42,11 +42,11 @@ final class AuphonicClient
         try {
             $token = Options::secret('auphonic_api_key');
         } catch (CryptoException $e) {
-            throw new \RuntimeException(__('Auphonic credentials could not be read: ', 'podcast-forge') . $e->getMessage(), 0, $e);
+            throw new \RuntimeException(__('Auphonic credentials could not be read: ', 'castsmith') . $e->getMessage(), 0, $e);
         }
 
         if ($token === '') {
-            throw new \RuntimeException(__('No Auphonic token has been configured.', 'podcast-forge'));
+            throw new \RuntimeException(__('No Auphonic token has been configured.', 'castsmith'));
         }
 
         return new self($token);
@@ -69,12 +69,12 @@ final class AuphonicClient
     ): string {
         if (!is_readable($audioPath)) {
             /* translators: %s: path of the audio file */
-            throw new \RuntimeException(sprintf(__('The audio file is not readable: %s', 'podcast-forge'), $audioPath));
+            throw new \RuntimeException(sprintf(__('The audio file is not readable: %s', 'castsmith'), $audioPath));
         }
 
         $preset = Options::get('auphonic_preset');
         if ($preset === '') {
-            throw new \RuntimeException(__('No Auphonic preset has been entered.', 'podcast-forge'));
+            throw new \RuntimeException(__('No Auphonic preset has been entered.', 'castsmith'));
         }
 
         $fields = array_filter(array_merge($metadata, [
@@ -96,7 +96,7 @@ final class AuphonicClient
 
         $audio = file_get_contents($audioPath);
         if ($audio === false) {
-            throw new \RuntimeException(__('The audio file could not be read.', 'podcast-forge'));
+            throw new \RuntimeException(__('The audio file could not be read.', 'castsmith'));
         }
 
         $body .= "--{$boundary}\r\n";
@@ -115,7 +115,7 @@ final class AuphonicClient
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -124,7 +124,7 @@ final class AuphonicClient
         if ($code >= 400 || !is_array($decoded)) {
             throw new \RuntimeException(sprintf(
                 /* translators: 1: HTTP status code, 2: beginning of the response body */
-                __('Auphonic responded with HTTP %1$d: %2$s', 'podcast-forge'),
+                __('Auphonic responded with HTTP %1$d: %2$s', 'castsmith'),
                 $code,
                 mb_substr((string) wp_remote_retrieve_body($response), 0, 300)
             ));
@@ -132,7 +132,7 @@ final class AuphonicClient
 
         $uuid = (string) ($decoded['data']['uuid'] ?? '');
         if ($uuid === '') {
-            throw new \RuntimeException(__('Auphonic did not return a production identifier.', 'podcast-forge'));
+            throw new \RuntimeException(__('Auphonic did not return a production identifier.', 'castsmith'));
         }
 
         return $uuid;
@@ -153,7 +153,7 @@ final class AuphonicClient
     {
         $preset = Options::get('auphonic_preset');
         if ($preset === '') {
-            throw new \RuntimeException(__('No Auphonic preset has been entered.', 'podcast-forge'));
+            throw new \RuntimeException(__('No Auphonic preset has been entered.', 'castsmith'));
         }
 
         $inputs = [];
@@ -199,7 +199,7 @@ final class AuphonicClient
         $created = $this->request('POST', self::CREATE, (string) wp_json_encode($body), 'application/json');
         $uuid = (string) ($created['data']['uuid'] ?? '');
         if ($uuid === '') {
-            throw new \RuntimeException(__('Auphonic did not return a production identifier.', 'podcast-forge'));
+            throw new \RuntimeException(__('Auphonic did not return a production identifier.', 'castsmith'));
         }
 
         // One request per file. With all files in a single request Auphonic
@@ -228,7 +228,7 @@ final class AuphonicClient
             $data = @file_get_contents($path);
             if ($data === false) {
                 /* translators: %s: path of the audio file */
-                throw new \RuntimeException(sprintf(__('The audio file is not readable: %s', 'podcast-forge'), $path));
+                throw new \RuntimeException(sprintf(__('The audio file is not readable: %s', 'castsmith'), $path));
             }
             $body .= "--{$boundary}\r\n";
             $body .= 'Content-Disposition: form-data; name="' . $field . '"; filename="' . $filename . "\"\r\n";
@@ -255,7 +255,7 @@ final class AuphonicClient
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -263,7 +263,7 @@ final class AuphonicClient
         if ($code >= 400 || !is_array($decoded)) {
             throw new \RuntimeException(sprintf(
                 /* translators: 1: HTTP status code, 2: beginning of the response body */
-                __('Auphonic responded with HTTP %1$d: %2$s', 'podcast-forge'),
+                __('Auphonic responded with HTTP %1$d: %2$s', 'castsmith'),
                 $code,
                 mb_substr((string) wp_remote_retrieve_body($response), 0, 300)
             ));
@@ -285,12 +285,12 @@ final class AuphonicClient
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $decoded = json_decode((string) wp_remote_retrieve_body($response), true);
         if (!is_array($decoded) || !isset($decoded['data'])) {
-            throw new \RuntimeException(__('Unexpected response from Auphonic.', 'podcast-forge'));
+            throw new \RuntimeException(__('Unexpected response from Auphonic.', 'castsmith'));
         }
 
         return (array) $decoded['data'];
@@ -320,7 +320,7 @@ final class AuphonicClient
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Download failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Download failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -328,14 +328,14 @@ final class AuphonicClient
         if (in_array($code, [301, 302, 303, 307, 308], true)) {
             $location = (string) wp_remote_retrieve_header($response, 'location');
             if ($location === '') {
-                throw new \RuntimeException(__('Auphonic redirects but does not specify a target.', 'podcast-forge'));
+                throw new \RuntimeException(__('Auphonic redirects but does not specify a target.', 'castsmith'));
             }
 
             // Without authentication: the URL carries its own signature.
             $response = wp_remote_get($location, ['timeout' => 600, 'redirection' => 3]);
 
             if (is_wp_error($response)) {
-                throw new \RuntimeException(__('Download failed: ', 'podcast-forge') . $response->get_error_message());
+                throw new \RuntimeException(__('Download failed: ', 'castsmith') . $response->get_error_message());
             }
 
             $code = (int) wp_remote_retrieve_response_code($response);
@@ -346,9 +346,9 @@ final class AuphonicClient
         if ($code !== 200 || $body === '') {
             throw new \RuntimeException(sprintf(
                 /* translators: 1: HTTP status code, 2: optional note that authentication was rejected (or empty) */
-                __('Download failed, HTTP %1$d%2$s.', 'podcast-forge'),
+                __('Download failed, HTTP %1$d%2$s.', 'castsmith'),
                 $code,
-                $code === 403 ? __(' — the authentication was not accepted', 'podcast-forge') : ''
+                $code === 403 ? __(' — the authentication was not accepted', 'castsmith') : ''
             ));
         }
 

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Pipeline;
+namespace Castsmith\Pipeline;
 
-use PodcastForge\Auphonic\AuphonicClient;
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Podlove\EpisodeDraft;
-use PodcastForge\Podlove\MediaStore;
-use PodcastForge\Storage\EpisodeStorage;
+use Castsmith\Auphonic\AuphonicClient;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Podlove\EpisodeDraft;
+use Castsmith\Podlove\MediaStore;
+use Castsmith\Storage\EpisodeStorage;
 
 /**
  * Fetch the finished file and store the episode as a Podlove draft.
@@ -38,7 +38,7 @@ final class Publish
             if ((int) ($details['status'] ?? -1) !== 3) {
                 EpisodeRepository::log($episodeId, 'auphonic', sprintf(
                     /* translators: %s: Auphonic production status */
-                    __('Not finished yet, status "%s". Waiting for the next callback.', 'podcast-forge'),
+                    __('Not finished yet, status "%s". Waiting for the next callback.', 'castsmith'),
                     $status
                 ));
 
@@ -47,12 +47,12 @@ final class Publish
 
             $datei = self::audioFile($details);
             if ($datei === null) {
-                throw new \RuntimeException(__('Auphonic does not list an output file.', 'podcast-forge'));
+                throw new \RuntimeException(__('Auphonic does not list an output file.', 'castsmith'));
             }
 
             $slug = (string) ($episode['podlove_slug'] ?? '');
             if ($slug === '') {
-                throw new \RuntimeException(__('The episode has no Podlove slug.', 'podcast-forge'));
+                throw new \RuntimeException(__('The episode has no Podlove slug.', 'castsmith'));
             }
 
             $audio = $client->download($datei['url']);
@@ -63,14 +63,14 @@ final class Publish
             if ($datei['size'] > 0 && strlen($audio) !== $datei['size']) {
                 throw new \RuntimeException(sprintf(
                     /* translators: 1: bytes received, 2: expected bytes */
-                    __('The file is incomplete: %1$d of %2$d bytes received.', 'podcast-forge'),
+                    __('The file is incomplete: %1$d of %2$d bytes received.', 'castsmith'),
                     strlen($audio),
                     $datei['size']
                 ));
             }
 
             if ($datei['checksum'] !== '' && md5($audio) !== $datei['checksum']) {
-                throw new \RuntimeException(__('The checksum of the downloaded file does not match.', 'podcast-forge'));
+                throw new \RuntimeException(__('The checksum of the downloaded file does not match.', 'castsmith'));
             }
 
             $audioPath = MediaStore::write($slug, 'mp3', $audio);
@@ -101,7 +101,7 @@ final class Publish
             if ($mixMs > 0 && $outMs - $mixMs > 3000) {
                 $warning = sprintf(
                     /* translators: %s: number of seconds */
-                    __('Warning: the finished file is %s seconds longer than the mix. Auphonic probably appended its jingle because only free credits were left. Buy more credits and send the episode to Auphonic again.', 'podcast-forge'),
+                    __('Warning: the finished file is %s seconds longer than the mix. Auphonic probably appended its jingle because only free credits were left. Buy more credits and send the episode to Auphonic again.', 'castsmith'),
                     number_format_i18n(($outMs - $mixMs) / 1000, 1)
                 );
                 EpisodeRepository::log($episodeId, 'auphonic', $warning);
@@ -114,17 +114,17 @@ final class Publish
 
             EpisodeRepository::log($episodeId, 'podlove', sprintf(
                 /* translators: 1: post ID, 2: file name, 3: file size, 4: transcript note, 5: list of linked assets */
-                __('Draft #%1$d created. File %2$s (%3$s)%4$s. Linked: %5$s.', 'podcast-forge'),
+                __('Draft #%1$d created. File %2$s (%3$s)%4$s. Linked: %5$s.', 'castsmith'),
                 $postId,
                 basename($audioPath),
                 size_format(strlen($audio)),
-                $transcriptWritten ? __(', transcript included', 'podcast-forge') : __(', without transcript', 'podcast-forge'),
-                $attached === [] ? __('nothing', 'podcast-forge') : implode(', ', $attached)
+                $transcriptWritten ? __(', transcript included', 'castsmith') : __(', without transcript', 'castsmith'),
+                $attached === [] ? __('nothing', 'castsmith') : implode(', ', $attached)
             ));
 
-            \PodcastForge\Notify\Notifier::audioReady($episodeId, $warning);
+            \Castsmith\Notify\Notifier::audioReady($episodeId, $warning);
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'podlove', __('Failed: ', 'podcast-forge') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'podlove', __('Failed: ', 'castsmith') . $e->getMessage());
         }
     }
 
@@ -173,12 +173,12 @@ final class Publish
     private static function reconcileTimeline(int $episodeId, array $episode, string $audio, int $introShiftMs): void
     {
         $ours = EpisodeRepository::decodeList($episode['chapters'] ?? null);
-        $embedded = \PodcastForge\Audio\Id3Chapters::parse($audio);
+        $embedded = \Castsmith\Audio\Id3Chapters::parse($audio);
 
         if ($ours === [] || count($embedded) !== count($ours)) {
             EpisodeRepository::log($episodeId, 'auphonic', sprintf(
                 /* translators: 1: chapters predicted, 2: chapter marks found in the file */
-                __('Timeline check skipped: %1$d chapters predicted, %2$d chapter marks in the finished file.', 'podcast-forge'),
+                __('Timeline check skipped: %1$d chapters predicted, %2$d chapter marks in the finished file.', 'castsmith'),
                 count($ours),
                 count($embedded)
             ));
@@ -207,7 +207,7 @@ final class Publish
 
         $vtt = EpisodeStorage::mixRelativePath($episodeId, 'vtt');
         if ($worst > 0 && EpisodeStorage::exists($vtt)) {
-            EpisodeStorage::write($vtt, \PodcastForge\Audio\Transcript::shiftByChapters(
+            EpisodeStorage::write($vtt, \Castsmith\Audio\Transcript::shiftByChapters(
                 (string) file_get_contents(EpisodeStorage::absolutePath($vtt)),
                 $starts,
                 $deltas
@@ -216,7 +216,7 @@ final class Publish
 
         EpisodeRepository::log($episodeId, 'auphonic', sprintf(
             /* translators: %d: milliseconds */
-            __('Timeline check: chapters and transcript follow the chapter marks in the finished file (prediction was off by up to %d ms).', 'podcast-forge'),
+            __('Timeline check: chapters and transcript follow the chapter marks in the finished file (prediction was off by up to %d ms).', 'castsmith'),
             $worst
         ));
     }

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health;
+namespace Castsmith\Health;
 
-use PodcastForge\Settings\SettingsPage;
+use Castsmith\Settings\SettingsPage;
 
 /**
  * Runs exactly one check and returns it as JSON.
@@ -27,7 +27,7 @@ final class AjaxController
     public static function handle(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_send_json_error(['message' => __('You do not have permission to do this.', 'podcast-forge')], 403);
+            wp_send_json_error(['message' => __('You do not have permission to do this.', 'castsmith')], 403);
         }
 
         check_ajax_referer(self::NONCE, 'nonce');
@@ -36,7 +36,7 @@ final class AjaxController
         $check = Registry::find($id);
 
         if ($check === null) {
-            wp_send_json_error(['message' => __('Unknown check.', 'podcast-forge')], 400);
+            wp_send_json_error(['message' => __('Unknown check.', 'castsmith')], 400);
         }
 
         try {
@@ -44,7 +44,7 @@ final class AjaxController
         } catch (\Throwable $e) {
             // The message of an unexpected error may be shown in the admin area;
             // it contains no credentials — those are never put into messages anywhere.
-            $result = Result::fail(__('The check aborted with an error.', 'podcast-forge'), $e->getMessage());
+            $result = Result::fail(__('The check aborted with an error.', 'castsmith'), $e->getMessage());
         }
 
         Registry::remember($check->id(), $result);

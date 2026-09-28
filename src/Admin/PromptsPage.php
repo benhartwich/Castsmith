@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Missing -- Every handler verifies its nonce first (guard() / check_ajax_referer()).
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use PodcastForge\Ai\Prompts;
-use PodcastForge\Settings\Options;
-use PodcastForge\Text\Sanitizer;
+use Castsmith\Ai\Prompts;
+use Castsmith\Settings\Options;
+use Castsmith\Text\Sanitizer;
 
 /**
  * View and edit the prompts.
@@ -21,7 +21,7 @@ use PodcastForge\Text\Sanitizer;
  */
 final class PromptsPage
 {
-    public const SLUG = 'aas-podcast-forge-prompts';
+    public const SLUG = 'castsmith-prompts';
     public const ACTION = 'aaspf_prompts_save';
 
     public static function register(): void
@@ -32,7 +32,7 @@ final class PromptsPage
 
     public static function addMenu(): void
     {
-        EpisodesPage::addSubpage(__('Podcast Forge — Prompts', 'podcast-forge'), __('Prompts', 'podcast-forge'), self::SLUG, [self::class, 'render']);
+        EpisodesPage::addSubpage(__('Castsmith — Prompts', 'castsmith'), __('Prompts', 'castsmith'), self::SLUG, [self::class, 'render']);
     }
 
     public static function url(string $language = ''): string
@@ -46,16 +46,16 @@ final class PromptsPage
     private static function descriptions(): array
     {
         return [
-            'script'     => [__('Spoken script', 'podcast-forge'), __('Turns the fact script into the text the voice speaks. The pronunciation dictionary list is appended automatically.', 'podcast-forge')],
-            'metadata'   => [__('Publication data', 'podcast-forge'), __('Titles, descriptions, keywords, chapters and pronunciation candidates. The output format is fixed.', 'podcast-forge')],
-            'factcheck'  => [__('Fact check', 'podcast-forge'), __('Compares the spoken script with the source for changed, missing and invented statements.', 'podcast-forge')],
-            'dictionary' => [__('Pronunciation dictionary', 'podcast-forge'), __('Decides which terms get a pronunciation rule and suggests phonetic spellings.', 'podcast-forge')],
+            'script'     => [__('Spoken script', 'castsmith'), __('Turns the fact script into the text the voice speaks. The pronunciation dictionary list is appended automatically.', 'castsmith')],
+            'metadata'   => [__('Publication data', 'castsmith'), __('Titles, descriptions, keywords, chapters and pronunciation candidates. The output format is fixed.', 'castsmith')],
+            'factcheck'  => [__('Fact check', 'castsmith'), __('Compares the spoken script with the source for changed, missing and invented statements.', 'castsmith')],
+            'dictionary' => [__('Pronunciation dictionary', 'castsmith'), __('Decides which terms get a pronunciation rule and suggests phonetic spellings.', 'castsmith')],
         ];
     }
 
     public static function render(): void
     {
-        if (!current_user_can(\PodcastForge\Settings\SettingsPage::CAPABILITY)) {
+        if (!current_user_can(\Castsmith\Settings\SettingsPage::CAPABILITY)) {
             return;
         }
 
@@ -65,8 +65,8 @@ final class PromptsPage
         }
 
         echo '<div class="wrap aaspf-wrap">';
-        echo '<h1>' . esc_html__('Prompts', 'podcast-forge') . '</h1>';
-        echo '<p class="description">' . esc_html__('Placeholders: {podcast}, {host}, {editor}, {sign_off} — they are filled from the settings. A version saved here takes precedence over a file in the prompt directory and over the bundled one.', 'podcast-forge') . '</p>';
+        echo '<h1>' . esc_html__('Prompts', 'castsmith') . '</h1>';
+        echo '<p class="description">' . esc_html__('Placeholders: {podcast}, {host}, {editor}, {sign_off} — they are filled from the settings. A version saved here takes precedence over a file in the prompt directory and over the bundled one.', 'castsmith') . '</p>';
 
         EpisodeActions::renderNotice();
 
@@ -77,7 +77,7 @@ final class PromptsPage
                 $lang === $language ? ' nav-tab-active' : '',
                 esc_url(self::url($lang)),
                 esc_html(strtoupper($lang)),
-                $lang === Options::language() ? ' ' . esc_html__('(podcast language)', 'podcast-forge') : ''
+                $lang === Options::language() ? ' ' . esc_html__('(podcast language)', 'castsmith') : ''
             );
         }
         echo '</nav>';
@@ -90,10 +90,10 @@ final class PromptsPage
         foreach (self::descriptions() as $name => [$title, $description]) {
             $raw = Prompts::raw($name, $language);
             $origin = match ($raw['source']) {
-                'override'  => __('edited in the admin', 'podcast-forge'),
+                'override'  => __('edited in the admin', 'castsmith'),
                 /* translators: %s: path of the prompt file */
-                'directory' => sprintf(__('File in the prompt directory: %s', 'podcast-forge'), $raw['path']),
-                default     => __('bundled', 'podcast-forge'),
+                'directory' => sprintf(__('File in the prompt directory: %s', 'castsmith'), $raw['path']),
+                default     => __('bundled', 'castsmith'),
             };
 
             echo '<section class="aaspf-panel" id="prompt-' . esc_attr($name) . '">';
@@ -107,12 +107,12 @@ final class PromptsPage
             );
             if ($raw['source'] === 'override') {
                 echo '<p><label><input type="checkbox" name="zuruecksetzen[' . esc_attr($name) . ']" value="1"> '
-                    . esc_html__('Discard edits and reset to the file or the default', 'podcast-forge') . '</label></p>';
+                    . esc_html__('Discard edits and reset to the file or the default', 'castsmith') . '</label></p>';
             }
             echo '</section>';
         }
 
-        submit_button(__('Save prompts', 'podcast-forge'));
+        submit_button(__('Save prompts', 'castsmith'));
         echo '</form></div>';
     }
 
@@ -122,7 +122,7 @@ final class PromptsPage
 
         $language = isset($_POST['sprache']) ? sanitize_key(wp_unslash((string) $_POST['sprache'])) : '';
         if (!in_array($language, Prompts::LANGUAGES, true)) {
-            wp_die(esc_html__('Unknown language.', 'podcast-forge'), '', ['response' => 400]);
+            wp_die(esc_html__('Unknown language.', 'castsmith'), '', ['response' => 400]);
         }
 
         foreach (Prompts::NAMES as $name) {
@@ -149,7 +149,7 @@ final class PromptsPage
             Prompts::saveOverride($name, $language, $submitted);
         }
 
-        EpisodeActions::notice('success', __('Prompts saved.', 'podcast-forge'));
+        EpisodeActions::notice('success', __('Prompts saved.', 'castsmith'));
         wp_safe_redirect(self::url($language));
         exit;
     }

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Segments;
+namespace Castsmith\Segments;
 
-use PodcastForge\Voice\VoiceSettings;
+use Castsmith\Voice\VoiceSettings;
 
 /**
  * Decides whether a segment has to be regenerated.

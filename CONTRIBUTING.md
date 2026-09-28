@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for looking at Podcast Forge. A few honest words first: this is a side project, maintained when there is time. **There is no support and no guaranteed response** to issues or pull requests. That said, good bug reports and focused pull requests are very welcome.
+Thanks for looking at Castsmith. A few honest words first: this is a side project, maintained when there is time. **There is no support and no guaranteed response** to issues or pull requests. That said, good bug reports and focused pull requests are very welcome.
 
 ## Bug reports
 
@@ -11,7 +11,7 @@ Please include the plugin version, WordPress and PHP version, which assembly pat
 - One topic per pull request.
 - Add or adjust unit tests (`tests/Unit`). Code that runs without WordPress should stay testable without WordPress.
 - `composer install && vendor/bin/phpunit` must pass.
-- User-visible strings are English and wrapped in translation functions with the text domain `podcast-forge`. Update `languages/podcast-forge.pot` with `wp i18n make-pot . languages/podcast-forge.pot --domain=podcast-forge --exclude=vendor,tests,prompts`.
+- User-visible strings are English and wrapped in translation functions with the text domain `castsmith`. Update `languages/castsmith.pot` with `wp i18n make-pot . languages/castsmith.pot --domain=castsmith --exclude=vendor,tests,prompts`.
 - Keep internal identifiers stable (option names `aaspf_*`, tables `*_aas_*`, status values): existing installations depend on them.
 - Explain *why* in comments where the reason is not obvious — this code base prefers a sentence of reasoning over a clever line.
 
@@ -21,4 +21,4 @@ See *Sources* in the README and `src/Source/Source.php`. A source can live in it
 
 ## Adding a language
 
-Translations of the interface: `languages/podcast-forge.pot`. For a podcast language beyond German and English you also need prompts (`prompts/<code>/`) and, for the number check, a parser for number words — see `src/Numbers/EnglishNumberParser.php` and `EnglishSpokenExtractor.php` as a template.
+Translations of the interface: `languages/castsmith.pot`. For a podcast language beyond German and English you also need prompts (`prompts/<code>/`) and, for the number check, a parser for number words — see `src/Numbers/EnglishNumberParser.php` and `EnglishSpokenExtractor.php` as a template.

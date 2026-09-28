@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health\Checks;
+namespace Castsmith\Health\Checks;
 
-use PodcastForge\Health\CheckInterface;
-use PodcastForge\Health\Result;
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\CryptoException;
+use Castsmith\Health\CheckInterface;
+use Castsmith\Health\Result;
+use Castsmith\Settings\Options;
+use Castsmith\Support\CryptoException;
 
 /**
  * Checks ElevenLabs via /v1/user/subscription.
@@ -33,11 +33,11 @@ final class ElevenLabsCheck implements CheckInterface
         try {
             $key = Options::secret('elevenlabs_api_key');
         } catch (CryptoException $e) {
-            return Result::fail(__('Credentials could not be read.', 'podcast-forge'), $e->getMessage());
+            return Result::fail(__('Credentials could not be read.', 'castsmith'), $e->getMessage());
         }
 
         if ($key === '') {
-            return Result::skip(__('No API key configured.', 'podcast-forge'));
+            return Result::skip(__('No API key configured.', 'castsmith'));
         }
 
         $response = wp_remote_get(self::ENDPOINT, [
@@ -49,19 +49,19 @@ final class ElevenLabsCheck implements CheckInterface
         ]);
 
         if (is_wp_error($response)) {
-            return Result::fail(__('Could not be reached.', 'podcast-forge'), $response->get_error_message());
+            return Result::fail(__('Could not be reached.', 'castsmith'), $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
         $body = json_decode((string) wp_remote_retrieve_body($response), true);
 
         if ($code === 401) {
-            return Result::fail(__('API key not accepted (HTTP 401).', 'podcast-forge'), $this->shapeHint($key));
+            return Result::fail(__('API key not accepted (HTTP 401).', 'castsmith'), $this->shapeHint($key));
         }
 
         if ($code !== 200 || !is_array($body)) {
             /* translators: %d: HTTP status code */
-            return Result::fail(sprintf(__('Unexpected response (HTTP %d).', 'podcast-forge'), $code));
+            return Result::fail(sprintf(__('Unexpected response (HTTP %d).', 'castsmith'), $code));
         }
 
         $used  = isset($body['character_count']) ? (int) $body['character_count'] : null;
@@ -72,7 +72,7 @@ final class ElevenLabsCheck implements CheckInterface
         if ($used !== null && $limit !== null && $limit > 0) {
             $detail = sprintf(
                 /* translators: 1: number of characters used, 2: character limit of the quota, 3: percentage of the quota used */
-                __('Quota: %1$s of %2$s characters used (%3$d %%).', 'podcast-forge'),
+                __('Quota: %1$s of %2$s characters used (%3$d %%).', 'castsmith'),
                 number_format_i18n($used),
                 number_format_i18n($limit),
                 (int) round($used / $limit * 100)
@@ -81,12 +81,12 @@ final class ElevenLabsCheck implements CheckInterface
 
         $voiceId = Options::get('elevenlabs_voice_id');
         if ($voiceId === '') {
-            return Result::warn(__('Reachable, but no voice ID configured.', 'podcast-forge'), trim($tier . ' ' . $detail));
+            return Result::warn(__('Reachable, but no voice ID configured.', 'castsmith'), trim($tier . ' ' . $detail));
         }
 
         return Result::ok(
             /* translators: %s: name of the ElevenLabs subscription plan */
-            $tier !== '' ? sprintf(__('Reachable (plan %s).', 'podcast-forge'), $tier) : __('Reachable.', 'podcast-forge'),
+            $tier !== '' ? sprintf(__('Reachable (plan %s).', 'castsmith'), $tier) : __('Reachable.', 'castsmith'),
             $detail
         );
     }
@@ -101,12 +101,12 @@ final class ElevenLabsCheck implements CheckInterface
     private function shapeHint(string $key): string
     {
         if (str_starts_with($key, 'sk_')) {
-            return __('The format looks right — the key has probably expired or been revoked.', 'podcast-forge');
+            return __('The format looks right — the key has probably expired or been revoked.', 'castsmith');
         }
 
         return sprintf(
             /* translators: %d: length of the stored API key in characters */
-            __('The stored value is %d characters long and does not start with "sk_". ElevenLabs keys start with "sk_". Is it perhaps a different value copied from the dashboard?', 'podcast-forge'),
+            __('The stored value is %d characters long and does not start with "sk_". ElevenLabs keys start with "sk_". Is it perhaps a different value copied from the dashboard?', 'castsmith'),
             strlen($key)
         );
     }

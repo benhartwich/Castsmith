@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Numbers;
+namespace Castsmith\Numbers;
 
 /**
  * Extracts typed values from the fact script, i.e. from text containing digits.

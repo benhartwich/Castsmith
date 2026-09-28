@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Segments;
+namespace Castsmith\Segments;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 
-use PodcastForge\Db\Schema;
+use Castsmith\Db\Schema;
 
 final class SegmentRepository
 {

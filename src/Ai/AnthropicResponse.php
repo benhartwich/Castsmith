@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Ai;
+namespace Castsmith\Ai;
 
 /**
  * Response from the Messages API, reduced to what the pipeline needs.

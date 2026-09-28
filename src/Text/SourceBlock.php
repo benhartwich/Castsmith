@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Text;
+namespace Castsmith\Text;
 
 /**
  * A paragraph or a heading of the fact script.

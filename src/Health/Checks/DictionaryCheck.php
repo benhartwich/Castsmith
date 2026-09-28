@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health\Checks;
+namespace Castsmith\Health\Checks;
 
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Checking the plugin's own storage directory, also from background jobs.
 
-use PodcastForge\Health\CheckInterface;
-use PodcastForge\Health\Result;
-use PodcastForge\Settings\Options;
-use PodcastForge\Voice\PhonemeGuard;
-use PodcastForge\Support\CryptoException;
-use PodcastForge\Support\PlsDocument;
-use PodcastForge\Support\PlsException;
-use PodcastForge\Voice\DictionaryWriter;
+use Castsmith\Health\CheckInterface;
+use Castsmith\Health\Result;
+use Castsmith\Settings\Options;
+use Castsmith\Voice\PhonemeGuard;
+use Castsmith\Support\CryptoException;
+use Castsmith\Support\PlsDocument;
+use Castsmith\Support\PlsException;
+use Castsmith\Voice\DictionaryWriter;
 
 /**
  * Checks the pronunciation dictionary.
@@ -46,7 +46,7 @@ final class DictionaryCheck implements CheckInterface
 
     public function label(): string
     {
-        return __('Pronunciation dictionary', 'podcast-forge');
+        return __('Pronunciation dictionary', 'castsmith');
     }
 
     public function run(): Result
@@ -54,23 +54,23 @@ final class DictionaryCheck implements CheckInterface
         try {
             $key = Options::secret('elevenlabs_api_key');
         } catch (CryptoException $e) {
-            return Result::fail(__('Credentials could not be read.', 'podcast-forge'), $e->getMessage());
+            return Result::fail(__('Credentials could not be read.', 'castsmith'), $e->getMessage());
         }
 
         if ($key === '') {
-            return Result::skip(__('No ElevenLabs API key configured.', 'podcast-forge'));
+            return Result::skip(__('No ElevenLabs API key configured.', 'castsmith'));
         }
 
         $dictionaryId = Options::get('elevenlabs_dictionary_id');
         if ($dictionaryId === '') {
-            return Result::skip(__('No dictionary configured.', 'podcast-forge'));
+            return Result::skip(__('No dictionary configured.', 'castsmith'));
         }
 
         $versionId = Options::get('elevenlabs_dictionary_version_id');
         if ($versionId === '') {
             return Result::fail(
-                __('No version pinned.', 'podcast-forge'),
-                __('Every request must pass the version_id explicitly. Without it, the latest version applies, and later maintenance retroactively changes the result of a re-run.', 'podcast-forge')
+                __('No version pinned.', 'castsmith'),
+                __('Every request must pass the version_id explicitly. Without it, the latest version applies, and later maintenance retroactively changes the result of a re-run.', 'castsmith')
             );
         }
 
@@ -98,24 +98,24 @@ final class DictionaryCheck implements CheckInterface
         ]);
 
         if (is_wp_error($response)) {
-            return Result::fail(__('Not reachable.', 'podcast-forge'), $response->get_error_message());
+            return Result::fail(__('Not reachable.', 'castsmith'), $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
 
         if ($code === 401) {
-            return Result::fail(__('API key not accepted (HTTP 401).', 'podcast-forge'));
+            return Result::fail(__('API key not accepted (HTTP 401).', 'castsmith'));
         }
 
         if ($code === 404) {
             /* translators: %s: dictionary ID */
-            return Result::fail(sprintf(__('Dictionary "%s" does not exist.', 'podcast-forge'), $dictionaryId));
+            return Result::fail(sprintf(__('Dictionary "%s" does not exist.', 'castsmith'), $dictionaryId));
         }
 
         $body = json_decode((string) wp_remote_retrieve_body($response), true);
         if ($code !== 200 || !is_array($body)) {
             /* translators: %d: HTTP status code */
-            return Result::fail(sprintf(__('Unexpected response (HTTP %d).', 'podcast-forge'), $code));
+            return Result::fail(sprintf(__('Unexpected response (HTTP %d).', 'castsmith'), $code));
         }
 
         return $body;
@@ -134,7 +134,7 @@ final class DictionaryCheck implements CheckInterface
         ]);
 
         if (is_wp_error($response)) {
-            return Result::fail(__('Pinned version could not be retrieved.', 'podcast-forge'), $response->get_error_message());
+            return Result::fail(__('Pinned version could not be retrieved.', 'castsmith'), $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -142,20 +142,20 @@ final class DictionaryCheck implements CheckInterface
         if ($code === 404) {
             return Result::fail(
                 /* translators: %s: pinned dictionary version ID */
-                sprintf(__('The pinned version "%s" does not exist.', 'podcast-forge'), $versionId),
-                __('Was the dictionary created anew instead of extended? Then all existing pins point to nothing.', 'podcast-forge')
+                sprintf(__('The pinned version "%s" does not exist.', 'castsmith'), $versionId),
+                __('Was the dictionary created anew instead of extended? Then all existing pins point to nothing.', 'castsmith')
             );
         }
 
         if ($code !== 200) {
             /* translators: %d: HTTP status code */
-            return Result::fail(sprintf(__('Pinned version responds with HTTP %d.', 'podcast-forge'), $code));
+            return Result::fail(sprintf(__('Pinned version responds with HTTP %d.', 'castsmith'), $code));
         }
 
         try {
             return PlsDocument::fromString((string) wp_remote_retrieve_body($response));
         } catch (PlsException $e) {
-            return Result::fail(__('The pinned version is not a readable PLS file.', 'podcast-forge'), $e->getMessage());
+            return Result::fail(__('The pinned version is not a readable PLS file.', 'castsmith'), $e->getMessage());
         }
     }
 
@@ -170,7 +170,7 @@ final class DictionaryCheck implements CheckInterface
 
         $detail = sprintf(
             /* translators: 1: dictionary name, 2: number of rules, 3: number of phonetic transcription rules, 4: number of terms */
-            __('Dictionary "%1$s", pinned version: %2$d rules, %3$d of them as phonetic transcription. %4$d terms for the system prompt.', 'podcast-forge'),
+            __('Dictionary "%1$s", pinned version: %2$d rules, %3$d of them as phonetic transcription. %4$d terms for the system prompt.', 'castsmith'),
             $name,
             $document->ruleCount(),
             $document->phonemeRuleCount(),
@@ -182,7 +182,7 @@ final class DictionaryCheck implements CheckInterface
         // watching.
         $localProblem = self::localFileProblem();
         if ($localProblem !== '') {
-            return Result::warn(__('The local PLS file is not writable.', 'podcast-forge'), $detail . ' ' . $localProblem);
+            return Result::warn(__('The local PLS file is not writable.', 'castsmith'), $detail . ' ' . $localProblem);
         }
 
         $model = Options::get('elevenlabs_model_id');
@@ -190,16 +190,16 @@ final class DictionaryCheck implements CheckInterface
         if ($document->phonemeRuleCount() > 0 && !in_array($model, self::PHONEME_MODELS, true)) {
             return Result::warn(
                 /* translators: 1: number of phonetic transcription rules, 2: model ID */
-                sprintf(__('%1$d phonetic transcription rules are silently discarded by model "%2$s".', 'podcast-forge'), $document->phonemeRuleCount(), $model),
-                $detail . __(' Only alias rules take effect on this model.', 'podcast-forge')
+                sprintf(__('%1$d phonetic transcription rules are silently discarded by model "%2$s".', 'castsmith'), $document->phonemeRuleCount(), $model),
+                $detail . __(' Only alias rules take effect on this model.', 'castsmith')
             );
         }
 
         if ($document->phonemeRuleCount() > 0 && !in_array($model, self::MULTILINGUAL_PHONEME_MODELS, true)) {
             return Result::warn(
                 /* translators: %s: model ID */
-                sprintf(__('Model "%s" evaluates phonetic transcription for English only.', 'podcast-forge'), $model),
-                $detail . __(' German phonetic transcription requires eleven_v3.', 'podcast-forge')
+                sprintf(__('Model "%s" evaluates phonetic transcription for English only.', 'castsmith'), $model),
+                $detail . __(' German phonetic transcription requires eleven_v3.', 'castsmith')
             );
         }
 
@@ -218,10 +218,10 @@ final class DictionaryCheck implements CheckInterface
         if ($unbrauchbar !== []) {
             return Result::warn(
                 /* translators: %d: number of affected rules */
-                sprintf(__('%d rules contain characters that the voice mispronounces.', 'podcast-forge'), count($unbrauchbar)),
+                sprintf(__('%d rules contain characters that the voice mispronounces.', 'castsmith'), count($unbrauchbar)),
                 $detail . sprintf(
                     /* translators: %s: comma-separated list of affected terms */
-                    __(' Affected: %s. The phonetic transcription must not contain ◌̯, ◌̩ or ç.', 'podcast-forge'),
+                    __(' Affected: %s. The phonetic transcription must not contain ◌̯, ◌̩ or ç.', 'castsmith'),
                     implode(', ', $unbrauchbar)
                 )
             );
@@ -229,17 +229,17 @@ final class DictionaryCheck implements CheckInterface
 
         if ($latest !== '' && $latest !== $versionId) {
             return Result::warn(
-                __('There is a newer version than the pinned one.', 'podcast-forge'),
+                __('There is a newer version than the pinned one.', 'castsmith'),
                 $detail . sprintf(
                     /* translators: %s: number of rules in the latest version, or "?" if unknown */
-                    __(' The latest version has %s rules. Until it is entered, every rule added since then has no effect anywhere.', 'podcast-forge'),
+                    __(' The latest version has %s rules. Until it is entered, every rule added since then has no effect anywhere.', 'castsmith'),
                     $latestRules !== null ? (string) $latestRules : '?'
                 )
             );
         }
 
         /* translators: %s: path of the local PLS file */
-        return Result::ok(__('Pinned and up to date.', 'podcast-forge'), $detail . ' ' . sprintf(__('Local file: %s', 'podcast-forge'), DictionaryWriter::path()));
+        return Result::ok(__('Pinned and up to date.', 'castsmith'), $detail . ' ' . sprintf(__('Local file: %s', 'castsmith'), DictionaryWriter::path()));
     }
 
     /**
@@ -253,18 +253,18 @@ final class DictionaryCheck implements CheckInterface
             return is_writable($path)
                 ? ''
                 /* translators: %s: path of the local PLS file */
-                : sprintf(__('The file %s belongs to another user and could not be modified.', 'podcast-forge'), $path);
+                : sprintf(__('The file %s belongs to another user and could not be modified.', 'castsmith'), $path);
         }
 
         $directory = dirname($path);
         if (!is_dir($directory)) {
             /* translators: %s: directory path */
-            return sprintf(__('The directory %s does not exist.', 'podcast-forge'), $directory);
+            return sprintf(__('The directory %s does not exist.', 'castsmith'), $directory);
         }
 
         return is_writable($directory)
             ? ''
             /* translators: %s: directory path */
-            : sprintf(__('The directory %s is not writable by the web server.', 'podcast-forge'), $directory);
+            : sprintf(__('The directory %s is not writable by the web server.', 'castsmith'), $directory);
     }
 }

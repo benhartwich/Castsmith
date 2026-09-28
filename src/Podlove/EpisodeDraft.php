@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Podlove;
+namespace Castsmith\Podlove;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Auphonic\ChapterFormat;
-use PodcastForge\Db\EpisodeRepository;
+use Castsmith\Auphonic\ChapterFormat;
+use Castsmith\Db\EpisodeRepository;
 
 /**
  * The episode as a draft in Podlove.
@@ -33,18 +33,18 @@ final class EpisodeDraft
     public static function upsert(int $episodeId): int
     {
         if (!class_exists('\\Podlove\\Model\\Episode')) {
-            throw new \RuntimeException(__('Podlove is not available.', 'podcast-forge'));
+            throw new \RuntimeException(__('Podlove is not available.', 'castsmith'));
         }
 
         $episode = EpisodeRepository::find($episodeId);
         if ($episode === null) {
             /* translators: %d: episode ID */
-            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'podcast-forge'), $episodeId));
+            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'castsmith'), $episodeId));
         }
 
         $title = trim((string) ($episode['episode_title'] ?? ''));
         if ($title === '') {
-            throw new \RuntimeException(__('The episode has no title.', 'podcast-forge'));
+            throw new \RuntimeException(__('The episode has no title.', 'castsmith'));
         }
 
         $postId = (int) ($episode['podlove_post_id'] ?? 0);
@@ -66,7 +66,7 @@ final class EpisodeDraft
             ], true);
 
             if ($postId <= 0) {
-                throw new \RuntimeException(__('The post could not be created.', 'podcast-forge'));
+                throw new \RuntimeException(__('The post could not be created.', 'castsmith'));
             }
         }
 
@@ -76,7 +76,7 @@ final class EpisodeDraft
 
         $slug = (string) ($episode['podlove_slug'] ?? '');
         if ($slug === '') {
-            $slug = SlugBuilder::fromTitle($title, \PodcastForge\Settings\Options::filePrefix());
+            $slug = SlugBuilder::fromTitle($title, \Castsmith\Settings\Options::filePrefix());
         }
 
         $chapters = ChapterFormat::toText(EpisodeRepository::decodeList($episode['chapters'] ?? null));
@@ -193,7 +193,7 @@ final class EpisodeDraft
             $parts[] = "<h3>Kapitel</h3>\n<ul><li>" . implode("</li>\n<li>", array_map('esc_html', $lines)) . '</li></ul>';
         }
 
-        $sources = \PodcastForge\Source\Sources::forEpisode($episode)->shownotesHtml($episode);
+        $sources = \Castsmith\Source\Sources::forEpisode($episode)->shownotesHtml($episode);
         if ($sources !== '') {
             $parts[] = $sources;
         }
@@ -201,7 +201,7 @@ final class EpisodeDraft
         // The disclosure comes at the end, set apart from the content.
         $disclosure = trim((string) ($episode['ai_disclosure_text'] ?? ''));
         if ($disclosure !== '') {
-            $parts[] = "<hr />\n<p class=\"podcast-forge-disclosure\"><small>"
+            $parts[] = "<hr />\n<p class=\"castsmith-disclosure\"><small>"
                 . nl2br(esc_html($disclosure))
                 . '</small></p>';
         }

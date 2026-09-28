@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Ai;
+namespace Castsmith\Ai;
 
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Jobs\Scheduler as JobScheduler;
-use PodcastForge\Settings\Options;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Jobs\Scheduler as JobScheduler;
+use Castsmith\Settings\Options;
 
 /**
  * Model calls via the Batch API: half the price, but no immediate
@@ -103,11 +103,11 @@ final class BatchGate
                 delete_option($key);
                 self::unindex($hash);
 
-                throw new AnthropicException(__('Batch failed: ', 'podcast-forge') . (string) ($state['fehler'] ?? __('unknown', 'podcast-forge')));
+                throw new AnthropicException(__('Batch failed: ', 'castsmith') . (string) ($state['fehler'] ?? __('unknown', 'castsmith')));
             }
 
             /* translators: %s: batch ID */
-            throw new PendingBatch(sprintf(__('Batch %s is still running.', 'podcast-forge'), (string) ($state['id'] ?? '')));
+            throw new PendingBatch(sprintf(__('Batch %s is still running.', 'castsmith'), (string) ($state['id'] ?? '')));
         }
 
         $customId = substr(sprintf('e%d-%s-%s', $episodeId, preg_replace('/[^a-z0-9]/', '', strtolower($step)), $hash), 0, 64);
@@ -128,13 +128,13 @@ final class BatchGate
 
         EpisodeRepository::log($episodeId, $step, sprintf(
             /* translators: 1: batch ID, 2: model name */
-            __('Submitted as a batch (%1$s, model %2$s). The result usually arrives within an hour, at half the price; after that it continues automatically.', 'podcast-forge'),
+            __('Submitted as a batch (%1$s, model %2$s). The result usually arrives within an hour, at half the price; after that it continues automatically.', 'castsmith'),
             $batchId,
             (string) $payload['model']
         ));
 
         /* translators: %s: batch ID */
-        throw new PendingBatch(sprintf(__('Batch %s submitted.', 'podcast-forge'), $batchId));
+        throw new PendingBatch(sprintf(__('Batch %s submitted.', 'castsmith'), $batchId));
     }
 
     /**
@@ -162,7 +162,7 @@ final class BatchGate
 
         if (($batch['processing_status'] ?? '') !== 'ended') {
             if (time() - (int) $state['seit'] > self::GIVE_UP_SECONDS) {
-                self::finish($key, $hash, $state + ['status' => 'fehler', 'fehler' => __('no result after 26 hours', 'podcast-forge')]);
+                self::finish($key, $hash, $state + ['status' => 'fehler', 'fehler' => __('no result after 26 hours', 'castsmith')]);
 
                 return;
             }
@@ -195,14 +195,14 @@ final class BatchGate
 
             EpisodeRepository::log($episodeId, (string) $state['schritt'], sprintf(
                 /* translators: %s: human-readable waiting time since submission */
-                __('Batch result arrived after %s.', 'podcast-forge'),
+                __('Batch result arrived after %s.', 'castsmith'),
                 human_time_diff((int) $state['seit'])
             ));
         } else {
             $state['status'] = 'fehler';
             $state['fehler'] = $result === null
-                ? __('Request missing from the result', 'podcast-forge')
-                : (string) ($result['type'] ?? __('unknown', 'podcast-forge')) . (isset($result['error']['error']['message']) ? ': ' . $result['error']['error']['message'] : '');
+                ? __('Request missing from the result', 'castsmith')
+                : (string) ($result['type'] ?? __('unknown', 'castsmith')) . (isset($result['error']['error']['message']) ? ': ' . $result['error']['error']['message'] : '');
         }
 
         self::finish($key, $hash, $state);
@@ -265,12 +265,12 @@ final class BatchGate
         self::unindex($hash);
 
         if (($state['status'] ?? '') === 'fehler') {
-            EpisodeRepository::log((int) $state['folge'], (string) $state['schritt'], __('Batch failed: ', 'podcast-forge') . (string) $state['fehler']);
+            EpisodeRepository::log((int) $state['folge'], (string) $state['schritt'], __('Batch failed: ', 'castsmith') . (string) $state['fehler']);
         }
 
         // Trigger the step again: on success it reads the response,
         // on an error it resubmits or reports it.
-        \PodcastForge\Pipeline\Scheduler::queueHook((string) $state['hook'], (int) $state['folge']);
+        \Castsmith\Pipeline\Scheduler::queueHook((string) $state['hook'], (int) $state['folge']);
     }
 
     private static function index(string $hash, int $episodeId): void

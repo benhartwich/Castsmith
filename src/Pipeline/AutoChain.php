@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Pipeline;
+namespace Castsmith\Pipeline;
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Segments\Segmenter;
-use PodcastForge\Segments\SegmentRepository;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Segments\Segmenter;
+use Castsmith\Segments\SegmentRepository;
 
 /**
  * The chain between the two human gates runs on its own.
@@ -51,7 +51,7 @@ final class AutoChain
 
         $message = sprintf(
             /* translators: 1: total number of segments, 2: number of newly created segments */
-            __('Continuing automatically: %1$d segments, %2$d of them new. Synthesis is running, then montage and Auphonic.', 'podcast-forge'),
+            __('Continuing automatically: %1$d segments, %2$d of them new. Synthesis is running, then montage and Auphonic.', 'castsmith'),
             $result['gesamt'],
             $result['angelegt']
         );
@@ -81,6 +81,6 @@ final class AutoChain
         }
 
         Scheduler::queueProduction($episodeId);
-        EpisodeRepository::log($episodeId, 'automatik', __('Montage complete, the episode is being sent to Auphonic automatically.', 'podcast-forge'));
+        EpisodeRepository::log($episodeId, 'automatik', __('Montage complete, the episode is being sent to Auphonic automatically.', 'castsmith'));
     }
 }

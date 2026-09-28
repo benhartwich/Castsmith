@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Segments\SegmentHash;
+use Castsmith\Segments\SegmentHash;
 use PHPUnit\Framework\TestCase;
 
 /**

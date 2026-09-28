@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Numbers;
+namespace Castsmith\Numbers;
 
 /**
  * Result of the number diff, split into three categories.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Podlove;
+namespace Castsmith\Podlove;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
@@ -57,7 +57,7 @@ final class MediaStore
 
     /**
      * The Podlove episode asset for a file type (mp3, vtt): the first asset
-     * whose file type has this extension. Filter `podcast_forge_podlove_asset`
+     * whose file type has this extension. Filter `castsmith_podlove_asset`
      * can pick another one.
      *
      * @return array{id:int,suffix:string}|null
@@ -76,7 +76,7 @@ final class MediaStore
         }
 
         /** Filter: the Podlove episode asset ([id, suffix]) used for a file extension, or null. */
-        $filtered = apply_filters('podcast_forge_podlove_asset', $found, $extension);
+        $filtered = apply_filters('castsmith_podlove_asset', $found, $extension);
 
         return is_array($filtered) && isset($filtered['id']) ? ['id' => (int) $filtered['id'], 'suffix' => (string) ($filtered['suffix'] ?? '')] : null;
     }
@@ -108,14 +108,14 @@ final class MediaStore
 
         if (!is_dir($directory) && !wp_mkdir_p($directory)) {
             /* translators: %s: path of the podcast upload directory */
-            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'podcast-forge'), $directory));
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'castsmith'), $directory));
         }
 
         $path = self::path($slug, $extension);
 
         if (file_put_contents($path, $bytes) === false) {
             /* translators: %s: path of the media file being written */
-            throw new \RuntimeException(sprintf(__('File could not be written: %s', 'podcast-forge'), $path));
+            throw new \RuntimeException(sprintf(__('File could not be written: %s', 'castsmith'), $path));
         }
 
         return $path;

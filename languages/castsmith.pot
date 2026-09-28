@@ -2,57 +2,54 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Podcast Forge 0.2.0\n"
-"Report-Msgid-Bugs-To: https://github.com/benhartwich/podcast-forge/issues\n"
+"Project-Id-Version: Castsmith – AI Podcast Production 0.3.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/castsmith\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-26T20:59:32+00:00\n"
+"POT-Creation-Date: 2026-09-28T10:28:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: podcast-forge\n"
+"X-Domain: castsmith\n"
 
 #. Plugin Name of the plugin
-#: podcast-forge.php
-#: src/Admin/EpisodesPage.php:44
-#: src/Admin/EpisodesPage.php:45
-#: src/Settings/SettingsPage.php:95
-msgid "Podcast Forge"
+#: castsmith.php
+msgid "Castsmith – AI Podcast Production"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: podcast-forge.php
-msgid "https://github.com/benhartwich/podcast-forge"
+#: castsmith.php
+msgid "https://github.com/benhartwich/castsmith"
 msgstr ""
 
 #. Description of the plugin
-#: podcast-forge.php
+#: castsmith.php
 msgid "Turns a fact script, a post or a custom source into a finished podcast episode: speaking script via language model, number and fact checking, speech synthesis with your own voice clone, assembly, mastering and a Podlove draft — with two human approvals."
 msgstr ""
 
 #. Author of the plugin
-#: podcast-forge.php
+#: castsmith.php
 msgid "Benjamin Hartwich"
 msgstr ""
 
 #. Author URI of the plugin
-#: podcast-forge.php
+#: castsmith.php
 msgid "https://astroblog.org"
 msgstr ""
 
 #. translators: %s: running PHP version
-#: podcast-forge.php:43
+#: castsmith.php:43
 #, php-format
 msgid "The plugin requires PHP 8.2 or newer, but is running under %s. It stays deactivated."
 msgstr ""
 
-#: podcast-forge.php:59
+#: castsmith.php:59
 msgid "The Composer autoloader is missing. Run \"composer install\" in the plugin directory."
 msgstr ""
 
-#: podcast-forge.php:92
+#: castsmith.php:92
 msgid "Startup failed — "
 msgstr ""
 
@@ -93,242 +90,248 @@ msgstr ""
 msgid "Rule for \"%2$s\" %1$s. The dictionary now has %3$d rules and is bound. Regenerate the affected segments for it to take effect."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:82
+#: src/Admin/EpisodeActions.php:83
 msgid "The source document contains no text."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:98
+#: src/Admin/EpisodeActions.php:99
 msgid "Source document imported."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:115
+#: src/Admin/EpisodeActions.php:116
 msgid "This post does not exist, or it cannot become an episode."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:119
+#: src/Admin/EpisodeActions.php:120
 msgid "You are not allowed to read this post."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:125
+#: src/Admin/EpisodeActions.php:126
 msgid "The post contains no text that can be read aloud."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:137
+#: src/Admin/EpisodeActions.php:138
 msgid "Post imported."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:147
+#: src/Admin/EpisodeActions.php:148
 msgid "Scheduled."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:148
+#: src/Admin/EpisodeActions.php:149
 msgid "The edit is scheduled and runs in the background."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:150
+#: src/Admin/EpisodeActions.php:151
 #: src/Jobs/Scheduler.php:56
 msgid "The job was not accepted by Action Scheduler."
 msgstr ""
 
 #. translators: 1: number of characters in the script, 2: comma-separated list of confirmed deviations or "none"
-#: src/Admin/EpisodeActions.php:183
+#: src/Admin/EpisodeActions.php:184
 #, php-format
 msgid "Script saved (%1$d characters). Confirmed deviations: %2$s."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:185
+#: src/Admin/EpisodeActions.php:186
 msgid "none"
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:191
+#: src/Admin/EpisodeActions.php:192
 msgid "Saved. There are still open deviations."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:192
+#: src/Admin/EpisodeActions.php:193
 msgid "Saved. The check is clean."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:205
+#: src/Admin/EpisodeActions.php:206
 msgid "Approval is locked as long as deviations are open."
 msgstr ""
 
 #. translators: %s: display name of the approving user
-#: src/Admin/EpisodeActions.php:216
+#: src/Admin/EpisodeActions.php:217
 #, php-format
 msgid "Text approved by %s."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:223
+#: src/Admin/EpisodeActions.php:224
 msgid "Aborted: "
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:224
+#: src/Admin/EpisodeActions.php:225
 msgid "The text is approved, but the chain could not be triggered automatically: "
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:229
+#: src/Admin/EpisodeActions.php:230
 msgid "The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:230
+#: src/Admin/EpisodeActions.php:231
 msgid "The text is approved. Next up is the audio."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:241
+#: src/Admin/EpisodeActions.php:242
 msgid "The audio is only created after the text approval. That is the first of the two human gates."
 msgstr ""
 
 #. translators: 1: total number of segments, 2: number of new segments, 3: number of unchanged segments, 4: number of removed segments
-#: src/Admin/EpisodeActions.php:254
+#: src/Admin/EpisodeActions.php:255
 #, php-format
 msgid "%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed."
 msgstr ""
 
 #. translators: 1: new segments, 2: kept segments
-#: src/Admin/EpisodeActions.php:265
+#: src/Admin/EpisodeActions.php:266
 #, php-format
 msgid "%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:278
+#: src/Admin/EpisodeActions.php:279
 msgid "The montage is scheduled."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:291
-#: src/Admin/EpisodeActions.php:327
+#: src/Admin/EpisodeActions.php:292
+#: src/Admin/EpisodeActions.php:328
 msgid "This segment does not belong to this episode."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:308
+#: src/Admin/EpisodeActions.php:309
 #: src/Segments/SegmentStatus.php:22
 msgid "flagged"
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:308
+#: src/Admin/EpisodeActions.php:309
 msgid "approved again"
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:313
+#: src/Admin/EpisodeActions.php:314
 msgid "Segment flagged. Regenerate it or re-record it with your own voice."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:314
+#: src/Admin/EpisodeActions.php:315
 msgid "Flag withdrawn."
 msgstr ""
 
 #. translators: %d: index of the segment
-#: src/Admin/EpisodeActions.php:343
+#: src/Admin/EpisodeActions.php:344
 #, php-format
 msgid "Segment %d is being regenerated with a new seed."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:344
+#: src/Admin/EpisodeActions.php:345
 msgid "The segment is being regenerated with a new seed."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:361
+#: src/Admin/EpisodeActions.php:362
 msgid "Production scheduled."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:363
+#: src/Admin/EpisodeActions.php:364
 msgid "The episode is going to Auphonic. The callback then creates the Podlove draft."
 msgstr ""
 
 #. translators: %s: formatted size of the freed storage
-#: src/Admin/EpisodeActions.php:384
+#: src/Admin/EpisodeActions.php:385
 #, php-format
 msgid "Segment audio files removed, %s freed. The finished episode and the transcript remain."
 msgstr ""
 
 #. translators: %s: freed storage
-#: src/Admin/EpisodeActions.php:390
+#: src/Admin/EpisodeActions.php:391
 #, php-format
 msgid "Segment audio files removed, %s freed."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:423
+#: src/Admin/EpisodeActions.php:424
 msgid "There is no assembled version to listen to yet."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:431
+#: src/Admin/EpisodeActions.php:432
 msgid "The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage."
 msgstr ""
 
 #. translators: %s: display name of the approving user
-#: src/Admin/EpisodeActions.php:442
+#: src/Admin/EpisodeActions.php:443
 #, php-format
 msgid "Audio approved by %s."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:446
+#: src/Admin/EpisodeActions.php:447
 msgid "Audio approved. Publishing is done by hand in Podlove."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:457
+#: src/Admin/EpisodeActions.php:458
 msgid "Episode and its audio files deleted."
 msgstr ""
 
 #. translators: %s: name of the music slot (e.g. opener, outro)
-#: src/Admin/EpisodeActions.php:475
+#: src/Admin/EpisodeActions.php:476
 #, php-format
 msgid "%s removed"
 msgstr ""
 
 #. translators: %s: name of the music slot (e.g. opener, outro)
-#: src/Admin/EpisodeActions.php:491
+#: src/Admin/EpisodeActions.php:492
 #, php-format
 msgid "The file for “%s” is not readable audio."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:503
+#: src/Admin/EpisodeActions.php:504
 msgid "The file could not be stored."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:511
+#: src/Admin/EpisodeActions.php:512
 msgid "No file arrived."
 msgstr ""
 
 #. translators: %s: comma-separated list of applied music changes
-#: src/Admin/EpisodeActions.php:513
+#: src/Admin/EpisodeActions.php:514
 #, php-format
 msgid "Applied: %s. Takes effect from the next montage."
 msgstr ""
 
 #. translators: %d: episode ID
-#: src/Admin/EpisodeActions.php:529
+#: src/Admin/EpisodeActions.php:530
 #, php-format
 msgid "Episode %d is hidden."
 msgstr ""
 
 #. translators: %d: episode ID
-#: src/Admin/EpisodeActions.php:531
+#: src/Admin/EpisodeActions.php:532
 #, php-format
 msgid "Episode %d is visible again."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:552
+#: src/Admin/EpisodeActions.php:553
 msgid "The uploaded file is not valid."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:557
+#: src/Admin/EpisodeActions.php:558
 msgid "Only DOCX files are read."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:567
+#: src/Admin/EpisodeActions.php:568
 msgid "Neither a file nor pasted text."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:579
+#: src/Admin/EpisodeActions.php:580
 msgid "You do not have the permissions for this."
 msgstr ""
 
-#: src/Admin/EpisodeActions.php:590
+#: src/Admin/EpisodeActions.php:591
 msgid "This episode does not exist."
+msgstr ""
+
+#: src/Admin/EpisodesPage.php:44
+#: src/Admin/EpisodesPage.php:45
+#: src/Settings/SettingsPage.php:95
+msgid "Castsmith"
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:56
 #: src/Admin/Overview.php:29
-msgid "Podcast Forge — Overview"
+msgid "Castsmith — Overview"
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:57
@@ -383,7 +386,7 @@ msgid "The request failed."
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:149
-#: src/Admin/EpisodesPage.php:757
+#: src/Admin/EpisodesPage.php:753
 msgid "Something is stuck here."
 msgstr ""
 
@@ -397,614 +400,614 @@ msgid "Where does the text come from? Once the fact script has been imported, th
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:197
-#: src/Admin/Overview.php:162
+#: src/Admin/Overview.php:160
 msgid "All episodes"
 msgstr ""
 
 #. translators: %s: creation date of the episode
-#: src/Admin/EpisodesPage.php:211
+#: src/Admin/EpisodesPage.php:210
 #, php-format
 msgid "created on %s"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:213
+#: src/Admin/EpisodesPage.php:212
 msgid "continues automatically after approval"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:214
+#: src/Admin/EpisodesPage.php:213
 msgid "every step by hand"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:222
-#: src/Admin/EpisodesPage.php:617
-#: src/Admin/EpisodesPage.php:624
+#: src/Admin/EpisodesPage.php:221
+#: src/Admin/EpisodesPage.php:613
+#: src/Admin/EpisodesPage.php:620
 msgid "Speech script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:226
+#: src/Admin/EpisodesPage.php:225
 msgid "Publishing"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:227
+#: src/Admin/EpisodesPage.php:226
 #: src/Admin/Workflow.php:63
 msgid "Audio"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:228
+#: src/Admin/EpisodesPage.php:227
 msgid "History and costs"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:238
+#: src/Admin/EpisodesPage.php:237
 msgid "Section"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:244
+#: src/Admin/EpisodesPage.php:243
 msgid "Episode sections"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:265
-#: src/Admin/EpisodesPage.php:647
-#: src/Admin/EpisodesPage.php:880
+#: src/Admin/EpisodesPage.php:264
+#: src/Admin/EpisodesPage.php:643
+#: src/Admin/EpisodesPage.php:877
 #: src/Source/UploadSource.php:22
 msgid "Fact script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:280
+#: src/Admin/EpisodesPage.php:279
 msgid "Title, description and chapters are created together with the speech script."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:291
+#: src/Admin/EpisodesPage.php:289
 msgid "The audio is created after the text approval."
 msgstr ""
 
 #. translators: 1: current step number, 2: total number of steps, 3: step title
-#: src/Admin/EpisodesPage.php:332
+#: src/Admin/EpisodesPage.php:329
 #, php-format
 msgid "Step %1$d of %2$d · %3$s"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:336
+#: src/Admin/EpisodesPage.php:333
 msgid "All steps done"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:344
+#: src/Admin/EpisodesPage.php:341
 msgid "Episode progress"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:369
+#: src/Admin/EpisodesPage.php:366
 msgid "Done"
 msgstr ""
 
 #. translators: %s: date and time of the audio approval
 #. translators: %s: point in time
-#: src/Admin/EpisodesPage.php:372
+#: src/Admin/EpisodesPage.php:369
 #: src/Admin/EpisodesPage.php:1296
 #, php-format
 msgid "Audio approved on %s. Publishing is done by hand in Podlove."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:379
+#: src/Admin/EpisodesPage.php:376
 msgid "Open Podlove draft"
 msgstr ""
 
 #. translators: 1: current step number, 2: total number of steps
-#: src/Admin/EpisodesPage.php:394
+#: src/Admin/EpisodesPage.php:391
 #, php-format
 msgid "Up next · Step %1$d of %2$d"
 msgstr ""
 
 #. translators: 1: current step number, 2: total number of steps
-#: src/Admin/EpisodesPage.php:394
+#: src/Admin/EpisodesPage.php:391
 #, php-format
 msgid "Running · Step %1$d of %2$d"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:404
+#: src/Admin/EpisodesPage.php:401
 msgid "A step got stuck"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:405
+#: src/Admin/EpisodesPage.php:402
 msgid "The reason is shown in the yellow box at the top and in the history. “Resume run” picks up again at the missing step."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:415
+#: src/Admin/EpisodesPage.php:412
 msgid "The speech script is being written"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:416
+#: src/Admin/EpisodesPage.php:413
 msgid "Editing, number diff, fact check and publishing data run in the background, a few minutes in total."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:418
+#: src/Admin/EpisodesPage.php:415
 msgid "Create speech script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:419
+#: src/Admin/EpisodesPage.php:416
 msgid "The fact script is turned into the speech script; then the number diff and fact check review it."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:420
-#: src/Admin/EpisodesPage.php:787
+#: src/Admin/EpisodesPage.php:417
+#: src/Admin/EpisodesPage.php:783
 msgid "Start editing"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:425
+#: src/Admin/EpisodesPage.php:422
 msgid "Read and approve the text"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:428
+#: src/Admin/EpisodesPage.php:425
 msgid "Go to the open items"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:429
+#: src/Admin/EpisodesPage.php:426
 msgid "Locked until the open items have been fixed in the text or acknowledged."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:431
-#: src/Admin/EpisodesPage.php:1046
+#: src/Admin/EpisodesPage.php:428
+#: src/Admin/EpisodesPage.php:1044
 msgid "Approve text"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:433
+#: src/Admin/EpisodesPage.php:430
 msgid "After that, audio, Auphonic and Podlove run on their own. The audio approval request arrives by e-mail."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:434
+#: src/Admin/EpisodesPage.php:431
 msgid "After that, you create the audio."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:435
+#: src/Admin/EpisodesPage.php:432
 msgid "Read speech script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:443
+#: src/Admin/EpisodesPage.php:440
 msgid "The audio is being created"
 msgstr ""
 
 #. translators: 1: number of voiced segments, 2: total number of segments
 #. translators: 1: number of services working fine, 2: total number of services
-#: src/Admin/EpisodesPage.php:446
-#: src/Admin/EpisodesPage.php:456
-#: src/Admin/Overview.php:121
+#: src/Admin/EpisodesPage.php:443
+#: src/Admin/EpisodesPage.php:453
+#: src/Admin/Overview.php:120
 #, php-format
 msgid "%1$d of %2$d"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:449
+#: src/Admin/EpisodesPage.php:446
 msgid "segments voiced. Then assembly and Auphonic, all on their own."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:462
-#: src/Admin/EpisodesPage.php:470
-#: src/Admin/EpisodesPage.php:1147
+#: src/Admin/EpisodesPage.php:459
+#: src/Admin/EpisodesPage.php:467
+#: src/Admin/EpisodesPage.php:1146
 msgid "Create audio"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:464
+#: src/Admin/EpisodesPage.php:461
 msgid "Each paragraph becomes a segment and is voiced with the voice clone."
 msgstr ""
 
 #. translators: 1: number of finished segments, 2: total number of segments
-#: src/Admin/EpisodesPage.php:466
+#: src/Admin/EpisodesPage.php:463
 #, php-format
 msgid "%1$d of %2$d segments done. Missing ones will be created, then the assembly."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:470
-#: src/Admin/EpisodesPage.php:1148
+#: src/Admin/EpisodesPage.php:467
+#: src/Admin/EpisodesPage.php:1147
 msgid "Create missing segments"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:478
+#: src/Admin/EpisodesPage.php:475
 msgid "The episode is being sent to Auphonic"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:479
+#: src/Admin/EpisodesPage.php:476
 msgid "The assembly is done. Auphonic is now computing levels, loudness and chapter marks."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:481
+#: src/Admin/EpisodesPage.php:478
 #: src/Admin/EpisodesPage.php:1664
 msgid "Send to Auphonic"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:482
+#: src/Admin/EpisodesPage.php:479
 msgid "The raw assembly is done. You can listen to it in the Audio tab."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:490
+#: src/Admin/EpisodesPage.php:487
 msgid "Auphonic is mastering the episode"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:491
+#: src/Admin/EpisodesPage.php:488
 msgid "The callback then creates the Podlove draft. Nothing to do here."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:501
+#: src/Admin/EpisodesPage.php:498
 msgid "Listen to and approve the mastered version"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:506
+#: src/Admin/EpisodesPage.php:503
 msgid "Exactly as it will appear in the feed. Individual segments and the chapter jumps of the raw assembly are in the Audio tab."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:507
+#: src/Admin/EpisodesPage.php:504
 #: src/Admin/EpisodesPage.php:1325
 msgid "Approve audio"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:508
+#: src/Admin/EpisodesPage.php:505
 msgid "Something sounds wrong"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:509
+#: src/Admin/EpisodesPage.php:506
 #: src/Notify/Notifier.php:147
 msgid "Publishing is then done by hand in Podlove."
 msgstr ""
 
 #. translators: 1: number of invented numbers, 2: number of open discrepancies
-#: src/Admin/EpisodesPage.php:565
-#: src/Admin/EpisodesPage.php:567
-#: src/Admin/EpisodesPage.php:810
+#: src/Admin/EpisodesPage.php:561
+#: src/Admin/EpisodesPage.php:563
+#: src/Admin/EpisodesPage.php:807
 msgid "Number diff"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:565
+#: src/Admin/EpisodesPage.php:561
 msgid "nothing invented, nothing missing"
 msgstr ""
 
 #. translators: 1: number of invented numbers, 2: number of open discrepancies
-#: src/Admin/EpisodesPage.php:567
+#: src/Admin/EpisodesPage.php:563
 #, php-format
 msgid "%1$d invented, %2$d open"
 msgstr ""
 
 #. translators: %d: number of fact check notes
 #. translators: %d: number of open serious findings
-#: src/Admin/EpisodesPage.php:570
-#: src/Admin/EpisodesPage.php:576
-#: src/Admin/EpisodesPage.php:578
-#: src/Admin/EpisodesPage.php:926
-#: src/Admin/PromptsPage.php:50
+#: src/Admin/EpisodesPage.php:566
+#: src/Admin/EpisodesPage.php:572
+#: src/Admin/EpisodesPage.php:574
+#: src/Admin/EpisodesPage.php:923
+#: src/Admin/PromptsPage.php:51
 msgid "Fact check"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:570
+#: src/Admin/EpisodesPage.php:566
 msgid "still running"
 msgstr ""
 
 #. translators: %d: number of fact check notes
-#: src/Admin/EpisodesPage.php:576
+#: src/Admin/EpisodesPage.php:572
 msgid "no findings"
 msgstr ""
 
 #. translators: %d: number of fact check notes
-#: src/Admin/EpisodesPage.php:576
+#: src/Admin/EpisodesPage.php:572
 #, php-format
 msgid "%d notes, none open"
 msgstr ""
 
 #. translators: %d: number of open serious findings
-#: src/Admin/EpisodesPage.php:578
+#: src/Admin/EpisodesPage.php:574
 #, php-format
 msgid "%d serious, open"
 msgstr ""
 
 #. translators: %d: estimated length in minutes
-#: src/Admin/EpisodesPage.php:588
-#: src/Admin/EpisodesPage.php:590
-#: src/Admin/EpisodesPage.php:613
-#: src/Admin/Overview.php:173
+#: src/Admin/EpisodesPage.php:584
+#: src/Admin/EpisodesPage.php:586
+#: src/Admin/EpisodesPage.php:609
+#: src/Admin/Overview.php:171
 msgid "Length"
 msgstr ""
 
 #. translators: %d: estimated length in minutes
-#: src/Admin/EpisodesPage.php:588
+#: src/Admin/EpisodesPage.php:584
 #, php-format
 msgid "about %d instead of at most 30 minutes"
 msgstr ""
 
 #. translators: %d: estimated length in minutes
-#: src/Admin/EpisodesPage.php:590
+#: src/Admin/EpisodesPage.php:586
 #, php-format
 msgid "about %d minutes"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:613
+#: src/Admin/EpisodesPage.php:609
 msgid "measured from the assembly"
 msgstr ""
 
 #. translators: %s: number of characters in the speech script
 #. translators: %s: number of billed characters
-#: src/Admin/EpisodesPage.php:620
+#: src/Admin/EpisodesPage.php:616
 #: src/Admin/EpisodesPage.php:1703
 #, php-format
 msgid "%s characters"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:624
+#: src/Admin/EpisodesPage.php:620
 msgid "not written yet"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:628
-#: src/Admin/EpisodesPage.php:634
+#: src/Admin/EpisodesPage.php:624
+#: src/Admin/EpisodesPage.php:630
 msgid "Checks"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:628
+#: src/Admin/EpisodesPage.php:624
 msgid "after editing"
 msgstr ""
 
 #. translators: %d: number of open check items
-#: src/Admin/EpisodesPage.php:636
+#: src/Admin/EpisodesPage.php:632
 #, php-format
 msgid "%d open"
 msgid_plural "%d open"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Admin/EpisodesPage.php:637
+#: src/Admin/EpisodesPage.php:633
 msgid "Numbers, facts and sources are clean"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:637
+#: src/Admin/EpisodesPage.php:633
 msgid "in the Speech script tab"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:649
+#: src/Admin/EpisodesPage.php:645
 msgid "characters of source text"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:655
+#: src/Admin/EpisodesPage.php:651
 msgid "Costs so far"
 msgstr ""
 
 #. translators: %s: number of billed ElevenLabs characters
-#: src/Admin/EpisodesPage.php:659
+#: src/Admin/EpisodesPage.php:655
 #, php-format
 msgid "Anthropic estimated · %s ElevenLabs characters"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:660
+#: src/Admin/EpisodesPage.php:656
 #: src/Admin/EpisodesPage.php:1695
 msgid "Anthropic, estimated"
 msgstr ""
 
 #. translators: %s: title of the current step
-#: src/Admin/EpisodesPage.php:697
+#: src/Admin/EpisodesPage.php:693
 #, php-format
 msgid "Waiting: %s"
 msgstr ""
 
 #. translators: %s: title of the current step
-#: src/Admin/EpisodesPage.php:700
+#: src/Admin/EpisodesPage.php:696
 #, php-format
 msgid "%s running"
 msgstr ""
 
 #. translators: %s: name of the text source
-#: src/Admin/EpisodesPage.php:718
+#: src/Admin/EpisodesPage.php:714
 #, php-format
 msgid "%s: The text is being created in the background. You will get an e-mail when it is ready."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:719
+#: src/Admin/EpisodesPage.php:715
 msgid "The speech script is being written or is waiting for editing to start."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:720
+#: src/Admin/EpisodesPage.php:716
 msgid "The text is waiting for your approval."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:721
+#: src/Admin/EpisodesPage.php:717
 msgid "The audio is being created. Assembly and Auphonic then run on their own; you will get an e-mail when the Podlove draft is ready."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:721
+#: src/Admin/EpisodesPage.php:717
 msgid "The audio is waiting to be created."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:722
+#: src/Admin/EpisodesPage.php:718
 msgid "The episode is being sent to Auphonic."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:722
+#: src/Admin/EpisodesPage.php:718
 msgid "The raw assembly is waiting to be sent to Auphonic."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:723
+#: src/Admin/EpisodesPage.php:719
 msgid "Auphonic is mastering the episode; the callback creates the Podlove draft."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:724
+#: src/Admin/EpisodesPage.php:720
 msgid "The mastered version is waiting for your approval."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:763
+#: src/Admin/EpisodesPage.php:759
 msgid "Resume run"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:764
+#: src/Admin/EpisodesPage.php:760
 msgid "Picks up where something is missing. Segments that were already created are kept and cost nothing again."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:778
+#: src/Admin/EpisodesPage.php:774
 msgid "Editing is running in the background. Reload the page now and then."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:788
+#: src/Admin/EpisodesPage.php:784
 msgid "Repeat editing"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:794
+#: src/Admin/EpisodesPage.php:791
 msgid "Repeating overwrites the speech script and costs tokens again."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:827
+#: src/Admin/EpisodesPage.php:824
 msgid "Invented numbers"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:828
+#: src/Admin/EpisodesPage.php:825
 msgid "Present in the speech script but not in the source text. This discrepancy cannot be acknowledged — it must be fixed in the text."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:837
+#: src/Admin/EpisodesPage.php:834
 msgid "Changed numbers"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:838
+#: src/Admin/EpisodesPage.php:835
 msgid "Rounded quantities. Acknowledge them if the rounding is intended."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:845
+#: src/Admin/EpisodesPage.php:842
 msgid "Missing numbers"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:846
+#: src/Admin/EpisodesPage.php:843
 msgid "Present in the source text but not in the speech script."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:853
+#: src/Admin/EpisodesPage.php:850
 msgid "Differing frequency"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:854
+#: src/Admin/EpisodesPage.php:851
 msgid "Present on both sides, just a different number of times. Does not block — the mandatory intro mentions the month in addition."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:862
+#: src/Admin/EpisodesPage.php:859
 msgid "All numbers match."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:879
+#: src/Admin/EpisodesPage.php:876
 msgid "Value"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:881
+#: src/Admin/EpisodesPage.php:878
 #: src/Admin/Workflow.php:61
 msgid "Script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:882
+#: src/Admin/EpisodesPage.php:879
 msgid "Location"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:884
-#: src/Admin/EpisodesPage.php:944
+#: src/Admin/EpisodesPage.php:881
+#: src/Admin/EpisodesPage.php:941
 msgid "acknowledged"
 msgstr ""
 
 #. translators: %s: the corresponding value on the other side
-#: src/Admin/EpisodesPage.php:896
+#: src/Admin/EpisodesPage.php:893
 #, php-format
 msgid "instead of %s"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:929
+#: src/Admin/EpisodesPage.php:926
 msgid "No content discrepancies found."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:934
+#: src/Admin/EpisodesPage.php:931
 msgid "This check comes from a model and does not block on its own. Serious findings, however, must be acknowledged before the text can be approved."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:940
+#: src/Admin/EpisodesPage.php:937
 msgid "Severity"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:941
+#: src/Admin/EpisodesPage.php:938
 msgid "Type"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:942
+#: src/Admin/EpisodesPage.php:939
 msgid "In the source"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:943
+#: src/Admin/EpisodesPage.php:940
 msgid "In the speech script"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:975
+#: src/Admin/EpisodesPage.php:972
 msgid "not needed"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:996
+#: src/Admin/EpisodesPage.php:993
 msgid "Edit text"
 msgstr ""
 
 #. translators: %d: number of characters
-#: src/Admin/EpisodesPage.php:1004
+#: src/Admin/EpisodesPage.php:1001
 #, php-format
 msgid "%d characters. The number diff is recalculated after saving."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1008
+#: src/Admin/EpisodesPage.php:1005
 msgid "Save and check speech script"
 msgstr ""
 
 #. translators: %s: date and time of the text approval
-#: src/Admin/EpisodesPage.php:1024
+#: src/Admin/EpisodesPage.php:1022
 #, php-format
 msgid "Text approved on %s."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1036
+#: src/Admin/EpisodesPage.php:1034
 msgid "Locked while discrepancies are open. Correct the text, or acknowledge the overridable discrepancies and save."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1062
-#: src/Admin/Overview.php:172
+#: src/Admin/EpisodesPage.php:1061
+#: src/Admin/Overview.php:170
 msgid "Title"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1064
+#: src/Admin/EpisodesPage.php:1063
 msgid "Short description"
 msgstr ""
 
 #. translators: %d: number of characters of the short description
-#: src/Admin/EpisodesPage.php:1066
+#: src/Admin/EpisodesPage.php:1065
 #, php-format
 msgid " (%d characters)"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1068
+#: src/Admin/EpisodesPage.php:1067
 msgid "Description"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1071
+#: src/Admin/EpisodesPage.php:1070
 msgid "Keywords"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1078
+#: src/Admin/EpisodesPage.php:1077
 msgid "Chapters"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1082
-#: src/Settings/SettingsPage.php:203
+#: src/Admin/EpisodesPage.php:1081
+#: src/Settings/SettingsPage.php:198
 msgid "Disclosure"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1084
+#: src/Admin/EpisodesPage.php:1083
 msgid "Appears at the end of the show notes. Fixed for this episode; later changes in the settings only affect new episodes."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1090
+#: src/Admin/EpisodesPage.php:1089
 msgid "Dictionary extended"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1101
+#: src/Admin/EpisodesPage.php:1100
 msgid "Created automatically and bound as a new dictionary version before synthesis runs."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1107
+#: src/Admin/EpisodesPage.php:1106
 msgid "Check pronunciation"
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1109
+#: src/Admin/EpisodesPage.php:1108
 msgid "These terms are not in the dictionary and might sound wrong. Creating a rule now is cheaper than re-recording them later."
 msgstr ""
 
-#: src/Admin/EpisodesPage.php:1135
+#: src/Admin/EpisodesPage.php:1134
 msgid "The audio is only created after the text approval."
 msgstr ""
 
@@ -1211,7 +1214,7 @@ msgstr ""
 
 #: src/Admin/EpisodesPage.php:1608
 #: src/Admin/Workflow.php:64
-#: src/Settings/SettingsPage.php:194
+#: src/Settings/SettingsPage.php:189
 msgid "Auphonic"
 msgstr ""
 
@@ -1268,8 +1271,8 @@ msgid "%s US cents"
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:1701
-#: src/Admin/Overview.php:94
-#: src/Admin/Overview.php:101
+#: src/Admin/Overview.php:93
+#: src/Admin/Overview.php:100
 msgid "ElevenLabs quota"
 msgstr ""
 
@@ -1307,89 +1310,89 @@ msgstr ""
 msgid "%s — two approvals stay with you: text and audio."
 msgstr ""
 
-#: src/Admin/Overview.php:74
-#: src/Admin/Overview.php:79
+#: src/Admin/Overview.php:73
+#: src/Admin/Overview.php:78
 msgid "In progress"
 msgstr ""
 
-#: src/Admin/Overview.php:79
+#: src/Admin/Overview.php:78
 #: src/Pipeline/Publish.php:122
 msgid "nothing"
 msgstr ""
 
-#: src/Admin/Overview.php:79
+#: src/Admin/Overview.php:78
 msgid "no open episode"
 msgstr ""
 
 #. translators: %s: character limit of the ElevenLabs plan
-#: src/Admin/Overview.php:97
+#: src/Admin/Overview.php:96
 #, php-format
 msgid "of %s characters in this billing month"
 msgstr ""
 
-#: src/Admin/Overview.php:101
+#: src/Admin/Overview.php:100
 msgid "unavailable"
 msgstr ""
 
-#: src/Admin/Overview.php:107
-#: src/Admin/Overview.php:119
+#: src/Admin/Overview.php:106
+#: src/Admin/Overview.php:118
 msgid "Services"
 msgstr ""
 
-#: src/Admin/Overview.php:107
+#: src/Admin/Overview.php:106
 msgid "not checked yet · check in the settings"
 msgstr ""
 
 #. translators: %s: time since the last check, e.g. "5 mins"
-#: src/Admin/Overview.php:123
+#: src/Admin/Overview.php:122
 #, php-format
 msgid "all fine · checked %s ago"
 msgstr ""
 
-#: src/Admin/Overview.php:145
+#: src/Admin/Overview.php:143
 msgid "Open"
 msgstr ""
 
-#: src/Admin/Overview.php:165
+#: src/Admin/Overview.php:163
 msgid "No episode created yet."
 msgstr ""
 
-#: src/Admin/Overview.php:172
+#: src/Admin/Overview.php:170
 msgid "No."
 msgstr ""
 
-#: src/Admin/Overview.php:172
+#: src/Admin/Overview.php:170
 msgid "Source"
 msgstr ""
 
-#: src/Admin/Overview.php:173
-#: src/Settings/SettingsPage.php:456
+#: src/Admin/Overview.php:171
+#: src/Settings/SettingsPage.php:450
 msgid "Status"
 msgstr ""
 
-#: src/Admin/Overview.php:174
+#: src/Admin/Overview.php:172
 msgid "Cost"
 msgstr ""
 
-#: src/Admin/Overview.php:174
+#: src/Admin/Overview.php:172
 msgid "Created"
 msgstr ""
 
-#: src/Admin/Overview.php:205
-#: src/Admin/Overview.php:221
+#: src/Admin/Overview.php:202
+#: src/Admin/Overview.php:218
 msgid "show"
 msgstr ""
 
-#: src/Admin/Overview.php:205
+#: src/Admin/Overview.php:202
 msgid "hide"
 msgstr ""
 
-#: src/Admin/Overview.php:215
+#: src/Admin/Overview.php:212
 msgid "Hide hidden episodes again"
 msgstr ""
 
 #. translators: %d: number of episodes
-#: src/Admin/Overview.php:219
+#: src/Admin/Overview.php:216
 #, php-format
 msgid "%d episode is hidden"
 msgid_plural "%d episodes are hidden"
@@ -1397,7 +1400,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: episode ID
-#: src/Admin/Overview.php:260
+#: src/Admin/Overview.php:257
 #: src/Notify/Notifier.php:190
 #: src/Notify/Notifier.php:287
 #: src/Pipeline/Recovery.php:174
@@ -1431,79 +1434,79 @@ msgstr ""
 msgid "Segment %1$d failed: %2$s"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:34
-msgid "Podcast Forge — Prompts"
+#: src/Admin/PromptsPage.php:35
+msgid "Castsmith — Prompts"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:34
-#: src/Admin/PromptsPage.php:67
+#: src/Admin/PromptsPage.php:35
+#: src/Admin/PromptsPage.php:68
 msgid "Prompts"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:48
+#: src/Admin/PromptsPage.php:49
 msgid "Spoken script"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:48
+#: src/Admin/PromptsPage.php:49
 msgid "Turns the fact script into the text the voice speaks. The pronunciation dictionary list is appended automatically."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:49
+#: src/Admin/PromptsPage.php:50
 msgid "Publication data"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:49
+#: src/Admin/PromptsPage.php:50
 msgid "Titles, descriptions, keywords, chapters and pronunciation candidates. The output format is fixed."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:50
+#: src/Admin/PromptsPage.php:51
 msgid "Compares the spoken script with the source for changed, missing and invented statements."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:51
+#: src/Admin/PromptsPage.php:52
 #: src/Health/Checks/DictionaryCheck.php:49
 msgid "Pronunciation dictionary"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:51
+#: src/Admin/PromptsPage.php:52
 msgid "Decides which terms get a pronunciation rule and suggests phonetic spellings."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:68
+#: src/Admin/PromptsPage.php:69
 msgid "Placeholders: {podcast}, {host}, {editor}, {sign_off} — they are filled from the settings. A version saved here takes precedence over a file in the prompt directory and over the bundled one."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:79
+#: src/Admin/PromptsPage.php:80
 msgid "(podcast language)"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:92
+#: src/Admin/PromptsPage.php:93
 msgid "edited in the admin"
 msgstr ""
 
 #. translators: %s: path of the prompt file
-#: src/Admin/PromptsPage.php:94
+#: src/Admin/PromptsPage.php:95
 #, php-format
 msgid "File in the prompt directory: %s"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:95
+#: src/Admin/PromptsPage.php:96
 msgid "bundled"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:109
+#: src/Admin/PromptsPage.php:110
 msgid "Discard edits and reset to the file or the default"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:114
+#: src/Admin/PromptsPage.php:115
 msgid "Save prompts"
 msgstr ""
 
-#: src/Admin/PromptsPage.php:124
+#: src/Admin/PromptsPage.php:125
 msgid "Unknown language."
 msgstr ""
 
-#: src/Admin/PromptsPage.php:153
+#: src/Admin/PromptsPage.php:152
 msgid "Prompts saved."
 msgstr ""
 
@@ -1536,7 +1539,7 @@ msgid "your approval"
 msgstr ""
 
 #: src/Admin/Workflow.php:143
-#: src/Settings/SettingsPage.php:258
+#: src/Settings/SettingsPage.php:253
 msgid "automatic"
 msgstr ""
 
@@ -1570,8 +1573,8 @@ msgstr ""
 #: src/Auphonic/AuphonicClient.php:118
 #: src/Auphonic/AuphonicClient.php:258
 #: src/Auphonic/AuphonicClient.php:288
-#: src/Voice/DictionaryWriter.php:148
-#: src/Voice/DictionaryWriter.php:309
+#: src/Voice/DictionaryWriter.php:153
+#: src/Voice/DictionaryWriter.php:314
 #: src/Voice/TextToSpeech.php:160
 #: src/Voice/VoiceChanger.php:123
 msgid "Connection failed: "
@@ -1604,7 +1607,7 @@ msgstr ""
 #: src/Ai/AnthropicClient.php:303
 #: src/Ai/BatchGate.php:106
 #: src/Ai/BatchGate.php:205
-#: src/Rest/AuphonicWebhook.php:91
+#: src/Rest/AuphonicWebhook.php:103
 msgid "unknown"
 msgstr ""
 
@@ -2163,12 +2166,12 @@ msgid "Available (%s)."
 msgstr ""
 
 #: src/Health/Checks/MontageCheck.php:24
-#: src/Settings/SettingsPage.php:257
+#: src/Settings/SettingsPage.php:252
 msgid "Assembly"
 msgstr ""
 
 #: src/Health/Checks/MontageCheck.php:33
-#: src/Settings/SettingsPage.php:266
+#: src/Settings/SettingsPage.php:261
 msgid "ffmpeg"
 msgstr ""
 
@@ -2181,7 +2184,7 @@ msgid "PHP — but opener, bridges and outro need Auphonic, and no Auphonic pres
 msgstr ""
 
 #: src/Health/Checks/MontageCheck.php:46
-#: src/Settings/SettingsPage.php:260
+#: src/Settings/SettingsPage.php:255
 msgid "PHP, music via Auphonic"
 msgstr ""
 
@@ -2244,30 +2247,48 @@ msgstr ""
 msgid " Next episode number: %d."
 msgstr ""
 
-#: src/Health/Checks/StorageCheck.php:28
+#: src/Health/Checks/StorageCheck.php:27
 msgid "Audio storage"
 msgstr ""
 
 #. translators: %s: filesystem path of the audio storage directory
-#: src/Health/Checks/StorageCheck.php:35
+#: src/Health/Checks/StorageCheck.php:34
 #, php-format
 msgid "Path: %s"
 msgstr ""
 
 #: src/Health/Checks/StorageCheck.php:43
-msgid "Writable, but located inside the served directory."
+msgid "Writable, but located inside the WordPress directory."
+msgstr ""
+
+#: src/Health/Checks/StorageCheck.php:43
+msgid " Make sure the web server does not serve this folder."
 msgstr ""
 
 #: src/Health/Checks/StorageCheck.php:44
-msgid " Under Apache the generated .htaccess files protect it, under nginx they do not: there the raw recordings would be publicly accessible. Configure a path outside the web directory or block the folder in the web server."
-msgstr ""
-
-#: src/Health/Checks/StorageCheck.php:48
 msgid "Writable and outside the web directory."
 msgstr ""
 
+#: src/Health/Checks/StorageCheck.php:49
+msgid "Writable; whether it is reachable from the web could not be tested."
+msgstr ""
+
+#: src/Health/Checks/StorageCheck.php:54
+msgid "Writable, but the files can be downloaded from the web."
+msgstr ""
+
+#. translators: 1: URL path of the storage folder, 2: name of the filter
+#: src/Health/Checks/StorageCheck.php:57
+#, php-format
+msgid "The web server ignores the .htaccess in this folder (nginx does). Block the path %1$s in the server configuration, or move the storage outside the web directory with the filter %2$s."
+msgstr ""
+
+#: src/Health/Checks/StorageCheck.php:64
+msgid "Writable and protected from direct access."
+msgstr ""
+
 #: src/Jobs/Scheduler.php:43
-#: src/Settings/SettingsPage.php:478
+#: src/Settings/SettingsPage.php:472
 msgid "Action Scheduler is not loaded."
 msgstr ""
 
@@ -2419,7 +2440,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"— Podcast Forge on "
+"— Castsmith on "
 msgstr ""
 
 #. translators: %d: number of digit sequences found outside break tags
@@ -2770,7 +2791,7 @@ msgstr ""
 msgid "%1$d segments generated, %2$d characters used. Status: %3$d of %4$d ready, total duration %5$s."
 msgstr ""
 
-#: src/Plugin.php:107
+#: src/Plugin.php:104
 #: src/Settings/SettingsPage.php:38
 msgid "Settings"
 msgstr ""
@@ -2788,13 +2809,15 @@ msgid "The post could not be created."
 msgstr ""
 
 #. translators: %s: path of the podcast upload directory
+#. translators: %s: path of the storage directory
 #. translators: %s: path of the episode directory
 #. translators: %s: path of the directory
 #. translators: %s: directory path of the dictionary file
 #: src/Podlove/MediaStore.php:111
-#: src/Storage/EpisodeStorage.php:74
-#: src/Storage/EpisodeStorage.php:124
-#: src/Voice/DictionaryWriter.php:512
+#: src/Storage/EpisodeStorage.php:112
+#: src/Storage/EpisodeStorage.php:134
+#: src/Storage/EpisodeStorage.php:178
+#: src/Voice/DictionaryWriter.php:521
 #, php-format
 msgid "Directory could not be created: %s"
 msgstr ""
@@ -2802,13 +2825,13 @@ msgstr ""
 #. translators: %s: path of the media file being written
 #. translators: %s: absolute path of the file
 #: src/Podlove/MediaStore.php:118
-#: src/Storage/EpisodeStorage.php:129
+#: src/Storage/EpisodeStorage.php:183
 #, php-format
 msgid "File could not be written: %s"
 msgstr ""
 
 #. translators: %s: Auphonic production status reported in the callback
-#: src/Rest/AuphonicWebhook.php:90
+#: src/Rest/AuphonicWebhook.php:102
 #, php-format
 msgid "Callback received, status \"%s\"."
 msgstr ""
@@ -2834,29 +2857,29 @@ msgid "approved"
 msgstr ""
 
 #. translators: %s: name of the settings field
-#: src/Settings/Options.php:114
+#: src/Settings/Options.php:112
 #, php-format
 msgid "\"%s\" is a secret and must be read via secret()."
 msgstr ""
 
-#: src/Settings/Options.php:183
+#: src/Settings/Options.php:181
 msgid "our host"
 msgstr ""
 
 #. translators: %s: name of the settings field
-#: src/Settings/Options.php:214
+#: src/Settings/Options.php:212
 #, php-format
 msgid "\"%s\" is not a secret."
 msgstr ""
 
 #. translators: %s: name of the credential settings field
-#: src/Settings/Options.php:227
+#: src/Settings/Options.php:225
 #, php-format
 msgid "The field \"%s\" is stored unencrypted in the database. Please enter it again in the settings."
 msgstr ""
 
 #: src/Settings/SettingsPage.php:37
-msgid "Podcast Forge — Settings"
+msgid "Castsmith — Settings"
 msgstr ""
 
 #: src/Settings/SettingsPage.php:82
@@ -2954,7 +2977,7 @@ msgid "Speech synthesis and Voice Changer."
 msgstr ""
 
 #: src/Settings/SettingsPage.php:168
-#: src/Settings/SettingsPage.php:185
+#: src/Settings/SettingsPage.php:180
 msgid "API key"
 msgstr ""
 
@@ -2967,7 +2990,7 @@ msgid "ID of the voice clone."
 msgstr ""
 
 #: src/Settings/SettingsPage.php:170
-#: src/Settings/SettingsPage.php:186
+#: src/Settings/SettingsPage.php:181
 msgid "Model"
 msgstr ""
 
@@ -2984,322 +3007,312 @@ msgid "There is exactly one dictionary, which grows through new versions. If it 
 msgstr ""
 
 #: src/Settings/SettingsPage.php:172
-msgid "Local dictionary file"
-msgstr ""
-
-#. translators: %s: path
-#: src/Settings/SettingsPage.php:174
-#, php-format
-msgid "PLS file that every rule is written to first — a good candidate for version control. Empty: in the storage folder. Currently: %s"
-msgstr ""
-
-#: src/Settings/SettingsPage.php:177
 msgid "Dictionary version"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:177
+#: src/Settings/SettingsPage.php:172
 msgid "Required. Passed explicitly with every request so that later maintenance does not retroactively change the result of a rerun."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:182
+#: src/Settings/SettingsPage.php:177
 msgid "Anthropic"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:183
+#: src/Settings/SettingsPage.php:178
 msgid "Editing the fact script into the spoken script."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:186
+#: src/Settings/SettingsPage.php:181
 msgid "For extraction, script, editing, fact check, metadata and dictionary. Since 25.09.2026 claude-opus-5-5: better than Opus 5 and 20 % cheaper."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:187
+#: src/Settings/SettingsPage.php:182
 msgid "Model for web research"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:187
+#: src/Settings/SettingsPage.php:182
 msgid "Research is supplementary; claude-sonnet-5 costs less than half."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:188
+#: src/Settings/SettingsPage.php:183
 msgid "Batch API"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:188
+#: src/Settings/SettingsPage.php:183
 msgid "Model calls at half price via the Batch API. The result usually arrives within an hour instead of immediately; the chain then continues on its own. Web research always runs directly."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:189
+#: src/Settings/SettingsPage.php:184
 msgid "Workspace ID"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:189
+#: src/Settings/SettingsPage.php:184
 msgid "Only needed if the key is identity-bound — then the API requires the anthropic-workspace-id header. Leave empty if the key is already bound to a workspace."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:195
+#: src/Settings/SettingsPage.php:190
 msgid "Production of the final file."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:197
+#: src/Settings/SettingsPage.php:192
 msgid "API token"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:198
+#: src/Settings/SettingsPage.php:193
 msgid "Preset UUID"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:198
+#: src/Settings/SettingsPage.php:193
 msgid "Speech recognition must be switched off in the preset — chapters and transcript come from the plugin."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:204
+#: src/Settings/SettingsPage.php:199
 msgid "Appears at the end of every episode's show notes. The text is copied when an episode is created — so a later change only affects new episodes and does not rewrite drafts that already exist."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:208
+#: src/Settings/SettingsPage.php:203
 msgid "Notice in the show notes"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:210
+#: src/Settings/SettingsPage.php:205
 msgid "Leaving it empty suppresses the notice entirely."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:214
+#: src/Settings/SettingsPage.php:209
 msgid "Notice in the audio as well"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:216
+#: src/Settings/SettingsPage.php:211
 msgid "Applies to episodes created afterwards. The sentence is spoken as a separate segment before the sign-off."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:220
+#: src/Settings/SettingsPage.php:215
 msgid "Spoken notice"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:222
+#: src/Settings/SettingsPage.php:217
 msgid "Spoken verbatim. Write out abbreviations such as “AI”."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:228
+#: src/Settings/SettingsPage.php:223
 msgid "Notifications"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:231
+#: src/Settings/SettingsPage.php:226
 msgid "Notify"
 msgstr ""
 
 #. translators: %s: address of the site admin
-#: src/Settings/SettingsPage.php:233
+#: src/Settings/SettingsPage.php:228
 #, php-format
 msgid "Separate multiple addresses with commas. Empty means: the admin address (%s). E-mails are sent when a text approval or an audio approval is pending and on errors — only for episodes that proceed automatically."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:246
+#: src/Settings/SettingsPage.php:241
 msgid "Opener and outro"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:247
+#: src/Settings/SettingsPage.php:242
 msgid "The assembly places the audio logo before the episode and the outro after it, in stereo, and shifts chapters and transcript accordingly. The files are uploaded below."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:249
+#: src/Settings/SettingsPage.php:244
 msgid "Use"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:249
+#: src/Settings/SettingsPage.php:244
 msgid "Mix opener and outro into every new assembly."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:254
+#: src/Settings/SettingsPage.php:249
 msgid "Tools"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:255
+#: src/Settings/SettingsPage.php:250
 msgid "External programs for the assembly."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:259
+#: src/Settings/SettingsPage.php:254
 msgid "ffmpeg on this server"
 msgstr ""
 
 #. translators: %s: why the current path is active
-#: src/Settings/SettingsPage.php:263
+#: src/Settings/SettingsPage.php:258
 #, php-format
 msgid "With ffmpeg, the plugin mixes the music itself (bridges fade under the next chapter). Without it, segments are joined in PHP and Auphonic adds opener, bridges and outro. Currently: %s"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:266
+#: src/Settings/SettingsPage.php:261
 msgid "Program name or absolute path."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:267
+#: src/Settings/SettingsPage.php:262
 msgid "ffprobe"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:267
+#: src/Settings/SettingsPage.php:262
 msgid "Needed for the measured segment duration."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:270
+#: src/Settings/SettingsPage.php:265
 msgid "Pause between paragraphs (ms)"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:272
+#: src/Settings/SettingsPage.php:267
 msgid "Without this pause one paragraph runs into the next. The model's own sentence pauses are two to four tenths of a second — the paragraph pause should be longer."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:276
+#: src/Settings/SettingsPage.php:271
 msgid "Pause at chapter boundaries (ms)"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:278
+#: src/Settings/SettingsPage.php:273
 msgid "Inserted as silence, not as a break tag — only this keeps the chapter time exact. Both pauses are filled with room tone from the recording itself and faded in and out softly at the edges."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:282
+#: src/Settings/SettingsPage.php:277
 msgid "Delete everything on uninstall"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:284
+#: src/Settings/SettingsPage.php:279
 msgid "Removes tables and settings when the plugin is deleted. Off by default."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:301
+#: src/Settings/SettingsPage.php:296
 msgid "Opener, outro and separators: files"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:302
+#: src/Settings/SettingsPage.php:297
 msgid "Separators are short musical bridges between chapters (about 8 to 12 seconds). They start shortly after the last word; the next chapter begins 1.5 seconds before their end while the assembly fades them out. Up to five, used in rotation. Trim silence at the end of the file beforehand. Without separators the silent chapter pause is used."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:309
+#: src/Settings/SettingsPage.php:304
 msgid "Opener (audio logo)"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:310
+#: src/Settings/SettingsPage.php:305
 msgid "Outro"
 msgstr ""
 
 #. translators: %d: separator number
-#: src/Settings/SettingsPage.php:314
+#: src/Settings/SettingsPage.php:309
 #, php-format
 msgid "Separator %d"
 msgstr ""
 
 #. translators: 1: duration of the audio file in seconds, 2: upload date
-#: src/Settings/SettingsPage.php:324
+#: src/Settings/SettingsPage.php:319
 #, php-format
 msgid "%1$s seconds, uploaded on %2$s."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:325
+#: src/Settings/SettingsPage.php:320
 msgid "Remove file"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:327
+#: src/Settings/SettingsPage.php:322
 msgid "No file yet."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:334
+#: src/Settings/SettingsPage.php:329
 msgid "Upload files"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:438
+#: src/Settings/SettingsPage.php:432
 msgid "saved"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:439
+#: src/Settings/SettingsPage.php:433
 msgid "Leaving it empty means: unchanged. To replace it, simply enter the new value."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:441
+#: src/Settings/SettingsPage.php:435
 msgid "delete stored value"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:443
+#: src/Settings/SettingsPage.php:437
 msgid "not set"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:451
+#: src/Settings/SettingsPage.php:445
 msgid "Service status"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:452
+#: src/Settings/SettingsPage.php:446
 msgid "Each check runs as a separate request. None of them uses up credit."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:455
+#: src/Settings/SettingsPage.php:449
 msgid "Service"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:462
+#: src/Settings/SettingsPage.php:456
 msgid "not checked yet"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:467
+#: src/Settings/SettingsPage.php:461
 msgid "Check now"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:475
+#: src/Settings/SettingsPage.php:469
 msgid "Background processing"
 msgstr ""
 
 #. translators: %s: version number
-#: src/Settings/SettingsPage.php:482
+#: src/Settings/SettingsPage.php:476
 #, php-format
 msgid "Action Scheduler %s is active."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:488
+#: src/Settings/SettingsPage.php:482
 msgid "Test job scheduled"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:495
-#: src/Settings/SettingsPage.php:509
+#: src/Settings/SettingsPage.php:489
+#: src/Settings/SettingsPage.php:503
 msgid "never"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:499
+#: src/Settings/SettingsPage.php:493
 msgid "Test job executed"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:507
+#: src/Settings/SettingsPage.php:501
 msgid "still pending — Action Scheduler processes the queue via WP-Cron, which takes up to a minute."
 msgstr ""
 
-#: src/Settings/SettingsPage.php:518
+#: src/Settings/SettingsPage.php:512
 msgid "Schedule test job"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:524
+#: src/Settings/SettingsPage.php:519
 msgid "Database"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:530
+#: src/Settings/SettingsPage.php:525
 msgid "present"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:532
+#: src/Settings/SettingsPage.php:527
 msgid "missing"
 msgstr ""
 
-#: src/Settings/SettingsPage.php:537
+#: src/Settings/SettingsPage.php:532
 msgid "Schema version"
 msgstr ""
 
 #. translators: %s: name of the settings field
-#: src/Settings/SettingsSanitizer.php:136
+#: src/Settings/SettingsSanitizer.php:134
 #, php-format
 msgid "Invalid value for %s — the previous value is kept."
 msgstr ""
 
-#: src/Settings/SettingsSanitizer.php:144
+#: src/Settings/SettingsSanitizer.php:142
 msgid "At least one e-mail address was invalid and has been discarded."
 msgstr ""
 
-#: src/Settings/SettingsSanitizer.php:167
-#: src/Settings/SettingsSanitizer.php:177
+#: src/Settings/SettingsSanitizer.php:165
+#: src/Settings/SettingsSanitizer.php:175
 msgid " Nothing was saved."
 msgstr ""
 
@@ -3395,21 +3408,21 @@ msgstr ""
 msgid "continue automatically up to the Podlove draft and send an e-mail notification"
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:197
+#: src/Storage/EpisodeStorage.php:251
 msgid "Will be created on the first run."
 msgstr ""
 
 #. translators: %s: path of the parent directory of the storage
-#: src/Storage/EpisodeStorage.php:199
+#: src/Storage/EpisodeStorage.php:253
 #, php-format
 msgid "The parent directory %s is not writable."
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:206
+#: src/Storage/EpisodeStorage.php:260
 msgid "Present and writable."
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:206
+#: src/Storage/EpisodeStorage.php:260
 msgid "Present, but not writable."
 msgstr ""
 
@@ -3438,13 +3451,22 @@ msgid "The program could not be started."
 msgstr ""
 
 #. translators: %s: file path of the DOCX file
-#: src/Text/DocxParser.php:31
+#: src/Text/DocxParser.php:37
 #, php-format
 msgid "DOCX file could not be read: %s"
 msgstr ""
 
-#: src/Text/DocxParser.php:37
+#: src/Text/DocxParser.php:42
+#: src/Text/DocxParser.php:55
 msgid "The DOCX file could not be opened: "
+msgstr ""
+
+#: src/Text/DocxParser.php:42
+msgid "it contains no word/document.xml."
+msgstr ""
+
+#: src/Text/DocxParser.php:55
+msgid "word/document.xml is not valid XML."
 msgstr ""
 
 #. translators: %s: path of the file
@@ -3459,76 +3481,76 @@ msgstr ""
 msgid "File could not be read: %s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:84
+#: src/Voice/DictionaryWriter.php:89
 msgid "The term the rule should apply to is missing."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:98
+#: src/Voice/DictionaryWriter.php:103
 msgid "Both the phonetic transcription and the respelling are missing."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:108
-#: src/Voice/DictionaryWriter.php:248
+#: src/Voice/DictionaryWriter.php:113
+#: src/Voice/DictionaryWriter.php:253
 msgid "No dictionary is configured."
 msgstr ""
 
 #. translators: 1: HTTP status code, 2: error detail from ElevenLabs
-#: src/Voice/DictionaryWriter.php:160
+#: src/Voice/DictionaryWriter.php:165
 #, php-format
 msgid "ElevenLabs responds with HTTP %1$d. %2$s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:235
+#: src/Voice/DictionaryWriter.php:240
 msgid "An empty rule set would empty the dictionary."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:279
+#: src/Voice/DictionaryWriter.php:284
 #, php-format
 msgid "Old rules cannot be removed, HTTP %d."
 msgstr ""
 
 #. translators: 1: HTTP status code, 2: start of the response body from ElevenLabs
-#: src/Voice/DictionaryWriter.php:318
+#: src/Voice/DictionaryWriter.php:323
 #, php-format
 msgid "New rules not accepted, HTTP %1$d: %2$s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:357
+#: src/Voice/DictionaryWriter.php:362
 msgid "Old rule cannot be removed: "
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:365
+#: src/Voice/DictionaryWriter.php:370
 #, php-format
 msgid "Old rule cannot be removed, HTTP %d."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:439
+#: src/Voice/DictionaryWriter.php:444
 msgid "No dictionary version is bound."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:448
+#: src/Voice/DictionaryWriter.php:453
 msgid "The bound dictionary version could not be loaded."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:496
+#: src/Voice/DictionaryWriter.php:501
 msgid "The PLS file has no closing lexicon element."
 msgstr ""
 
 #. translators: %s: path of the dictionary file
-#: src/Voice/DictionaryWriter.php:517
+#: src/Voice/DictionaryWriter.php:526
 #, php-format
 msgid "The file %s could not be written."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:526
+#: src/Voice/DictionaryWriter.php:535
 #: src/Voice/TextToSpeech.php:56
 #: src/Voice/VoiceChanger.php:47
 msgid "ElevenLabs credentials could not be read: "
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:530
+#: src/Voice/DictionaryWriter.php:539
 msgid "No ElevenLabs API key is stored."
 msgstr ""
 

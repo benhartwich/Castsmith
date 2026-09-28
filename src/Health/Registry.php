@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health;
+namespace Castsmith\Health;
 
-use PodcastForge\Health\Checks\AnthropicCheck;
-use PodcastForge\Health\Checks\AuphonicCheck;
-use PodcastForge\Health\Checks\DictionaryCheck;
-use PodcastForge\Health\Checks\ElevenLabsCheck;
-use PodcastForge\Health\Checks\FfmpegCheck;
-use PodcastForge\Health\Checks\PodloveCheck;
-use PodcastForge\Health\Checks\StorageCheck;
+use Castsmith\Health\Checks\AnthropicCheck;
+use Castsmith\Health\Checks\AuphonicCheck;
+use Castsmith\Health\Checks\DictionaryCheck;
+use Castsmith\Health\Checks\ElevenLabsCheck;
+use Castsmith\Health\Checks\FfmpegCheck;
+use Castsmith\Health\Checks\PodloveCheck;
+use Castsmith\Health\Checks\StorageCheck;
 
 final class Registry
 {
@@ -24,13 +24,13 @@ final class Registry
             new AnthropicCheck(),
             new AuphonicCheck(),
             new PodloveCheck(),
-            new \PodcastForge\Health\Checks\MontageCheck(),
+            new \Castsmith\Health\Checks\MontageCheck(),
             new FfmpegCheck(),
             new StorageCheck(),
         ];
 
         /** Filter: additional checks from add-ons (CheckInterface objects). */
-        foreach ((array) apply_filters('podcast_forge_health_checks', []) as $extra) {
+        foreach ((array) apply_filters('castsmith_health_checks', []) as $extra) {
             if ($extra instanceof CheckInterface) {
                 $checks[] = $extra;
             }
@@ -72,7 +72,7 @@ final class Registry
             try {
                 $result = $check->run();
             } catch (\Throwable $e) {
-                $result = Result::fail(__('The check aborted with an error.', 'podcast-forge'), $e->getMessage());
+                $result = Result::fail(__('The check aborted with an error.', 'castsmith'), $e->getMessage());
             }
             self::remember($check->id(), $result);
         }

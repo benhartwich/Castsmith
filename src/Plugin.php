@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge;
+namespace Castsmith;
 
-use PodcastForge\Db\Schema;
-use PodcastForge\Admin\EpisodeActions;
-use PodcastForge\Admin\AudioStream;
-use PodcastForge\Admin\DictionaryController;
-use PodcastForge\Admin\EpisodesPage;
-use PodcastForge\Admin\PatchController;
-use PodcastForge\Health\AjaxController;
-use PodcastForge\Jobs\AdminActions;
-use PodcastForge\Jobs\Scheduler;
-use PodcastForge\Pipeline\Scheduler as PipelineScheduler;
-use PodcastForge\Settings\SettingsPage;
+use Castsmith\Db\Schema;
+use Castsmith\Admin\EpisodeActions;
+use Castsmith\Admin\AudioStream;
+use Castsmith\Admin\DictionaryController;
+use Castsmith\Admin\EpisodesPage;
+use Castsmith\Admin\PatchController;
+use Castsmith\Health\AjaxController;
+use Castsmith\Jobs\AdminActions;
+use Castsmith\Jobs\Scheduler;
+use Castsmith\Pipeline\Scheduler as PipelineScheduler;
+use Castsmith\Settings\SettingsPage;
 
 /**
  * Hooks the plugin into WordPress. Nothing else.
@@ -49,7 +49,7 @@ final class Plugin
         // frontend context.
         Scheduler::register();
         PipelineScheduler::register();
-        \PodcastForge\Rest\AuphonicWebhook::register();
+        \Castsmith\Rest\AuphonicWebhook::register();
         // Translations everywhere, not only in the admin: mails and run-log
         // entries are written by background jobs, too.
         add_action('init', [$this, 'loadTextdomain']);
@@ -57,23 +57,23 @@ final class Plugin
         // update a background job may run before anyone opens the backend.
         add_action('init', [Schema::class, 'maybeInstall'], 1);
         // Changed paths or mode: check for ffmpeg again.
-        add_action('update_option_' . \PodcastForge\Settings\Options::OPTION, [\PodcastForge\Audio\AudioEngine::class, 'forget'], 10, 0);
+        add_action('update_option_' . \Castsmith\Settings\Options::OPTION, [\Castsmith\Audio\AudioEngine::class, 'forget'], 10, 0);
         // Publishing also happens from within the Podlove backend, so this is not admin-only.
-        \PodcastForge\Notify\Announcement::register();
+        \Castsmith\Notify\Announcement::register();
 
         // The plugin has no frontend output; the screens are admin-only.
         if (is_admin()) {
             SettingsPage::register();
             EpisodesPage::register();
-            \PodcastForge\Admin\PromptsPage::register();
+            \Castsmith\Admin\PromptsPage::register();
             EpisodeActions::register();
             AudioStream::register();
             PatchController::register();
             DictionaryController::register();
             AjaxController::register();
             AdminActions::register();
-            \PodcastForge\Admin\ProgressController::register();
-            add_action('admin_init', [\PodcastForge\Admin\Urls::class, 'redirectLegacy'], 1);
+            \Castsmith\Admin\ProgressController::register();
+            add_action('admin_init', [\Castsmith\Admin\Urls::class, 'redirectLegacy'], 1);
             add_filter(
                 'plugin_action_links_' . plugin_basename(AASPF_PLUGIN_FILE),
                 [$this, 'addSettingsLink']
@@ -84,7 +84,7 @@ final class Plugin
     public function loadTextdomain(): void
     {
         load_plugin_textdomain(
-            'podcast-forge',
+            'castsmith',
             false,
             dirname(plugin_basename(AASPF_PLUGIN_FILE)) . '/languages'
         );
@@ -97,11 +97,11 @@ final class Plugin
      */
     public function addSettingsLink(array $links): array
     {
-        $url = \PodcastForge\Admin\Urls::settings();
+        $url = \Castsmith\Admin\Urls::settings();
 
         array_unshift(
             $links,
-            '<a href="' . esc_url($url) . '">' . esc_html__('Settings', 'podcast-forge') . '</a>'
+            '<a href="' . esc_url($url) . '">' . esc_html__('Settings', 'castsmith') . '</a>'
         );
 
         return $links;

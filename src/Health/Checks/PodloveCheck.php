@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health\Checks;
+namespace Castsmith\Health\Checks;
 
-use PodcastForge\Health\CheckInterface;
-use PodcastForge\Health\Result;
+use Castsmith\Health\CheckInterface;
+use Castsmith\Health\Result;
 
 /**
  * Checks whether Podlove is active and reachable.
@@ -37,14 +37,14 @@ final class PodloveCheck implements CheckInterface
         }
 
         if (!is_plugin_active(self::PLUGIN_FILE)) {
-            return Result::fail(__('Podlove Podcast Publisher is not active.', 'podcast-forge'));
+            return Result::fail(__('Podlove Podcast Publisher is not active.', 'castsmith'));
         }
 
         if (!class_exists(self::EPISODE_CLASS) || !class_exists(self::PODCAST_CLASS)) {
             return Result::fail(
-                __('Podlove is active, but the PHP API is missing.', 'podcast-forge'),
+                __('Podlove is active, but the PHP API is missing.', 'castsmith'),
                 /* translators: 1: Podlove episode class name, 2: Podlove podcast class name */
-                sprintf(__('Expected the classes %1$s and %2$s.', 'podcast-forge'), self::EPISODE_CLASS, self::PODCAST_CLASS)
+                sprintf(__('Expected the classes %1$s and %2$s.', 'castsmith'), self::EPISODE_CLASS, self::PODCAST_CLASS)
             );
         }
 
@@ -56,26 +56,26 @@ final class PodloveCheck implements CheckInterface
         }
 
         // Can Podlove find the files the plugin writes?
-        $location = \PodcastForge\Podlove\MediaStore::location();
+        $location = \Castsmith\Podlove\MediaStore::location();
         if (!$location['matches_podlove']) {
             return Result::warn(
-                __('Podlove\'s media file base URL does not point to this site\'s uploads.', 'podcast-forge'),
+                __('Podlove\'s media file base URL does not point to this site\'s uploads.', 'castsmith'),
                 /* translators: %s: URL to enter in Podlove */
-                sprintf(__('Finished episodes are stored in uploads/podcasts. Set the media file base URL in Podlove to %s.', 'podcast-forge'), trailingslashit($location['url']))
+                sprintf(__('Finished episodes are stored in uploads/podcasts. Set the media file base URL in Podlove to %s.', 'castsmith'), trailingslashit($location['url']))
             );
         }
-        if (\PodcastForge\Podlove\MediaStore::asset('mp3') === null) {
-            return Result::warn(__('Podlove has no episode asset for MP3.', 'podcast-forge'), __('Create an asset with the file type MP3 in Podlove, otherwise the audio file cannot be linked.', 'podcast-forge'));
+        if (\Castsmith\Podlove\MediaStore::asset('mp3') === null) {
+            return Result::warn(__('Podlove has no episode asset for MP3.', 'castsmith'), __('Create an asset with the file type MP3 in Podlove, otherwise the audio file cannot be linked.', 'castsmith'));
         }
 
         $details = $this->episodeSummary();
-        if (\PodcastForge\Podlove\MediaStore::asset('vtt') === null) {
-            $details .= ' ' . __('No asset for WebVTT transcripts — transcripts are not linked.', 'podcast-forge');
+        if (\Castsmith\Podlove\MediaStore::asset('vtt') === null) {
+            $details .= ' ' . __('No asset for WebVTT transcripts — transcripts are not linked.', 'castsmith');
         }
 
         return Result::ok(
             /* translators: %s: Podlove plugin version number */
-            $version !== '' ? sprintf(__('Active (version %s).', 'podcast-forge'), $version) : __('Active.', 'podcast-forge'),
+            $version !== '' ? sprintf(__('Active (version %s).', 'castsmith'), $version) : __('Active.', 'castsmith'),
             trim($details)
         );
     }
@@ -97,13 +97,13 @@ final class PodloveCheck implements CheckInterface
 
         $published = (int) \Podlove\Model\Episode::count_published();
         /* translators: %s: formatted number of published episodes */
-        $summary = sprintf(__('%s published episodes.', 'podcast-forge'), number_format_i18n($published));
+        $summary = sprintf(__('%s published episodes.', 'castsmith'), number_format_i18n($published));
 
         if (method_exists(self::EPISODE_CLASS, 'get_next_episode_number')) {
             $next = \Podlove\Model\Episode::get_next_episode_number();
             if (is_numeric($next)) {
                 /* translators: %d: next episode number */
-                $summary .= sprintf(__(' Next episode number: %d.', 'podcast-forge'), (int) $next);
+                $summary .= sprintf(__(' Next episode number: %d.', 'castsmith'), (int) $next);
             }
         }
 

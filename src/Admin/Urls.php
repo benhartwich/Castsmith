@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use PodcastForge\Settings\SettingsPage;
+use Castsmith\Settings\SettingsPage;
 
 /**
  * All backend addresses in one place.

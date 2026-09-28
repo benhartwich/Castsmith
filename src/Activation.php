@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge;
+namespace Castsmith;
 
-use PodcastForge\Db\Schema;
-use PodcastForge\Jobs\Scheduler;
-use PodcastForge\Settings\Options;
+use Castsmith\Db\Schema;
+use Castsmith\Jobs\Scheduler;
+use Castsmith\Settings\Options;
 
 /**
  * What happens when the plugin is activated and deactivated.

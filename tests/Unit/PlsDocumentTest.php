@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Support\PlsDocument;
-use PodcastForge\Support\PlsException;
+use Castsmith\Support\PlsDocument;
+use Castsmith\Support\PlsException;
 use PHPUnit\Framework\TestCase;
 
 final class PlsDocumentTest extends TestCase

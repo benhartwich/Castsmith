@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Auphonic;
+namespace Castsmith\Auphonic;
 
 /**
  * Converts the measured chapter times into the line format that Auphonic expects.

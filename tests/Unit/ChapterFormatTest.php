@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Auphonic\ChapterFormat;
+use Castsmith\Auphonic\ChapterFormat;
 use PHPUnit\Framework\TestCase;
 
 final class ChapterFormatTest extends TestCase

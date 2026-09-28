@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
 /**
  * Keeps phonetic transcriptions free of characters that ElevenLabs

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Settings;
+namespace Castsmith\Settings;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Support\Crypto;
-use PodcastForge\Support\CryptoException;
-use PodcastForge\Support\KeyStore;
+use Castsmith\Support\Crypto;
+use Castsmith\Support\CryptoException;
+use Castsmith\Support\KeyStore;
 
 /**
  * Single storage location for the plugin settings: one option, one array.
@@ -87,7 +87,7 @@ final class Options
          * Filter: default settings, extended by the fields of add-ons. Add-ons
          * store their values in the same option so that an export contains everything.
          */
-        return array_merge($defaults, (array) apply_filters('podcast_forge_option_defaults', []));
+        return array_merge($defaults, (array) apply_filters('castsmith_option_defaults', []));
     }
 
     /**
@@ -109,7 +109,7 @@ final class Options
     {
         if (in_array($key, self::SECRET_FIELDS, true)) {
             /* translators: %s: name of the settings field */
-            throw new \LogicException(sprintf(__('"%s" is a secret and must be read via secret().', 'podcast-forge'), $key));
+            throw new \LogicException(sprintf(__('"%s" is a secret and must be read via secret().', 'castsmith'), $key));
         }
 
         $all = self::all();
@@ -158,9 +158,9 @@ final class Options
      */
     public static function filePrefix(): string
     {
-        $prefix = \PodcastForge\Podlove\SlugBuilder::prefix(self::get('file_prefix'));
+        $prefix = \Castsmith\Podlove\SlugBuilder::prefix(self::get('file_prefix'));
         if ($prefix === '') {
-            $prefix = \PodcastForge\Podlove\SlugBuilder::asciify(self::podcastName());
+            $prefix = \Castsmith\Podlove\SlugBuilder::asciify(self::podcastName());
         }
 
         return $prefix !== '' ? mb_substr($prefix, 0, 40) : 'Podcast';
@@ -178,7 +178,7 @@ final class Options
 
         return strtr($template, [
             '{podcast}'  => self::podcastName(),
-            '{host}'     => $host !== '' ? $host : __('our host', 'podcast-forge'),
+            '{host}'     => $host !== '' ? $host : __('our host', 'castsmith'),
             // Empty details become an em dash: "Editor: —." reads more clearly
             // than "Editor: ." — the prompts explain what applies in that case.
             '{editor}'   => trim(self::get('podcast_editor')) !== '' ? trim(self::get('podcast_editor')) : '—',
@@ -209,7 +209,7 @@ final class Options
     {
         if (!in_array($field, self::SECRET_FIELDS, true)) {
             /* translators: %s: name of the settings field */
-            throw new \LogicException(sprintf(__('"%s" is not a secret.', 'podcast-forge'), $field));
+            throw new \LogicException(sprintf(__('"%s" is not a secret.', 'castsmith'), $field));
         }
 
         $all = self::all();
@@ -222,7 +222,7 @@ final class Options
         if (!Crypto::looksEncrypted($value)) {
             throw new CryptoException(sprintf(
                 /* translators: %s: name of the credential settings field */
-                __('The field "%s" is stored unencrypted in the database. Please enter it again in the settings.', 'podcast-forge'),
+                __('The field "%s" is stored unencrypted in the database. Please enter it again in the settings.', 'castsmith'),
                 $field
             ));
         }

@@ -1,31 +1,31 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Admin\DictionaryController;
-use PodcastForge\Admin\PatchController;
-use PodcastForge\Audio\Transcript;
-use PodcastForge\Pipeline\Gate;
-use PodcastForge\Podlove\MediaStore;
-use PodcastForge\Podlove\SlugBuilder;
-use PodcastForge\Rest\AuphonicWebhook;
-use PodcastForge\Pipeline\Synthesis;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Segments\SegmentStatus;
-use PodcastForge\Storage\EpisodeStorage;
-use PodcastForge\Settings\SettingsPage;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Admin\DictionaryController;
+use Castsmith\Admin\PatchController;
+use Castsmith\Audio\Transcript;
+use Castsmith\Pipeline\Gate;
+use Castsmith\Podlove\MediaStore;
+use Castsmith\Podlove\SlugBuilder;
+use Castsmith\Rest\AuphonicWebhook;
+use Castsmith\Pipeline\Synthesis;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Segments\SegmentStatus;
+use Castsmith\Storage\EpisodeStorage;
+use Castsmith\Settings\SettingsPage;
 
 /**
  * Episode overview and text approval — the first of the two human gates.
  */
 final class EpisodesPage
 {
-    public const MENU_SLUG = 'aas-podcast-forge-folgen';
+    public const MENU_SLUG = 'castsmith-episodes';
 
     /** @var list<string> */
     private static array $hookSuffixes = [];
@@ -41,8 +41,8 @@ final class EpisodesPage
         // A dedicated top-level menu item, like the gallery plugin, instead of
         // two entries under "Tools".
         add_menu_page(
-            __('Podcast Forge', 'podcast-forge'),
-            __('Podcast Forge', 'podcast-forge'),
+            __('Castsmith', 'castsmith'),
+            __('Castsmith', 'castsmith'),
             SettingsPage::CAPABILITY,
             self::MENU_SLUG,
             [self::class, 'render'],
@@ -53,8 +53,8 @@ final class EpisodesPage
         $hooks = [];
         $hooks[] = add_submenu_page(
             self::MENU_SLUG,
-            __('Podcast Forge — Overview', 'podcast-forge'),
-            __('Overview', 'podcast-forge'),
+            __('Castsmith — Overview', 'castsmith'),
+            __('Overview', 'castsmith'),
             SettingsPage::CAPABILITY,
             self::MENU_SLUG,
             [self::class, 'render']
@@ -87,7 +87,7 @@ final class EpisodesPage
             'action'  => ProgressController::ACTION,
             'nonce'   => wp_create_nonce(ProgressController::NONCE),
             /* translators: between two numbers: "19 of 43" */
-            'of'      => __('of', 'podcast-forge'),
+            'of'      => __('of', 'castsmith'),
         ]);
 
         wp_enqueue_script('aaspf-segmente', AASPF_PLUGIN_URL . 'assets/segments.js', [], Assets::version('assets/segments.js'), true);
@@ -98,16 +98,16 @@ final class EpisodesPage
             'regelAction'  => DictionaryController::ACTION,
             'regelNonce'   => wp_create_nonce(DictionaryController::NONCE),
             'strings'      => [
-                'aufnahmeStarten'     => __('Start recording', 'podcast-forge'),
-                'aufnahmeStoppen'     => __('Stop recording', 'podcast-forge'),
-                'aufnahmeLaeuft'      => __('Recording — read the whole sentence aloud.', 'podcast-forge'),
-                'aufnahmeFertig'      => __('Recording done. Listen to it first, then apply it.', 'podcast-forge'),
-                'wirdUmgewandelt'     => __('Converting into your voice …', 'podcast-forge'),
-                'keinRecorder'        => __('This browser cannot record audio.', 'podcast-forge'),
-                'keinMikrofon'        => __('No access to the microphone:', 'podcast-forge'),
-                'regelLaeuft'         => __('Creating rule …', 'podcast-forge'),
-                'regelUnvollstaendig' => __('The term or both pronunciation forms are missing. One of the two is enough.', 'podcast-forge'),
-                'fehler'              => __('The request failed.', 'podcast-forge'),
+                'aufnahmeStarten'     => __('Start recording', 'castsmith'),
+                'aufnahmeStoppen'     => __('Stop recording', 'castsmith'),
+                'aufnahmeLaeuft'      => __('Recording — read the whole sentence aloud.', 'castsmith'),
+                'aufnahmeFertig'      => __('Recording done. Listen to it first, then apply it.', 'castsmith'),
+                'wirdUmgewandelt'     => __('Converting into your voice …', 'castsmith'),
+                'keinRecorder'        => __('This browser cannot record audio.', 'castsmith'),
+                'keinMikrofon'        => __('No access to the microphone:', 'castsmith'),
+                'regelLaeuft'         => __('Creating rule …', 'castsmith'),
+                'regelUnvollstaendig' => __('The term or both pronunciation forms are missing. One of the two is enough.', 'castsmith'),
+                'fehler'              => __('The request failed.', 'castsmith'),
             ],
         ]);
     }
@@ -115,7 +115,7 @@ final class EpisodesPage
     public static function render(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have permission to do this.', 'podcast-forge'));
+            wp_die(esc_html__('You do not have permission to do this.', 'castsmith'));
         }
 
         $id = isset($_GET['episode']) ? (int) $_GET['episode'] : 0;
@@ -140,13 +140,13 @@ final class EpisodesPage
      */
     public static function renderStuckNotice(): void
     {
-        $stuck = \PodcastForge\Pipeline\Recovery::stuckEpisodes();
+        $stuck = \Castsmith\Pipeline\Recovery::stuckEpisodes();
         if ($stuck === []) {
             return;
         }
 
         echo '<div class="notice notice-warning"><p><strong>'
-            . esc_html__('Something is stuck here.', 'podcast-forge') . '</strong></p>';
+            . esc_html__('Something is stuck here.', 'castsmith') . '</strong></p>';
 
         foreach ($stuck as $item) {
             printf(
@@ -163,11 +163,11 @@ final class EpisodesPage
     private static function renderNewPage(): void
     {
         echo '<p class="aaspf-zurueck"><a href="' . esc_url(Urls::episodes()) . '">&larr; '
-            . esc_html__('Overview', 'podcast-forge') . '</a></p>';
-        echo '<h1>' . esc_html__('New episode', 'podcast-forge') . '</h1>';
-        echo '<p class="description">' . esc_html__('Where does the text come from? Once the fact script has been imported, the path is the same for every source: speech script, checks, your text approval, audio.', 'podcast-forge') . '</p>';
+            . esc_html__('Overview', 'castsmith') . '</a></p>';
+        echo '<h1>' . esc_html__('New episode', 'castsmith') . '</h1>';
+        echo '<p class="description">' . esc_html__('Where does the text come from? Once the fact script has been imported, the path is the same for every source: speech script, checks, your text approval, audio.', 'castsmith') . '</p>';
 
-        foreach (\PodcastForge\Source\Sources::all() as $source) {
+        foreach (\Castsmith\Source\Sources::all() as $source) {
             echo '<section class="aaspf-panel" id="quelle-' . esc_attr($source->id()) . '">';
             echo '<h2>' . esc_html($source->label()) . '</h2>';
             echo '<p class="description">' . esc_html($source->description()) . '</p>';
@@ -187,14 +187,14 @@ final class EpisodesPage
         $id = (int) $episode['id'];
         $stations = Workflow::stations($episode);
         $current = Workflow::current($stations);
-        $source = \PodcastForge\Source\Sources::forEpisode($episode);
+        $source = \Castsmith\Source\Sources::forEpisode($episode);
         $panelTitle = $source->panelTitle($episode);
         ob_start();
         $source->renderAside($episode);
         $aside = trim((string) ob_get_clean());
 
         echo '<p class="aaspf-zurueck"><a href="' . esc_url(Urls::episodes()) . '">&larr; '
-            . esc_html__('All episodes', 'podcast-forge') . '</a></p>';
+            . esc_html__('All episodes', 'castsmith') . '</a></p>';
 
         echo '<div class="aaspf-titelzeile">';
         echo '<h1>' . esc_html(Overview::title($episode)) . '</h1>';
@@ -207,10 +207,10 @@ final class EpisodesPage
             $meta[] = (string) $episode['source_filename'];
         }
         /* translators: %s: creation date of the episode */
-        $meta[] = sprintf(__('created on %s', 'podcast-forge'), mysql2date('d.m.Y', (string) $episode['created_at']));
+        $meta[] = sprintf(__('created on %s', 'castsmith'), mysql2date('d.m.Y', (string) $episode['created_at']));
         $meta[] = (int) ($episode['auto_chain'] ?? 0) === 1
-            ? __('continues automatically after approval', 'podcast-forge')
-            : __('every step by hand', 'podcast-forge');
+            ? __('continues automatically after approval', 'castsmith')
+            : __('every step by hand', 'castsmith');
         echo '<p class="aaspf-meta">' . esc_html(implode(' · ', $meta)) . '</p>';
 
         self::renderResume($episode);
@@ -218,13 +218,13 @@ final class EpisodesPage
         self::renderNow($episode, $current);
         self::renderFigures($episode);
 
-        $tabs = ['skript' => __('Speech script', 'podcast-forge')];
+        $tabs = ['skript' => __('Speech script', 'castsmith')];
         if ($panelTitle !== '') {
             $tabs['quellen'] = $panelTitle;
         }
-        $tabs['veroeffentlichung'] = __('Publishing', 'podcast-forge');
-        $tabs['audio'] = __('Audio', 'podcast-forge');
-        $tabs['verlauf'] = __('History and costs', 'podcast-forge');
+        $tabs['veroeffentlichung'] = __('Publishing', 'castsmith');
+        $tabs['audio'] = __('Audio', 'castsmith');
+        $tabs['verlauf'] = __('History and costs', 'castsmith');
 
         $default = match ($current['key'] ?? '') {
             Workflow::QUELLEN => 'quellen',
@@ -234,13 +234,13 @@ final class EpisodesPage
         };
 
         echo '<div class="aaspf-reiter" data-aaspf-reiter data-standard="' . esc_attr($default) . '">';
-        echo '<label class="aaspf-reiter-wahl-label" for="aaspf-reiter-wahl">' . esc_html__('Section', 'podcast-forge') . '</label>';
+        echo '<label class="aaspf-reiter-wahl-label" for="aaspf-reiter-wahl">' . esc_html__('Section', 'castsmith') . '</label>';
         echo '<select id="aaspf-reiter-wahl" class="aaspf-reiter-wahl">';
         foreach ($tabs as $key => $label) {
             printf('<option value="%s"%s>%s</option>', esc_attr($key), selected($key, $default, false), esc_html($label));
         }
         echo '</select>';
-        echo '<div class="aaspf-reiter-leiste" role="tablist" aria-label="' . esc_attr__('Episode sections', 'podcast-forge') . '">';
+        echo '<div class="aaspf-reiter-leiste" role="tablist" aria-label="' . esc_attr__('Episode sections', 'castsmith') . '">';
         foreach ($tabs as $key => $label) {
             printf(
                 '<a href="#reiter-%1$s" role="tab" id="tab-%1$s" aria-controls="reiter-%1$s" aria-selected="%2$s" class="aaspf-reiter-knopf">%3$s</a>',
@@ -261,7 +261,7 @@ final class EpisodesPage
             self::renderFactCheck($episode);
             self::renderScriptForm($episode);
             if (trim((string) ($episode['script_text'] ?? '')) === '' && trim((string) ($episode['source_text'] ?? '')) !== '') {
-                echo '<h3>' . esc_html__('Fact script', 'podcast-forge') . '</h3>';
+                echo '<h3>' . esc_html__('Fact script', 'castsmith') . '</h3>';
                 echo '<pre class="aaspf-vorlage">' . esc_html((string) $episode['source_text']) . '</pre>';
             }
         });
@@ -276,7 +276,7 @@ final class EpisodesPage
             self::renderMetadata($episode);
             self::renderProduction($episode);
             if (trim((string) ($episode['episode_title'] ?? '')) === '') {
-                echo '<p class="description">' . esc_html__('Title, description and chapters are created together with the speech script.', 'podcast-forge') . '</p>';
+                echo '<p class="description">' . esc_html__('Title, description and chapters are created together with the speech script.', 'castsmith') . '</p>';
             }
         });
 
@@ -286,7 +286,7 @@ final class EpisodesPage
             $html = (string) ob_get_clean();
             echo trim($html) !== ''
                 ? wp_kses($html, Html::allowed())
-                : '<p class="description">' . esc_html__('The audio is created after the text approval.', 'podcast-forge') . '</p>';
+                : '<p class="description">' . esc_html__('The audio is created after the text approval.', 'castsmith') . '</p>';
         });
 
         self::panel('verlauf', static function () use ($id, $episode): void {
@@ -326,11 +326,11 @@ final class EpisodesPage
             printf(
                 '<span><strong>%s</strong></span><span>%s</span>',
                 /* translators: 1: current step number, 2: total number of steps, 3: step title */
-                esc_html(sprintf(__('Step %1$d of %2$d · %3$s', 'podcast-forge'), $current['nummer'], $current['gesamt'], $current['titel'])),
+                esc_html(sprintf(__('Step %1$d of %2$d · %3$s', 'castsmith'), $current['nummer'], $current['gesamt'], $current['titel'])),
                 esc_html($current['wort'])
             );
         } else {
-            echo '<span><strong>' . esc_html__('All steps done', 'podcast-forge') . '</strong></span>';
+            echo '<span><strong>' . esc_html__('All steps done', 'castsmith') . '</strong></span>';
         }
         echo '<span class="aaspf-schritte-balken">';
         foreach ($stations as $station) {
@@ -338,7 +338,7 @@ final class EpisodesPage
         }
         echo '</span></div>';
 
-        echo '<ol class="aaspf-schritte' . ($compact ? ' aaspf-schritte-klein' : '') . '" aria-label="' . esc_attr__('Episode progress', 'podcast-forge') . '">';
+        echo '<ol class="aaspf-schritte' . ($compact ? ' aaspf-schritte-klein' : '') . '" aria-label="' . esc_attr__('Episode progress', 'castsmith') . '">';
         foreach ($stations as $station) {
             echo '<li data-zustand="' . esc_attr($station['zustand']) . '"' . ($station['zustand'] === 'dran' ? ' aria-current="step"' : '') . '>';
             echo '<span class="aaspf-schritt-name">' . esc_html($station['titel']) . '</span>';
@@ -363,17 +363,17 @@ final class EpisodesPage
         if ($current === null) {
             echo '<section class="aaspf-jetzt aaspf-jetzt-fertig">';
             echo '<div class="aaspf-jetzt-inhalt">';
-            echo '<h2>' . esc_html__('Done', 'podcast-forge') . '</h2>';
+            echo '<h2>' . esc_html__('Done', 'castsmith') . '</h2>';
             echo '<p>' . esc_html(sprintf(
                 /* translators: %s: date and time of the audio approval */
-                __('Audio approved on %s. Publishing is done by hand in Podlove.', 'podcast-forge'),
+                __('Audio approved on %s. Publishing is done by hand in Podlove.', 'castsmith'),
                 mysql2date('d.m.Y, H:i', (string) ($episode['audio_approved_at'] ?? ''))
             )) . '</p>';
             echo '</div>';
             $postId = (int) ($episode['podlove_post_id'] ?? 0);
             if ($postId > 0 && get_post($postId) !== null) {
                 echo '<div class="aaspf-jetzt-aktion"><a class="button button-primary button-hero" href="' . esc_url((string) get_edit_post_link($postId)) . '">'
-                    . esc_html__('Open Podlove draft', 'podcast-forge') . '</a></div>';
+                    . esc_html__('Open Podlove draft', 'castsmith') . '</a></div>';
             }
             echo '</section>';
 
@@ -388,7 +388,7 @@ final class EpisodesPage
         echo '<div class="aaspf-jetzt-inhalt">';
         echo '<p class="aaspf-jetzt-marke">' . esc_html(sprintf(
             /* translators: 1: current step number, 2: total number of steps */
-            $human ? __('Up next · Step %1$d of %2$d', 'podcast-forge') : __('Running · Step %1$d of %2$d', 'podcast-forge'),
+            $human ? __('Up next · Step %1$d of %2$d', 'castsmith') : __('Running · Step %1$d of %2$d', 'castsmith'),
             $current['nummer'],
             $current['gesamt']
         )) . '</p>';
@@ -398,10 +398,10 @@ final class EpisodesPage
         switch ($current['key']) {
             case Workflow::QUELLEN:
                 if ($status === EpisodeStatus::SOURCE_FAILED) {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('A step got stuck', 'podcast-forge') . '</h2>';
-                    echo '<p>' . esc_html__('The reason is shown in the yellow box at the top and in the history. “Resume run” picks up again at the missing step.', 'podcast-forge') . '</p>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('A step got stuck', 'castsmith') . '</h2>';
+                    echo '<p>' . esc_html__('The reason is shown in the yellow box at the top and in the history. “Resume run” picks up again at the missing step.', 'castsmith') . '</p>';
                 } else {
-                    [$headline, $text] = \PodcastForge\Source\Sources::forEpisode($episode)->runningNotice($episode);
+                    [$headline, $text] = \Castsmith\Source\Sources::forEpisode($episode)->runningNotice($episode);
                     echo '<h2 id="aaspf-jetzt-titel">' . esc_html($headline) . '</h2>';
                     echo '<p>' . esc_html($text) . '</p>';
                 }
@@ -409,27 +409,27 @@ final class EpisodesPage
 
             case Workflow::SKRIPT:
                 if (!$human) {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The speech script is being written', 'podcast-forge') . '</h2>';
-                    echo '<p>' . esc_html__('Editing, number diff, fact check and publishing data run in the background, a few minutes in total.', 'podcast-forge') . '</p>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The speech script is being written', 'castsmith') . '</h2>';
+                    echo '<p>' . esc_html__('Editing, number diff, fact check and publishing data run in the background, a few minutes in total.', 'castsmith') . '</p>';
                 } else {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Create speech script', 'podcast-forge') . '</h2>';
-                    echo '<p>' . esc_html__('The fact script is turned into the speech script; then the number diff and fact check review it.', 'podcast-forge') . '</p>';
-                    $action = self::captureForm(EpisodeActions::ACTION_REDIGAT, $id, __('Start editing', 'podcast-forge'));
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Create speech script', 'castsmith') . '</h2>';
+                    echo '<p>' . esc_html__('The fact script is turned into the speech script; then the number diff and fact check review it.', 'castsmith') . '</p>';
+                    $action = self::captureForm(EpisodeActions::ACTION_REDIGAT, $id, __('Start editing', 'castsmith'));
                 }
                 break;
 
             case Workflow::TEXTFREIGABE:
-                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Read and approve the text', 'podcast-forge') . '</h2>';
+                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Read and approve the text', 'castsmith') . '</h2>';
                 self::renderChecklist($episode);
                 if ($status === EpisodeStatus::GATE_FAILED) {
-                    $action = '<a class="button button-hero" href="#reiter-skript" data-aaspf-reiter-sprung="skript">' . esc_html__('Go to the open items', 'podcast-forge') . '</a>'
-                        . '<p class="aaspf-jetzt-hinweis">' . esc_html__('Locked until the open items have been fixed in the text or acknowledged.', 'podcast-forge') . '</p>';
+                    $action = '<a class="button button-hero" href="#reiter-skript" data-aaspf-reiter-sprung="skript">' . esc_html__('Go to the open items', 'castsmith') . '</a>'
+                        . '<p class="aaspf-jetzt-hinweis">' . esc_html__('Locked until the open items have been fixed in the text or acknowledged.', 'castsmith') . '</p>';
                 } else {
-                    $action = self::captureForm(EpisodeActions::ACTION_APPROVE, $id, __('Approve text', 'podcast-forge'), true)
+                    $action = self::captureForm(EpisodeActions::ACTION_APPROVE, $id, __('Approve text', 'castsmith'), true)
                         . '<p class="aaspf-jetzt-hinweis">' . esc_html($auto
-                            ? __('After that, audio, Auphonic and Podlove run on their own. The audio approval request arrives by e-mail.', 'podcast-forge')
-                            : __('After that, you create the audio.', 'podcast-forge')) . '</p>'
-                        . '<a class="aaspf-jetzt-link" href="#reiter-skript" data-aaspf-reiter-sprung="skript">' . esc_html__('Read speech script', 'podcast-forge') . '</a>';
+                            ? __('After that, audio, Auphonic and Podlove run on their own. The audio approval request arrives by e-mail.', 'castsmith')
+                            : __('After that, you create the audio.', 'castsmith')) . '</p>'
+                        . '<a class="aaspf-jetzt-link" href="#reiter-skript" data-aaspf-reiter-sprung="skript">' . esc_html__('Read speech script', 'castsmith') . '</a>';
                 }
                 break;
 
@@ -437,34 +437,34 @@ final class EpisodesPage
                 $summary = SegmentRepository::summary($id);
                 $ready = $summary['erzeugt'] + $summary['beanstandet'];
                 if (!$human && $summary['gesamt'] > 0) {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The audio is being created', 'podcast-forge') . '</h2>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The audio is being created', 'castsmith') . '</h2>';
                     echo '<p><span data-aaspf-live-zahl>' . esc_html(sprintf(
                         /* translators: 1: number of voiced segments, 2: total number of segments */
-                        __('%1$d of %2$d', 'podcast-forge'),
+                        __('%1$d of %2$d', 'castsmith'),
                         $ready,
                         $summary['gesamt']
-                    )) . '</span> ' . esc_html__('segments voiced. Then assembly and Auphonic, all on their own.', 'podcast-forge') . '</p>';
+                    )) . '</span> ' . esc_html__('segments voiced. Then assembly and Auphonic, all on their own.', 'castsmith') . '</p>';
                     printf(
                         '<progress class="aaspf-fortschritt" data-aaspf-live-balken max="%1$d" value="%2$d">%3$s</progress>',
                         (int) max(1, $summary['gesamt']),
                         (int) $ready,
                         esc_html(sprintf(
                             /* translators: 1: number of voiced segments, 2: total number of segments */
-                            __('%1$d of %2$d', 'podcast-forge'),
+                            __('%1$d of %2$d', 'castsmith'),
                             $ready,
                             $summary['gesamt']
                         ))
                     );
                 } else {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Create audio', 'podcast-forge') . '</h2>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Create audio', 'castsmith') . '</h2>';
                     echo '<p>' . esc_html($summary['gesamt'] === 0
-                        ? __('Each paragraph becomes a segment and is voiced with the voice clone.', 'podcast-forge')
+                        ? __('Each paragraph becomes a segment and is voiced with the voice clone.', 'castsmith')
                         /* translators: 1: number of finished segments, 2: total number of segments */
-                        : sprintf(__('%1$d of %2$d segments done. Missing ones will be created, then the assembly.', 'podcast-forge'), $ready, $summary['gesamt'])) . '</p>';
+                        : sprintf(__('%1$d of %2$d segments done. Missing ones will be created, then the assembly.', 'castsmith'), $ready, $summary['gesamt'])) . '</p>';
                     $action = self::captureForm(
                         EpisodeActions::ACTION_AUDIO,
                         $id,
-                        $summary['gesamt'] === 0 ? __('Create audio', 'podcast-forge') : __('Create missing segments', 'podcast-forge'),
+                        $summary['gesamt'] === 0 ? __('Create audio', 'castsmith') : __('Create missing segments', 'castsmith'),
                         true
                     );
                 }
@@ -472,11 +472,11 @@ final class EpisodesPage
 
             case Workflow::AUPHONIC:
                 if (!$human) {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The episode is being sent to Auphonic', 'podcast-forge') . '</h2>';
-                    echo '<p>' . esc_html__('The assembly is done. Auphonic is now computing levels, loudness and chapter marks.', 'podcast-forge') . '</p>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('The episode is being sent to Auphonic', 'castsmith') . '</h2>';
+                    echo '<p>' . esc_html__('The assembly is done. Auphonic is now computing levels, loudness and chapter marks.', 'castsmith') . '</p>';
                 } else {
-                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Send to Auphonic', 'podcast-forge') . '</h2>';
-                    echo '<p>' . esc_html__('The raw assembly is done. You can listen to it in the Audio tab.', 'podcast-forge') . '</p>';
+                    echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Send to Auphonic', 'castsmith') . '</h2>';
+                    echo '<p>' . esc_html__('The raw assembly is done. You can listen to it in the Audio tab.', 'castsmith') . '</p>';
                     ob_start();
                     self::renderProduceForm($episode);
                     $action = (string) ob_get_clean();
@@ -484,8 +484,8 @@ final class EpisodesPage
                 break;
 
             case Workflow::PODLOVE:
-                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Auphonic is mastering the episode', 'podcast-forge') . '</h2>';
-                echo '<p>' . esc_html__('The callback then creates the Podlove draft. Nothing to do here.', 'podcast-forge') . '</p>';
+                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Auphonic is mastering the episode', 'castsmith') . '</h2>';
+                echo '<p>' . esc_html__('The callback then creates the Podlove draft. Nothing to do here.', 'castsmith') . '</p>';
                 $uuid = (string) ($episode['auphonic_production_uuid'] ?? '');
                 if ($uuid !== '') {
                     echo '<div class="aaspf-jetzt-stand">';
@@ -495,15 +495,15 @@ final class EpisodesPage
                 break;
 
             case Workflow::AUDIOFREIGABE:
-                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Listen to and approve the mastered version', 'podcast-forge') . '</h2>';
+                echo '<h2 id="aaspf-jetzt-titel">' . esc_html__('Listen to and approve the mastered version', 'castsmith') . '</h2>';
                 $slug = (string) ($episode['podlove_slug'] ?? '');
                 if ($slug !== '' && file_exists(MediaStore::path($slug, 'mp3'))) {
                     echo '<audio class="aaspf-folge-player" controls preload="metadata" src="' . esc_url(MediaStore::url($slug, 'mp3')) . '"></audio>';
                 }
-                echo '<p class="description">' . esc_html__('Exactly as it will appear in the feed. Individual segments and the chapter jumps of the raw assembly are in the Audio tab.', 'podcast-forge') . '</p>';
-                $action = self::captureForm(EpisodeActions::ACTION_APPROVE_AUDIO, $id, __('Approve audio', 'podcast-forge'), true)
-                    . '<a class="button" href="#reiter-audio" data-aaspf-reiter-sprung="audio">' . esc_html__('Something sounds wrong', 'podcast-forge') . '</a>'
-                    . '<p class="aaspf-jetzt-hinweis">' . esc_html__('Publishing is then done by hand in Podlove.', 'podcast-forge') . '</p>';
+                echo '<p class="description">' . esc_html__('Exactly as it will appear in the feed. Individual segments and the chapter jumps of the raw assembly are in the Audio tab.', 'castsmith') . '</p>';
+                $action = self::captureForm(EpisodeActions::ACTION_APPROVE_AUDIO, $id, __('Approve audio', 'castsmith'), true)
+                    . '<a class="button" href="#reiter-audio" data-aaspf-reiter-sprung="audio">' . esc_html__('Something sounds wrong', 'castsmith') . '</a>'
+                    . '<p class="aaspf-jetzt-hinweis">' . esc_html__('Publishing is then done by hand in Podlove.', 'castsmith') . '</p>';
                 break;
         }
 
@@ -558,32 +558,32 @@ final class EpisodesPage
         ));
 
         $items[] = $invented + $openDiff + $guardBlocks === 0
-            ? ['ok', __('Number diff', 'podcast-forge'), __('nothing invented, nothing missing', 'podcast-forge')]
+            ? ['ok', __('Number diff', 'castsmith'), __('nothing invented, nothing missing', 'castsmith')]
             /* translators: 1: number of invented numbers, 2: number of open discrepancies */
-            : ['fail', __('Number diff', 'podcast-forge'), sprintf(__('%1$d invented, %2$d open', 'podcast-forge'), $invented, $openDiff + $guardBlocks)];
+            : ['fail', __('Number diff', 'castsmith'), sprintf(__('%1$d invented, %2$d open', 'castsmith'), $invented, $openDiff + $guardBlocks)];
 
         if (($episode['factcheck_json'] ?? null) === null) {
-            $items[] = ['warn', __('Fact check', 'podcast-forge'), __('still running', 'podcast-forge')];
+            $items[] = ['warn', __('Fact check', 'castsmith'), __('still running', 'castsmith')];
         } else {
-            $openFacts = array_diff(\PodcastForge\Pipeline\FactCheck::blockingKeys((int) $episode['id']), $acknowledged);
+            $openFacts = array_diff(\Castsmith\Pipeline\FactCheck::blockingKeys((int) $episode['id']), $acknowledged);
             $total = count(EpisodeRepository::decodeList($episode['factcheck_json']));
             $items[] = $openFacts === []
                 /* translators: %d: number of fact check notes */
-                ? ['ok', __('Fact check', 'podcast-forge'), $total === 0 ? __('no findings', 'podcast-forge') : sprintf(__('%d notes, none open', 'podcast-forge'), $total)]
+                ? ['ok', __('Fact check', 'castsmith'), $total === 0 ? __('no findings', 'castsmith') : sprintf(__('%d notes, none open', 'castsmith'), $total)]
                 /* translators: %d: number of open serious findings */
-                : ['fail', __('Fact check', 'podcast-forge'), sprintf(__('%d serious, open', 'podcast-forge'), count($openFacts))];
+                : ['fail', __('Fact check', 'castsmith'), sprintf(__('%d serious, open', 'castsmith'), count($openFacts))];
         }
 
-        foreach (\PodcastForge\Source\Sources::forEpisode($episode)->checklist($episode, $acknowledged) as $item) {
+        foreach (\Castsmith\Source\Sources::forEpisode($episode)->checklist($episode, $acknowledged) as $item) {
             $items[] = $item;
         }
 
-        $minutes = \PodcastForge\Notify\Notifier::estimateMinutes(mb_strlen((string) ($episode['script_text'] ?? '')));
+        $minutes = \Castsmith\Notify\Notifier::estimateMinutes(mb_strlen((string) ($episode['script_text'] ?? '')));
         $items[] = $minutes > 30
             /* translators: %d: estimated length in minutes */
-            ? ['warn', __('Length', 'podcast-forge'), sprintf(__('about %d instead of at most 30 minutes', 'podcast-forge'), $minutes)]
+            ? ['warn', __('Length', 'castsmith'), sprintf(__('about %d instead of at most 30 minutes', 'castsmith'), $minutes)]
             /* translators: %d: estimated length in minutes */
-            : ['ok', __('Length', 'podcast-forge'), sprintf(__('about %d minutes', 'podcast-forge'), $minutes)];
+            : ['ok', __('Length', 'castsmith'), sprintf(__('about %d minutes', 'castsmith'), $minutes)];
 
         echo '<ul class="aaspf-pruefliste">';
         foreach ($items as [$tone, $label, $text]) {
@@ -606,54 +606,54 @@ final class EpisodesPage
         echo '<div class="aaspf-kennzahlen">';
 
         if ($duration > 0) {
-            self::figure(__('Length', 'podcast-forge'), Synthesis::formatDuration($duration), __('measured from the assembly', 'podcast-forge'));
+            self::figure(__('Length', 'castsmith'), Synthesis::formatDuration($duration), __('measured from the assembly', 'castsmith'));
         } elseif ($chars > 0) {
-            $minutes = \PodcastForge\Notify\Notifier::estimateMinutes($chars);
+            $minutes = \Castsmith\Notify\Notifier::estimateMinutes($chars);
             self::figure(
-                __('Speech script', 'podcast-forge'),
+                __('Speech script', 'castsmith'),
                 sprintf('≈ %d min', $minutes),
                 /* translators: %s: number of characters in the speech script */
-                sprintf(__('%s characters', 'podcast-forge'), number_format_i18n($chars)),
+                sprintf(__('%s characters', 'castsmith'), number_format_i18n($chars)),
                 $minutes > 30 ? 'warn' : ''
             );
         } else {
-            self::figure(__('Speech script', 'podcast-forge'), '—', __('not written yet', 'podcast-forge'));
+            self::figure(__('Speech script', 'castsmith'), '—', __('not written yet', 'castsmith'));
         }
 
         if (trim($script) === '') {
-            self::figure(__('Checks', 'podcast-forge'), '—', __('after editing', 'podcast-forge'));
+            self::figure(__('Checks', 'castsmith'), '—', __('after editing', 'castsmith'));
         } else {
             $acknowledged = EpisodeRepository::decodeList($episode['diff_acknowledged'] ?? null);
             $open = count(array_diff(Gate::acknowledgeableKeys((int) $episode['id']), $acknowledged))
                 + count((array) (EpisodeRepository::decodeMap($episode['diff_json'] ?? null)['erfunden'] ?? []));
             self::figure(
-                __('Checks', 'podcast-forge'),
+                __('Checks', 'castsmith'),
                 /* translators: %d: number of open check items */
-                sprintf(_n('%d open', '%d open', $open, 'podcast-forge'), $open),
-                $open === 0 ? __('Numbers, facts and sources are clean', 'podcast-forge') : __('in the Speech script tab', 'podcast-forge'),
+                sprintf(_n('%d open', '%d open', $open, 'castsmith'), $open),
+                $open === 0 ? __('Numbers, facts and sources are clean', 'castsmith') : __('in the Speech script tab', 'castsmith'),
                 $open === 0 ? 'ok' : 'warn'
             );
         }
 
-        $sourceFigure = \PodcastForge\Source\Sources::forEpisode($episode)->figure($episode);
+        $sourceFigure = \Castsmith\Source\Sources::forEpisode($episode)->figure($episode);
         if ($sourceFigure !== null) {
             self::figure($sourceFigure[0], $sourceFigure[1], $sourceFigure[2]);
         } else {
             self::figure(
-                __('Fact script', 'podcast-forge'),
+                __('Fact script', 'castsmith'),
                 number_format_i18n(mb_strlen((string) ($episode['source_text'] ?? ''))),
-                __('characters of source text', 'podcast-forge')
+                __('characters of source text', 'castsmith')
             );
         }
 
         $billed = (int) ($episode['chars_billed'] ?? 0);
         self::figure(
-            __('Costs so far', 'podcast-forge'),
+            __('Costs so far', 'castsmith'),
             number_format_i18n((float) $episode['cost_cents'] / 100, 2) . ' $',
             $billed > 0
                 /* translators: %s: number of billed ElevenLabs characters */
-                ? sprintf(__('Anthropic estimated · %s ElevenLabs characters', 'podcast-forge'), number_format_i18n($billed))
-                : __('Anthropic, estimated', 'podcast-forge')
+                ? sprintf(__('Anthropic estimated · %s ElevenLabs characters', 'castsmith'), number_format_i18n($billed))
+                : __('Anthropic, estimated', 'castsmith')
         );
 
         echo '</div>';
@@ -690,10 +690,10 @@ final class EpisodesPage
                 [$tone, $label] = ['ok', EpisodeStatus::label($status)];
             } elseif (Workflow::needsHuman($episode, $current['key'])) {
                 /* translators: %s: title of the current step */
-                [$tone, $label] = [$status === EpisodeStatus::GATE_FAILED ? 'fail' : 'warn', sprintf(__('Waiting: %s', 'podcast-forge'), $current['titel'])];
+                [$tone, $label] = [$status === EpisodeStatus::GATE_FAILED ? 'fail' : 'warn', sprintf(__('Waiting: %s', 'castsmith'), $current['titel'])];
             } else {
                 /* translators: %s: title of the current step */
-                [$tone, $label] = ['laeuft', sprintf(__('%s running', 'podcast-forge'), $current['titel'])];
+                [$tone, $label] = ['laeuft', sprintf(__('%s running', 'castsmith'), $current['titel'])];
             }
         }
 
@@ -711,13 +711,13 @@ final class EpisodesPage
 
         return match ($key) {
             /* translators: %s: name of the text source */
-            Workflow::QUELLEN       => sprintf(__('%s: The text is being created in the background. You will get an e-mail when it is ready.', 'podcast-forge'), \PodcastForge\Source\Sources::forEpisode($episode)->label()),
-            Workflow::SKRIPT        => __('The speech script is being written or is waiting for editing to start.', 'podcast-forge'),
-            Workflow::TEXTFREIGABE  => __('The text is waiting for your approval.', 'podcast-forge'),
-            Workflow::AUDIO         => $auto ? __('The audio is being created. Assembly and Auphonic then run on their own; you will get an e-mail when the Podlove draft is ready.', 'podcast-forge') : __('The audio is waiting to be created.', 'podcast-forge'),
-            Workflow::AUPHONIC      => $auto ? __('The episode is being sent to Auphonic.', 'podcast-forge') : __('The raw assembly is waiting to be sent to Auphonic.', 'podcast-forge'),
-            Workflow::PODLOVE       => __('Auphonic is mastering the episode; the callback creates the Podlove draft.', 'podcast-forge'),
-            Workflow::AUDIOFREIGABE => __('The mastered version is waiting for your approval.', 'podcast-forge'),
+            Workflow::QUELLEN       => sprintf(__('%s: The text is being created in the background. You will get an e-mail when it is ready.', 'castsmith'), \Castsmith\Source\Sources::forEpisode($episode)->label()),
+            Workflow::SKRIPT        => __('The speech script is being written or is waiting for editing to start.', 'castsmith'),
+            Workflow::TEXTFREIGABE  => __('The text is waiting for your approval.', 'castsmith'),
+            Workflow::AUDIO         => $auto ? __('The audio is being created. Assembly and Auphonic then run on their own; you will get an e-mail when the Podlove draft is ready.', 'castsmith') : __('The audio is waiting to be created.', 'castsmith'),
+            Workflow::AUPHONIC      => $auto ? __('The episode is being sent to Auphonic.', 'castsmith') : __('The raw assembly is waiting to be sent to Auphonic.', 'castsmith'),
+            Workflow::PODLOVE       => __('Auphonic is mastering the episode; the callback creates the Podlove draft.', 'castsmith'),
+            Workflow::AUDIOFREIGABE => __('The mastered version is waiting for your approval.', 'castsmith'),
             default                 => '',
         };
     }
@@ -736,7 +736,7 @@ final class EpisodesPage
 
         $chars = mb_strlen((string) ($episode['script_text'] ?? ''));
 
-        return $chars > 0 ? sprintf('≈ %d min', \PodcastForge\Notify\Notifier::estimateMinutes($chars)) : '—';
+        return $chars > 0 ? sprintf('≈ %d min', \Castsmith\Notify\Notifier::estimateMinutes($chars)) : '—';
     }
 
     /**
@@ -744,34 +744,34 @@ final class EpisodesPage
      */
     private static function renderResume(array $episode): void
     {
-        $reason = \PodcastForge\Pipeline\Recovery::stuckReason($episode);
+        $reason = \Castsmith\Pipeline\Recovery::stuckReason($episode);
         if ($reason === null) {
             return;
         }
 
         echo '<div class="notice notice-warning inline"><p><strong>'
-            . esc_html__('Something is stuck here.', 'podcast-forge') . '</strong> ' . esc_html($reason) . '</p>';
+            . esc_html__('Something is stuck here.', 'castsmith') . '</strong> ' . esc_html($reason) . '</p>';
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field(EpisodeActions::ACTION_RESUME);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_RESUME) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) (int) $episode['id']) . '">';
         echo '<p><button type="submit" class="aaspf-knopf aaspf-knopf-haupt">'
-            . esc_html__('Resume run', 'podcast-forge') . '</button></p>';
-        echo '<p class="description">' . esc_html__('Picks up where something is missing. Segments that were already created are kept and cost nothing again.', 'podcast-forge') . '</p>';
+            . esc_html__('Resume run', 'castsmith') . '</button></p>';
+        echo '<p class="description">' . esc_html__('Picks up where something is missing. Segments that were already created are kept and cost nothing again.', 'castsmith') . '</p>';
         echo '</form></div>';
     }
 
     private static function renderPipelineActions(int $id, string $status, string $script): void
     {
         $episode = EpisodeRepository::find($id) ?? [];
-        if ($episode !== [] && \PodcastForge\Source\Sources::forEpisode($episode)->preparesText() && trim((string) ($episode['source_text'] ?? '')) === '') {
+        if ($episode !== [] && \Castsmith\Source\Sources::forEpisode($episode)->preparesText() && trim((string) ($episode['source_text'] ?? '')) === '') {
             // As long as the source is still writing its fact script, there is
             // nothing to edit.
             return;
         }
 
         if ($status === EpisodeStatus::REDIGAT_RUNNING) {
-            echo '<div class="notice notice-info inline"><p>' . esc_html__('Editing is running in the background. Reload the page now and then.', 'podcast-forge') . '</p></div>';
+            echo '<div class="notice notice-info inline"><p>' . esc_html__('Editing is running in the background. Reload the page now and then.', 'castsmith') . '</p></div>';
         }
 
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
@@ -780,15 +780,15 @@ final class EpisodesPage
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
 
         $label = $script === ''
-            ? __('Start editing', 'podcast-forge')
-            : __('Repeat editing', 'podcast-forge');
+            ? __('Start editing', 'castsmith')
+            : __('Repeat editing', 'castsmith');
 
         echo '<p>';
         submit_button($label, 'primary', 'submit', false);
         echo '</p>';
 
         if ($script !== '') {
-            echo '<p class="description">' . esc_html__('Repeating overwrites the speech script and costs tokens again.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('Repeating overwrites the speech script and costs tokens again.', 'castsmith') . '</p>';
         }
 
         echo '</form>';
@@ -804,7 +804,7 @@ final class EpisodesPage
             return;
         }
 
-        echo '<h3>' . esc_html__('Number diff', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Number diff', 'castsmith') . '</h3>';
 
         $guard = EpisodeRepository::decodeList($episode['guard_json'] ?? null);
         foreach ($guard as $problem) {
@@ -821,8 +821,8 @@ final class EpisodesPage
         $diff = EpisodeRepository::decodeMap($episode['diff_json'] ?? null);
 
         self::renderBucket(
-            __('Invented numbers', 'podcast-forge'),
-            __('Present in the speech script but not in the source text. This discrepancy cannot be acknowledged — it must be fixed in the text.', 'podcast-forge'),
+            __('Invented numbers', 'castsmith'),
+            __('Present in the speech script but not in the source text. This discrepancy cannot be acknowledged — it must be fixed in the text.', 'castsmith'),
             (array) ($diff['erfunden'] ?? []),
             false,
             []
@@ -831,24 +831,24 @@ final class EpisodesPage
         $acknowledged = EpisodeRepository::decodeList($episode['diff_acknowledged'] ?? null);
 
         self::renderBucket(
-            __('Changed numbers', 'podcast-forge'),
-            __('Rounded quantities. Acknowledge them if the rounding is intended.', 'podcast-forge'),
+            __('Changed numbers', 'castsmith'),
+            __('Rounded quantities. Acknowledge them if the rounding is intended.', 'castsmith'),
             (array) ($diff['geaendert'] ?? []),
             true,
             $acknowledged
         );
 
         self::renderBucket(
-            __('Missing numbers', 'podcast-forge'),
-            __('Present in the source text but not in the speech script.', 'podcast-forge'),
+            __('Missing numbers', 'castsmith'),
+            __('Present in the source text but not in the speech script.', 'castsmith'),
             (array) ($diff['fehlt'] ?? []),
             true,
             $acknowledged
         );
 
         self::renderBucket(
-            __('Differing frequency', 'podcast-forge'),
-            __('Present on both sides, just a different number of times. Does not block — the mandatory intro mentions the month in addition.', 'podcast-forge'),
+            __('Differing frequency', 'castsmith'),
+            __('Present on both sides, just a different number of times. Does not block — the mandatory intro mentions the month in addition.', 'castsmith'),
             (array) ($diff['haeufigkeit'] ?? []),
             false,
             []
@@ -856,7 +856,7 @@ final class EpisodesPage
 
         if ($diff !== [] && ($diff['erfunden'] ?? []) === [] && ($diff['fehlt'] ?? []) === []
             && ($diff['geaendert'] ?? []) === [] && ($diff['haeufigkeit'] ?? []) === []) {
-            echo '<p class="aaspf-status aaspf-status-ok">' . esc_html__('All numbers match.', 'podcast-forge') . '</p>';
+            echo '<p class="aaspf-status aaspf-status-ok">' . esc_html__('All numbers match.', 'castsmith') . '</p>';
         }
     }
 
@@ -873,12 +873,12 @@ final class EpisodesPage
         echo '<h4>' . esc_html($title) . ' <span class="aaspf-badge aaspf-badge-skip">' . esc_html((string) count($findings)) . '</span></h4>';
         echo '<p class="description">' . esc_html($description) . '</p>';
         echo '<table class="widefat striped"><thead><tr>';
-        echo '<th scope="col">' . esc_html__('Value', 'podcast-forge') . '</th>';
-        echo '<th scope="col">' . esc_html__('Fact script', 'podcast-forge') . '</th>';
-        echo '<th scope="col">' . esc_html__('Script', 'podcast-forge') . '</th>';
-        echo '<th scope="col">' . esc_html__('Location', 'podcast-forge') . '</th>';
+        echo '<th scope="col">' . esc_html__('Value', 'castsmith') . '</th>';
+        echo '<th scope="col">' . esc_html__('Fact script', 'castsmith') . '</th>';
+        echo '<th scope="col">' . esc_html__('Script', 'castsmith') . '</th>';
+        echo '<th scope="col">' . esc_html__('Location', 'castsmith') . '</th>';
         if ($acknowledgeable) {
-            echo '<th scope="col">' . esc_html__('acknowledged', 'podcast-forge') . '</th>';
+            echo '<th scope="col">' . esc_html__('acknowledged', 'castsmith') . '</th>';
         }
         echo '</tr></thead><tbody>';
 
@@ -890,7 +890,7 @@ final class EpisodesPage
             echo '<td><strong>' . esc_html((string) ($finding['label'] ?? '')) . '</strong>';
             if ($counterpart !== '') {
                 /* translators: %s: the corresponding value on the other side */
-                echo '<br><span class="description">' . esc_html(sprintf(__('instead of %s', 'podcast-forge'), $counterpart)) . '</span>';
+                echo '<br><span class="description">' . esc_html(sprintf(__('instead of %s', 'castsmith'), $counterpart)) . '</span>';
             }
             echo '</td>';
             echo '<td>' . esc_html((string) ($finding['sourceCount'] ?? 0)) . '×</td>';
@@ -920,25 +920,25 @@ final class EpisodesPage
             return;
         }
 
-        echo '<h3>' . esc_html__('Fact check', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Fact check', 'castsmith') . '</h3>';
 
         if ($findings === []) {
-            echo '<p class="aaspf-status aaspf-status-ok">' . esc_html__('No content discrepancies found.', 'podcast-forge') . '</p>';
+            echo '<p class="aaspf-status aaspf-status-ok">' . esc_html__('No content discrepancies found.', 'castsmith') . '</p>';
 
             return;
         }
 
-        echo '<p class="description">' . esc_html__('This check comes from a model and does not block on its own. Serious findings, however, must be acknowledged before the text can be approved.', 'podcast-forge') . '</p>';
+        echo '<p class="description">' . esc_html__('This check comes from a model and does not block on its own. Serious findings, however, must be acknowledged before the text can be approved.', 'castsmith') . '</p>';
 
         $acknowledged = EpisodeRepository::decodeList($episode['diff_acknowledged'] ?? null);
 
         echo '<table class="widefat striped"><thead><tr>';
         foreach ([
-            __('Severity', 'podcast-forge'),
-            __('Type', 'podcast-forge'),
-            __('In the source', 'podcast-forge'),
-            __('In the speech script', 'podcast-forge'),
-            __('acknowledged', 'podcast-forge'),
+            __('Severity', 'castsmith'),
+            __('Type', 'castsmith'),
+            __('In the source', 'castsmith'),
+            __('In the speech script', 'castsmith'),
+            __('acknowledged', 'castsmith'),
         ] as $head) {
             echo '<th scope="col">' . esc_html($head) . '</th>';
         }
@@ -969,7 +969,7 @@ final class EpisodesPage
                 echo '<input type="checkbox" form="aaspf-script-form" name="acknowledged[]" value="' . esc_attr($key) . '"'
                     . checked(in_array($key, $acknowledged, true), true, false) . '>';
             } else {
-                echo '<span class="aaspf-segment-meta">' . esc_html__('not needed', 'podcast-forge') . '</span>';
+                echo '<span class="aaspf-segment-meta">' . esc_html__('not needed', 'castsmith') . '</span>';
             }
             echo '</td>';
             echo '</tr>';
@@ -990,7 +990,7 @@ final class EpisodesPage
             return;
         }
 
-        echo '<h3>' . esc_html__('Edit text', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Edit text', 'castsmith') . '</h3>';
         echo '<form id="aaspf-script-form" method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
         wp_nonce_field(EpisodeActions::ACTION_SAVE_SCRIPT);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_SAVE_SCRIPT) . '">';
@@ -998,11 +998,11 @@ final class EpisodesPage
         echo '<textarea name="script_text" rows="24" class="large-text code" spellcheck="true">' . esc_textarea($script) . '</textarea>';
         echo '<p class="description">' . esc_html(sprintf(
             /* translators: %d: number of characters */
-            __('%d characters. The number diff is recalculated after saving.', 'podcast-forge'),
+            __('%d characters. The number diff is recalculated after saving.', 'castsmith'),
             mb_strlen($script)
         )) . '</p>';
         echo '<p>';
-        submit_button(__('Save and check speech script', 'podcast-forge'), 'secondary', 'submit', false);
+        submit_button(__('Save and check speech script', 'castsmith'), 'secondary', 'submit', false);
         echo '</p>';
         echo '</form>';
     }
@@ -1019,7 +1019,7 @@ final class EpisodesPage
             echo '<div class="notice notice-success inline"><p><strong>';
             echo esc_html(sprintf(
                 /* translators: %s: date and time of the text approval */
-                __('Text approved on %s.', 'podcast-forge'),
+                __('Text approved on %s.', 'castsmith'),
                 (string) ($episode['text_approved_at'] ?? '')
             ));
             echo '</strong></p></div>';
@@ -1031,7 +1031,7 @@ final class EpisodesPage
 
 
         if ($blocked) {
-            echo '<p class="aaspf-status aaspf-status-fail">' . esc_html__('Locked while discrepancies are open. Correct the text, or acknowledge the overridable discrepancies and save.', 'podcast-forge') . '</p>';
+            echo '<p class="aaspf-status aaspf-status-fail">' . esc_html__('Locked while discrepancies are open. Correct the text, or acknowledge the overridable discrepancies and save.', 'castsmith') . '</p>';
 
             return;
         }
@@ -1041,7 +1041,7 @@ final class EpisodesPage
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_APPROVE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
         echo '<p>';
-        submit_button(__('Approve text', 'podcast-forge'), 'primary', 'submit', false);
+        submit_button(__('Approve text', 'castsmith'), 'primary', 'submit', false);
         echo '</p>';
         echo '</form>';
     }
@@ -1058,35 +1058,35 @@ final class EpisodesPage
         echo '<table class="widefat striped"><tbody>';
 
         $short = (string) ($episode['description_short'] ?? '');
-        self::row(__('Title', 'podcast-forge'), (string) $episode['episode_title']);
+        self::row(__('Title', 'castsmith'), (string) $episode['episode_title']);
         self::row(
-            __('Short description', 'podcast-forge'),
+            __('Short description', 'castsmith'),
             /* translators: %d: number of characters of the short description */
-            $short . sprintf(__(' (%d characters)', 'podcast-forge'), mb_strlen($short))
+            $short . sprintf(__(' (%d characters)', 'castsmith'), mb_strlen($short))
         );
-        self::row(__('Description', 'podcast-forge'), (string) ($episode['description_long'] ?? ''));
+        self::row(__('Description', 'castsmith'), (string) ($episode['description_long'] ?? ''));
 
         $keywords = EpisodeRepository::decodeList($episode['keywords'] ?? null);
-        self::row(__('Keywords', 'podcast-forge'), implode(', ', array_map('strval', $keywords)));
+        self::row(__('Keywords', 'castsmith'), implode(', ', array_map('strval', $keywords)));
 
         $chapters = EpisodeRepository::decodeList($episode['chapters'] ?? null);
         $lines = [];
         foreach ($chapters as $chapter) {
             $lines[] = sprintf('%d. %s', (int) ($chapter['abschnitt'] ?? 0), (string) ($chapter['titel'] ?? ''));
         }
-        self::row(__('Chapters', 'podcast-forge'), implode(' · ', $lines));
+        self::row(__('Chapters', 'castsmith'), implode(' · ', $lines));
 
         $disclosure = trim((string) ($episode['ai_disclosure_text'] ?? ''));
         if ($disclosure !== '') {
-            echo '<tr><th scope="row">' . esc_html__('Disclosure', 'podcast-forge') . '</th><td>';
+            echo '<tr><th scope="row">' . esc_html__('Disclosure', 'castsmith') . '</th><td>';
             echo '<em>' . nl2br(esc_html($disclosure)) . '</em>';
-            echo '<p class="description">' . esc_html__('Appears at the end of the show notes. Fixed for this episode; later changes in the settings only affect new episodes.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('Appears at the end of the show notes. Fixed for this episode; later changes in the settings only affect new episodes.', 'castsmith') . '</p>';
             echo '</td></tr>';
         }
 
         $added = EpisodeRepository::decodeList($episode['dictionary_added'] ?? null);
         if ($added !== []) {
-            echo '<tr><th scope="row">' . esc_html__('Dictionary extended', 'podcast-forge') . '</th><td>';
+            echo '<tr><th scope="row">' . esc_html__('Dictionary extended', 'castsmith') . '</th><td>';
             echo '<ul style="margin:0">';
             foreach ($added as $rule) {
                 printf(
@@ -1097,15 +1097,15 @@ final class EpisodesPage
                 );
             }
             echo '</ul>';
-            echo '<p class="description">' . esc_html__('Created automatically and bound as a new dictionary version before synthesis runs.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('Created automatically and bound as a new dictionary version before synthesis runs.', 'castsmith') . '</p>';
             echo '</td></tr>';
         }
 
         $candidates = EpisodeRepository::decodeList($episode['pronunciation_candidates'] ?? null);
         if ($candidates !== []) {
-            echo '<tr><th scope="row">' . esc_html__('Check pronunciation', 'podcast-forge') . '</th><td>';
+            echo '<tr><th scope="row">' . esc_html__('Check pronunciation', 'castsmith') . '</th><td>';
             echo esc_html(implode(', ', array_map('strval', $candidates)));
-            echo '<p class="description">' . esc_html__('These terms are not in the dictionary and might sound wrong. Creating a rule now is cheaper than re-recording them later.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('These terms are not in the dictionary and might sound wrong. Creating a rule now is cheaper than re-recording them later.', 'castsmith') . '</p>';
             echo '</td></tr>';
         }
 
@@ -1131,7 +1131,7 @@ final class EpisodesPage
 
 
         if ($status !== EpisodeStatus::TEXT_APPROVED && $segments === []) {
-            echo '<p class="description">' . esc_html__('The audio is only created after the text approval.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('The audio is only created after the text approval.', 'castsmith') . '</p>';
 
             return;
         }
@@ -1143,15 +1143,15 @@ final class EpisodesPage
         echo '<p>';
         submit_button(
             $segments === []
-                ? __('Create audio', 'podcast-forge')
-                : __('Create missing segments', 'podcast-forge'),
+                ? __('Create audio', 'castsmith')
+                : __('Create missing segments', 'castsmith'),
             'primary',
             'submit',
             false
         );
         echo '</p>';
         if ($segments !== []) {
-            echo '<p class="description">' . esc_html__('Unchanged segments keep their audio and cost nothing. Only what has changed is created.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('Unchanged segments keep their audio and cost nothing. Only what has changed is created.', 'castsmith') . '</p>';
         }
         echo '</form>';
 
@@ -1161,13 +1161,13 @@ final class EpisodesPage
 
         echo '<p>' . esc_html(sprintf(
             /* translators: 1: finished segments, 2: total, 3: duration */
-            __('%1$d of %2$d segments done, %3$s in total.', 'podcast-forge'),
+            __('%1$d of %2$d segments done, %3$s in total.', 'castsmith'),
             $summary['erzeugt'] + $summary['beanstandet'],
             $summary['gesamt'],
             Synthesis::formatDuration($summary['dauer_ms'])
         ));
         if ($summary['offen'] > 0) {
-            echo ' <span class="aaspf-status aaspf-status-warn">' . esc_html__('Synthesis is still running.', 'podcast-forge') . '</span>';
+            echo ' <span class="aaspf-status aaspf-status-warn">' . esc_html__('Synthesis is still running.', 'castsmith') . '</span>';
         }
         echo '</p>';
 
@@ -1193,7 +1193,7 @@ final class EpisodesPage
         wp_nonce_field(EpisodeActions::ACTION_MONTAGE);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_MONTAGE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-        echo '<button type="submit" class="aaspf-knopf">' . esc_html__('Rebuild assembly', 'podcast-forge') . '</button>';
+        echo '<button type="submit" class="aaspf-knopf">' . esc_html__('Rebuild assembly', 'castsmith') . '</button>';
         echo '</form>';
 
         if ($mix === '' || !EpisodeStorage::exists($mix)) {
@@ -1205,20 +1205,20 @@ final class EpisodesPage
         $withTimes = array_values(array_filter($chapters, static fn ($c): bool => isset($c['start_ms'])));
 
         echo '<div class="aaspf-abnahme">';
-        echo '<h3>' . esc_html__('Listen to the whole episode', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Listen to the whole episode', 'castsmith') . '</h3>';
 
         echo '<audio id="aaspf-folge" class="aaspf-folge-player" controls preload="metadata" src="'
             . esc_url(AudioStream::episodeUrl($id)) . '"></audio>';
 
         echo '<p class="description">' . esc_html(sprintf(
             /* translators: 1: duration, 2: file size */
-            __('%1$s, %2$s. The file is stored outside the web root and is only delivered after a permission check.', 'podcast-forge'),
+            __('%1$s, %2$s. The file is stored outside the web root and is only delivered after a permission check.', 'castsmith'),
             Synthesis::formatDuration((int) ($episode['duration_ms'] ?? 0)),
             size_format(EpisodeStorage::size($mix))
         )) . '</p>';
 
         if ($withTimes !== []) {
-            echo '<h4>' . esc_html__('Chapters — click to jump', 'podcast-forge') . '</h4>';
+            echo '<h4>' . esc_html__('Chapters — click to jump', 'castsmith') . '</h4>';
             echo '<ul class="aaspf-kapitel">';
             foreach ($withTimes as $chapter) {
                 $ms = (int) $chapter['start_ms'];
@@ -1230,14 +1230,14 @@ final class EpisodesPage
                 );
             }
             echo '</ul>';
-            echo '<p class="description">' . esc_html__('When jumping, the sentence should be heard from its start, not from the middle.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('When jumping, the sentence should be heard from its start, not from the middle.', 'castsmith') . '</p>';
         }
 
         $vtt = EpisodeStorage::mixRelativePath($id, 'vtt');
         if (EpisodeStorage::exists($vtt)) {
             echo '<p>' . esc_html(sprintf(
                 /* translators: %s: file size */
-                __('A transcript is available (%s), generated from the synthesis timestamps.', 'podcast-forge'),
+                __('A transcript is available (%s), generated from the synthesis timestamps.', 'castsmith'),
                 size_format(EpisodeStorage::size($vtt))
             )) . '</p>';
         }
@@ -1265,11 +1265,11 @@ final class EpisodesPage
 
         echo '<p class="description">';
         if ($status === EpisodeStatus::AWAITING_AUDIO) {
-            echo esc_html__('This is the raw assembly. Auphonic has mastered it in the meantime — the finished version is approved further down.', 'podcast-forge');
+            echo esc_html__('This is the raw assembly. Auphonic has mastered it in the meantime — the finished version is approved further down.', 'castsmith');
         } elseif ($status === EpisodeStatus::PRODUCING) {
-            echo esc_html__('This is the raw assembly. Auphonic is processing it right now; the approval comes afterwards, further down.', 'podcast-forge');
+            echo esc_html__('This is the raw assembly. Auphonic is processing it right now; the approval comes afterwards, further down.', 'castsmith');
         } else {
-            echo esc_html__('This is the raw assembly, still without levelling and loudness. If it sounds right, send it to Auphonic further down. Approval only comes after that.', 'podcast-forge');
+            echo esc_html__('This is the raw assembly, still without levelling and loudness. If it sounds right, send it to Auphonic further down. Approval only comes after that.', 'castsmith');
         }
         echo '</p>';
     }
@@ -1288,12 +1288,12 @@ final class EpisodesPage
         $id = (int) $episode['id'];
         $status = (string) $episode['status'];
 
-        echo '<h3>' . esc_html__('Audio approval', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Audio approval', 'castsmith') . '</h3>';
 
         if ($status === EpisodeStatus::DONE) {
             echo '<p class="aaspf-status aaspf-status-ok">' . esc_html(sprintf(
                 /* translators: %s: point in time */
-                __('Audio approved on %s. Publishing is done by hand in Podlove.', 'podcast-forge'),
+                __('Audio approved on %s. Publishing is done by hand in Podlove.', 'castsmith'),
                 (string) ($episode['audio_approved_at'] ?? '')
             )) . '</p>';
 
@@ -1303,8 +1303,8 @@ final class EpisodesPage
         if ($status !== EpisodeStatus::AWAITING_AUDIO) {
             echo '<p class="description">' . esc_html(
                 $status === EpisodeStatus::PRODUCING
-                    ? __('Auphonic is still processing. As soon as the callback arrives, the approval button appears here.', 'podcast-forge')
-                    : __('Send to Auphonic first. The mastered version is approved, not the raw assembly.', 'podcast-forge')
+                    ? __('Auphonic is still processing. As soon as the callback arrives, the approval button appears here.', 'castsmith')
+                    : __('Send to Auphonic first. The mastered version is approved, not the raw assembly.', 'castsmith')
             ) . '</p>';
 
             return;
@@ -1312,7 +1312,7 @@ final class EpisodesPage
 
         $slug = (string) ($episode['podlove_slug'] ?? '');
         if ($slug !== '' && file_exists(MediaStore::path($slug, 'mp3'))) {
-            echo '<p>' . esc_html__('The finished version, exactly as it appears in the feed:', 'podcast-forge') . '</p>';
+            echo '<p>' . esc_html__('The finished version, exactly as it appears in the feed:', 'castsmith') . '</p>';
             echo '<audio class="aaspf-folge-player" controls preload="metadata" src="'
                 . esc_url(MediaStore::url($slug, 'mp3')) . '"></audio>';
         }
@@ -1322,8 +1322,8 @@ final class EpisodesPage
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_APPROVE_AUDIO) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
         echo '<p><button type="submit" class="aaspf-knopf aaspf-knopf-haupt">'
-            . esc_html__('Approve audio', 'podcast-forge') . '</button></p>';
-        echo '<p class="description">' . esc_html__('Records that the episode has been listened to and found good. This does not publish anything — that is done by hand in Podlove.', 'podcast-forge') . '</p>';
+            . esc_html__('Approve audio', 'castsmith') . '</button></p>';
+        echo '<p class="description">' . esc_html__('Records that the episode has been listened to and found good. This does not publish anything — that is done by hand in Podlove.', 'castsmith') . '</p>';
         echo '</form>';
     }
 
@@ -1344,18 +1344,18 @@ final class EpisodesPage
         echo '<details class="aaspf-segmentliste"' . ($flagged > 0 ? ' open' : '') . '>';
         echo '<summary><strong>' . esc_html(sprintf(
             /* translators: %d: number of segments */
-            __('Listen to individual segments (%d)', 'podcast-forge'),
+            __('Listen to individual segments (%d)', 'castsmith'),
             count($segments)
         )) . '</strong>';
         if ($flagged > 0) {
             echo ' <span class="aaspf-badge aaspf-badge-warn">' . esc_html(sprintf(
                 /* translators: %d: number of flagged segments */
-                _n('%d flagged', '%d flagged', $flagged, 'podcast-forge'),
+                _n('%d flagged', '%d flagged', $flagged, 'castsmith'),
                 $flagged
             )) . '</span>';
         }
         echo '</summary>';
-        echo '<p class="description">' . esc_html__('Below each segment there is “Correct pronunciation" — behind it are both options: a dictionary rule for every future episode, or re-speaking the sentence yourself (Voice Changer) for this one episode only. “Flag" additionally marks the segment so it does not get lost while going through.', 'podcast-forge') . '</p>';
+        echo '<p class="description">' . esc_html__('Below each segment there is “Correct pronunciation" — behind it are both options: a dictionary rule for every future episode, or re-speaking the sentence yourself (Voice Changer) for this one episode only. “Flag" additionally marks the segment so it does not get lost while going through.', 'castsmith') . '</p>';
 
         foreach ($segments as $segment) {
             self::renderSegment($id, $segment);
@@ -1386,7 +1386,7 @@ final class EpisodesPage
         echo esc_html(Synthesis::formatDuration((int) $segment['duration_ms']));
         echo ' · ' . esc_html(SegmentStatus::labels()[$status] ?? $status);
         if ((string) $segment['source'] === 'sts') {
-            echo ' · ' . esc_html__('re-spoken', 'podcast-forge');
+            echo ' · ' . esc_html__('re-spoken', 'castsmith');
         }
         echo '</span>';
         echo '</div>';
@@ -1397,7 +1397,7 @@ final class EpisodesPage
             echo '<audio controls preload="none" data-aaspf="segment-audio" src="'
                 . esc_url(AudioStream::segmentUrl($segmentId)) . '"></audio>';
         } else {
-            echo '<p class="aaspf-status aaspf-status-pending">' . esc_html__('not created yet', 'podcast-forge') . '</p>';
+            echo '<p class="aaspf-status aaspf-status-pending">' . esc_html__('not created yet', 'castsmith') . '</p>';
         }
 
         if ($flagged && (string) $segment['note'] !== '') {
@@ -1409,7 +1409,7 @@ final class EpisodesPage
             $episodeId,
             $segmentId,
             EpisodeActions::ACTION_FLAG,
-            $flagged ? __('all good', 'podcast-forge') : __('flag', 'podcast-forge'),
+            $flagged ? __('all good', 'castsmith') : __('flag', 'castsmith'),
             $flagged ? '' : 'aaspf-knopf-warnung',
             !$flagged
         );
@@ -1417,7 +1417,7 @@ final class EpisodesPage
             $episodeId,
             $segmentId,
             EpisodeActions::ACTION_REGENERATE,
-            __('regenerate', 'podcast-forge')
+            __('regenerate', 'castsmith')
         );
         echo '</div>';
 
@@ -1426,7 +1426,7 @@ final class EpisodesPage
         // ever found the re-speaking option. It now sits on every segment and
         // already names both options in the expandable summary line.
         echo '<details class="aaspf-korrektur-auf"' . ($flagged ? ' open' : '') . '>';
-        echo '<summary>' . esc_html__('Correct pronunciation — create a rule or re-speak the sentence yourself', 'podcast-forge') . '</summary>';
+        echo '<summary>' . esc_html__('Correct pronunciation — create a rule or re-speak the sentence yourself', 'castsmith') . '</summary>';
         self::renderCorrection($segment);
         echo '</details>';
 
@@ -1442,7 +1442,7 @@ final class EpisodesPage
         echo '<input type="hidden" name="segment" value="' . esc_attr((string) $segmentId) . '">';
         if ($withNote) {
             echo '<input type="text" name="note" class="aaspf-feld-notiz" placeholder="'
-                . esc_attr__('what sounded wrong?', 'podcast-forge') . '">';
+                . esc_attr__('what sounded wrong?', 'castsmith') . '">';
         }
         echo '<button type="submit" class="aaspf-knopf ' . esc_attr($extraClass) . '">' . esc_html($label) . '</button>';
         echo '</form>';
@@ -1468,8 +1468,8 @@ final class EpisodesPage
         echo '<div class="aaspf-korrektur" data-segment="' . esc_attr((string) $segmentId) . '">';
 
         echo '<div class="aaspf-weg">';
-        echo '<h4><span class="aaspf-weg-nr">1</span>' . esc_html__('Dictionary rule — applies to every future episode', 'podcast-forge') . '</h4>';
-        echo '<p class="description">' . esc_html__('The right option for a recurring proper name. The phonetic transcription states exactly what should be spoken — the ˈ mark comes before the stressed syllable, ː lengthens the preceding vowel.', 'podcast-forge') . '</p>';
+        echo '<h4><span class="aaspf-weg-nr">1</span>' . esc_html__('Dictionary rule — applies to every future episode', 'castsmith') . '</h4>';
+        echo '<p class="description">' . esc_html__('The right option for a recurring proper name. The phonetic transcription states exactly what should be spoken — the ˈ mark comes before the stressed syllable, ː lengthens the preceding vowel.', 'castsmith') . '</p>';
 
         // If the dictionary already has a rule for the guessed term, it gets
         // replaced, not duplicated. That should be made visible.
@@ -1477,39 +1477,39 @@ final class EpisodesPage
         if ($currentRule !== '') {
             echo '<p class="aaspf-status aaspf-status-warn">' . esc_html(sprintf(
                 /* translators: 1: term, 2: existing pronunciation */
-                __('There is already the rule "%2$s" for "%1$s". It will be replaced, not duplicated.', 'podcast-forge'),
+                __('There is already the rule "%2$s" for "%1$s". It will be replaced, not duplicated.', 'castsmith'),
                 $guess,
                 $currentRule
             )) . '</p>';
         }
 
-        $art = \PodcastForge\Voice\DictionaryWriter::preferredRuleType();
+        $art = \Castsmith\Voice\DictionaryWriter::preferredRuleType();
 
         echo '<div class="aaspf-felder">';
-        echo '<div><label for="aaspf-begriff-' . esc_attr((string) $segmentId) . '">' . esc_html__('Term in the text', 'podcast-forge') . '</label>';
+        echo '<div><label for="aaspf-begriff-' . esc_attr((string) $segmentId) . '">' . esc_html__('Term in the text', 'castsmith') . '</label>';
         echo '<input type="text" id="aaspf-begriff-' . esc_attr((string) $segmentId) . '" data-aaspf="regel-begriff" value="' . esc_attr($guess) . '" placeholder="Fomalhaut"></div>';
-        echo '<div><label for="aaspf-ipa-' . esc_attr((string) $segmentId) . '">' . esc_html__('Phonetic transcription (IPA)', 'podcast-forge') . '</label>';
+        echo '<div><label for="aaspf-ipa-' . esc_attr((string) $segmentId) . '">' . esc_html__('Phonetic transcription (IPA)', 'castsmith') . '</label>';
         echo '<input type="text" id="aaspf-ipa-' . esc_attr((string) $segmentId) . '" data-aaspf="regel-ipa" placeholder="foːmalˈhuːt"></div>';
-        echo '<div><label for="aaspf-alias-' . esc_attr((string) $segmentId) . '">' . esc_html__('Respelling (fallback)', 'podcast-forge') . '</label>';
+        echo '<div><label for="aaspf-alias-' . esc_attr((string) $segmentId) . '">' . esc_html__('Respelling (fallback)', 'castsmith') . '</label>';
         echo '<input type="text" id="aaspf-alias-' . esc_attr((string) $segmentId) . '" data-aaspf="regel-alias" placeholder="Fomal-hut"></div>';
-        echo '<div><button type="button" class="aaspf-knopf aaspf-knopf-haupt" data-aaspf="regel-senden">' . esc_html__('Create rule', 'podcast-forge') . '</button></div>';
+        echo '<div><button type="button" class="aaspf-knopf aaspf-knopf-haupt" data-aaspf="regel-senden">' . esc_html__('Create rule', 'castsmith') . '</button></div>';
         echo '</div>';
 
         echo '<p class="aaspf-hinweis">' . esc_html(
             $art === 'phoneme'
-                ? __('The configured model understands phonetic transcription — it will be used. The respelling is stored as a comment in case you later switch to a model without phonetic support.', 'podcast-forge')
-                : __('The configured model silently discards phonetic transcription — the respelling will be used. The phonetic transcription is stored as a comment so that switching to Eleven v3 means no rework.', 'podcast-forge')
+                ? __('The configured model understands phonetic transcription — it will be used. The respelling is stored as a comment in case you later switch to a model without phonetic support.', 'castsmith')
+                : __('The configured model silently discards phonetic transcription — the respelling will be used. The phonetic transcription is stored as a comment so that switching to Eleven v3 means no rework.', 'castsmith')
         ) . '</p>';
         echo '</div>';
 
         echo '<div class="aaspf-weg">';
-        echo '<h4><span class="aaspf-weg-nr">2</span>' . esc_html__('Re-speak the sentence — applies only to this episode', 'podcast-forge') . '</h4>';
-        echo '<p class="description">' . esc_html__('Read the whole sentence aloud, not just the wrong word. The Voice Changer carries over the intonation of the recording; a word spoken on its own sounds noticeably out of place between two sentences.', 'podcast-forge') . '</p>';
+        echo '<h4><span class="aaspf-weg-nr">2</span>' . esc_html__('Re-speak the sentence — applies only to this episode', 'castsmith') . '</h4>';
+        echo '<p class="description">' . esc_html__('Read the whole sentence aloud, not just the wrong word. The Voice Changer carries over the intonation of the recording; a word spoken on its own sounds noticeably out of place between two sentences.', 'castsmith') . '</p>';
         echo '<p class="aaspf-vorlesen">' . esc_html((string) $segment['text']) . '</p>';
         echo '<div class="aaspf-aktionen">';
-        echo '<button type="button" class="aaspf-knopf" data-aaspf="aufnahme"><span class="aaspf-punkt"></span><span data-aaspf="beschriftung">' . esc_html__('Start recording', 'podcast-forge') . '</span></button>';
+        echo '<button type="button" class="aaspf-knopf" data-aaspf="aufnahme"><span class="aaspf-punkt"></span><span data-aaspf="beschriftung">' . esc_html__('Start recording', 'castsmith') . '</span></button>';
         echo '<span class="aaspf-segment-meta" data-aaspf="uhr"></span>';
-        echo '<button type="button" class="aaspf-knopf aaspf-knopf-haupt" data-aaspf="uebernehmen" disabled>' . esc_html__('apply', 'podcast-forge') . '</button>';
+        echo '<button type="button" class="aaspf-knopf aaspf-knopf-haupt" data-aaspf="uebernehmen" disabled>' . esc_html__('apply', 'castsmith') . '</button>';
         echo '</div>';
         echo '<audio class="aaspf-vorschau-player" controls data-aaspf="vorschau" hidden></audio>';
         echo '</div>';
@@ -1538,18 +1538,18 @@ final class EpisodesPage
     {
         echo '<code>' . esc_html($uuid) . '</code> ';
         echo '<a href="' . esc_url('https://auphonic.com/engine/status/' . rawurlencode($uuid)) . '" target="_blank" rel="noopener">'
-            . esc_html__('view on Auphonic', 'podcast-forge') . '</a>';
+            . esc_html__('view on Auphonic', 'castsmith') . '</a>';
 
         if ((string) $episode['status'] !== EpisodeStatus::PRODUCING) {
             return;
         }
 
         try {
-            $details = \PodcastForge\Auphonic\AuphonicClient::fromSettings()->details($uuid);
+            $details = \Castsmith\Auphonic\AuphonicClient::fromSettings()->details($uuid);
         } catch (\Throwable $e) {
             echo '<p class="aaspf-status aaspf-status-warn">' . esc_html(sprintf(
                 /* translators: %s: error message */
-                __('The status could not be retrieved: %s', 'podcast-forge'),
+                __('The status could not be retrieved: %s', 'castsmith'),
                 $e->getMessage()
             )) . '</p>';
 
@@ -1562,7 +1562,7 @@ final class EpisodesPage
         // 3 means done. If the episode is then still marked as "running", the
         // callback got lost or the step after it failed.
         if ($code === 3) {
-            echo '<p class="aaspf-status aaspf-status-warn">' . esc_html__('Auphonic is done, but the episode is still marked as "producing". The callback is missing or fetching the result failed — "Resume run" catches up on it.', 'podcast-forge') . '</p>';
+            echo '<p class="aaspf-status aaspf-status-warn">' . esc_html__('Auphonic is done, but the episode is still marked as "producing". The callback is missing or fetching the result failed — "Resume run" catches up on it.', 'castsmith') . '</p>';
 
             return;
         }
@@ -1570,7 +1570,7 @@ final class EpisodesPage
         if ($code === 9 || $code === 2) {
             echo '<p class="aaspf-status aaspf-status-fail">' . esc_html(sprintf(
                 /* translators: %s: state reported by Auphonic */
-                __('Auphonic reports an error: %s', 'podcast-forge'),
+                __('Auphonic reports an error: %s', 'castsmith'),
                 $wort !== '' ? $wort : (string) $code
             )) . '</p>';
 
@@ -1579,7 +1579,7 @@ final class EpisodesPage
 
         echo '<p class="aaspf-status aaspf-status-running">' . esc_html(sprintf(
             /* translators: %s: state reported by Auphonic */
-            __('Running — Auphonic reports "%s". The status is fetched again when the page is reloaded.', 'podcast-forge'),
+            __('Running — Auphonic reports "%s". The status is fetched again when the page is reloaded.', 'castsmith'),
             $wort !== '' ? $wort : (string) $code
         )) . '</p>';
     }
@@ -1598,27 +1598,27 @@ final class EpisodesPage
         $postId = (int) ($episode['podlove_post_id'] ?? 0);
         $slug = (string) ($episode['podlove_slug'] ?? '');
         if ($slug === '') {
-            $slug = SlugBuilder::fromTitle((string) ($episode['episode_title'] ?? ''), \PodcastForge\Settings\Options::filePrefix());
+            $slug = SlugBuilder::fromTitle((string) ($episode['episode_title'] ?? ''), \Castsmith\Settings\Options::filePrefix());
         }
 
 
-        echo '<h3>' . esc_html__('Production', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Production', 'castsmith') . '</h3>';
         echo '<table class="widefat striped"><tbody>';
 
-        echo '<tr><th scope="row">' . esc_html__('Auphonic', 'podcast-forge') . '</th><td>';
+        echo '<tr><th scope="row">' . esc_html__('Auphonic', 'castsmith') . '</th><td>';
         if ($uuid === '') {
-            echo esc_html__('not sent yet', 'podcast-forge');
+            echo esc_html__('not sent yet', 'castsmith');
         } else {
             self::renderAuphonicStand($episode, $uuid);
         }
         echo '</td></tr>';
 
-        echo '<tr><th scope="row">' . esc_html__('Callback URL', 'podcast-forge') . '</th><td><code>'
+        echo '<tr><th scope="row">' . esc_html__('Callback URL', 'castsmith') . '</th><td><code>'
             . esc_html(AuphonicWebhook::url()) . '</code>';
-        echo '<p class="description">' . esc_html__('Auphonic calls this URL as soon as the production is finished. There is no polling.', 'podcast-forge') . '</p>';
+        echo '<p class="description">' . esc_html__('Auphonic calls this URL as soon as the production is finished. There is no polling.', 'castsmith') . '</p>';
         echo '</td></tr>';
 
-        echo '<tr><th scope="row">' . esc_html__('Podlove draft', 'podcast-forge') . '</th><td>';
+        echo '<tr><th scope="row">' . esc_html__('Podlove draft', 'castsmith') . '</th><td>';
         if ($postId > 0 && get_post($postId) !== null) {
             $status = (string) get_post_status($postId);
             printf(
@@ -1628,11 +1628,11 @@ final class EpisodesPage
                 esc_html($status)
             );
             if ($status !== 'draft') {
-                echo ' <span class="aaspf-status aaspf-status-warn">' . esc_html__('no longer a draft', 'podcast-forge') . '</span>';
+                echo ' <span class="aaspf-status aaspf-status-warn">' . esc_html__('no longer a draft', 'castsmith') . '</span>';
             }
-            echo '<p class="description">' . esc_html__('The draft is never published automatically. Listen, review, then publish by hand.', 'podcast-forge') . '</p>';
+            echo '<p class="description">' . esc_html__('The draft is never published automatically. Listen, review, then publish by hand.', 'castsmith') . '</p>';
         } else {
-            echo esc_html__('created after the Auphonic callback', 'podcast-forge');
+            echo esc_html__('created after the Auphonic callback', 'castsmith');
         }
         echo '</td></tr>';
 
@@ -1650,7 +1650,7 @@ final class EpisodesPage
         $uuid = (string) ($episode['auphonic_production_uuid'] ?? '');
         $slug = (string) ($episode['podlove_slug'] ?? '');
         if ($slug === '') {
-            $slug = SlugBuilder::fromTitle((string) ($episode['episode_title'] ?? ''), \PodcastForge\Settings\Options::filePrefix());
+            $slug = SlugBuilder::fromTitle((string) ($episode['episode_title'] ?? ''), \Castsmith\Settings\Options::filePrefix());
         }
 
         echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '">';
@@ -1658,15 +1658,15 @@ final class EpisodesPage
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_PRODUCE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
         echo '<div class="aaspf-felder">';
-        echo '<div><label for="aaspf-slug">' . esc_html__('Podlove slug', 'podcast-forge') . '</label>';
+        echo '<div><label for="aaspf-slug">' . esc_html__('Podlove slug', 'castsmith') . '</label>';
         echo '<input type="text" id="aaspf-slug" name="slug" value="' . esc_attr($slug) . '" class="regular-text"></div>';
         echo '<div><button type="submit" class="aaspf-knopf aaspf-knopf-haupt">'
-            . esc_html($uuid === '' ? __('Send to Auphonic', 'podcast-forge') : __('send again', 'podcast-forge'))
+            . esc_html($uuid === '' ? __('Send to Auphonic', 'castsmith') : __('send again', 'castsmith'))
             . '</button></div>';
         echo '</div>';
         echo '<p class="description">' . esc_html(sprintf(
             /* translators: %s: file name */
-            __('Determines the public file name: %s.mp3. Chapter marks and metadata are sent along; speech recognition must be switched off in the Auphonic preset.', 'podcast-forge'),
+            __('Determines the public file name: %s.mp3. Chapter marks and metadata are sent along; speech recognition must be switched off in the Auphonic preset.', 'castsmith'),
             $slug
         )) . '</p>';
         echo '</form>';
@@ -1688,23 +1688,23 @@ final class EpisodesPage
             return;
         }
 
-        echo '<h3>' . esc_html__('Usage', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Usage', 'castsmith') . '</h3>';
         echo '<table class="widefat striped" style="max-width:46em"><tbody>';
         printf(
             '<tr><th scope="row">%s</th><td>%s</td></tr>',
-            esc_html__('Anthropic, estimated', 'podcast-forge'),
+            esc_html__('Anthropic, estimated', 'castsmith'),
             /* translators: %s: estimated cost in US cents */
-            esc_html(sprintf(__('%s US cents', 'podcast-forge'), number_format_i18n($cents, 2)))
+            esc_html(sprintf(__('%s US cents', 'castsmith'), number_format_i18n($cents, 2)))
         );
         printf(
             '<tr><th scope="row">%s</th><td>%s</td></tr>',
-            esc_html__('ElevenLabs quota', 'podcast-forge'),
+            esc_html__('ElevenLabs quota', 'castsmith'),
             /* translators: %s: number of billed characters */
-            esc_html(sprintf(__('%s characters', 'podcast-forge'), number_format_i18n($chars)))
+            esc_html(sprintf(__('%s characters', 'castsmith'), number_format_i18n($chars)))
         );
         printf(
             '<tr><th scope="row">%s</th><td>%s</td></tr>',
-            esc_html__('Storage used', 'podcast-forge'),
+            esc_html__('Storage used', 'castsmith'),
             esc_html(size_format($bytes))
         );
         echo '</tbody></table>';
@@ -1714,8 +1714,8 @@ final class EpisodesPage
             wp_nonce_field(EpisodeActions::ACTION_CLEANUP);
             echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_CLEANUP) . '">';
             echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-            echo '<button type="submit" class="aaspf-knopf">' . esc_html__('Remove raw segment recordings', 'podcast-forge') . '</button>';
-            echo '<p class="description">' . esc_html__('Removes only the individual segments. The finished episode and the transcript remain. Deliberately not automatic — when the next problem comes up, you still want to have them.', 'podcast-forge') . '</p>';
+            echo '<button type="submit" class="aaspf-knopf">' . esc_html__('Remove raw segment recordings', 'castsmith') . '</button>';
+            echo '<p class="description">' . esc_html__('Removes only the individual segments. The finished episode and the transcript remain. Deliberately not automatic — when the next problem comes up, you still want to have them.', 'castsmith') . '</p>';
             echo '</form>';
         }
     }
@@ -1725,7 +1725,7 @@ final class EpisodesPage
      */
     private static function existingRule(string $grapheme): string
     {
-        $document = \PodcastForge\Voice\PronunciationDictionary::document();
+        $document = \Castsmith\Voice\PronunciationDictionary::document();
         if ($document === null) {
             return '';
         }
@@ -1746,7 +1746,7 @@ final class EpisodesPage
             return;
         }
 
-        echo '<h3>' . esc_html__('Run log', 'podcast-forge') . '</h3>';
+        echo '<h3>' . esc_html__('Run log', 'castsmith') . '</h3>';
         echo '<table class="widefat striped"><tbody>';
 
         foreach (array_reverse($entries) as $entry) {
@@ -1762,13 +1762,13 @@ final class EpisodesPage
 
     private static function renderDangerZone(int $id): void
     {
-        echo '<h3>' . esc_html__('Delete', 'podcast-forge') . '</h3>';
-        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-aaspf-confirm="' . esc_attr__('Delete this episode including its segments?', 'podcast-forge') . '">';
+        echo '<h3>' . esc_html__('Delete', 'castsmith') . '</h3>';
+        echo '<form method="post" action="' . esc_url(admin_url('admin-post.php')) . '" data-aaspf-confirm="' . esc_attr__('Delete this episode including its segments?', 'castsmith') . '">';
         wp_nonce_field(EpisodeActions::ACTION_DELETE);
         echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_DELETE) . '">';
         echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
         echo '<p>';
-        submit_button(__('Delete episode', 'podcast-forge'), 'delete', 'submit', false);
+        submit_button(__('Delete episode', 'castsmith'), 'delete', 'submit', false);
         echo '</p>';
         echo '</form>';
     }

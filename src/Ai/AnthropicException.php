@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Ai;
+namespace Castsmith\Ai;
 
 final class AnthropicException extends \RuntimeException
 {

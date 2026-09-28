@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Ai\AnthropicResponse;
-use PodcastForge\Ai\Pricing;
+use Castsmith\Ai\AnthropicResponse;
+use Castsmith\Ai\Pricing;
 use PHPUnit\Framework\TestCase;
 
 /**

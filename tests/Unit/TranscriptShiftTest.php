@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Audio\Transcript;
+use Castsmith\Audio\Transcript;
 use PHPUnit\Framework\TestCase;
 
 final class TranscriptShiftTest extends TestCase

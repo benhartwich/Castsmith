@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\CryptoException;
+use Castsmith\Settings\Options;
+use Castsmith\Support\CryptoException;
 
 /**
  * Path A for corrections: a re-recorded passage in the timbre of the clone.
@@ -44,16 +44,16 @@ final class VoiceChanger
         try {
             $key = Options::secret('elevenlabs_api_key');
         } catch (CryptoException $e) {
-            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'podcast-forge') . $e->getMessage(), 0, $e);
+            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'castsmith') . $e->getMessage(), 0, $e);
         }
 
         if ($key === '') {
-            throw new \RuntimeException(__('No ElevenLabs API key has been configured.', 'podcast-forge'));
+            throw new \RuntimeException(__('No ElevenLabs API key has been configured.', 'castsmith'));
         }
 
         $voiceId = Options::get('elevenlabs_voice_id');
         if ($voiceId === '') {
-            throw new \RuntimeException(__('No voice ID has been configured.', 'podcast-forge'));
+            throw new \RuntimeException(__('No voice ID has been configured.', 'castsmith'));
         }
 
         $format = Options::get('tts_output_format');
@@ -77,11 +77,11 @@ final class VoiceChanger
     public function convert(string $recording, string $filename, int $seed): string
     {
         if ($recording === '') {
-            throw new \RuntimeException(__('The recording is empty.', 'podcast-forge'));
+            throw new \RuntimeException(__('The recording is empty.', 'castsmith'));
         }
 
         if (strlen($recording) > self::MAX_UPLOAD_BYTES) {
-            throw new \RuntimeException(__('The recording is too large.', 'podcast-forge'));
+            throw new \RuntimeException(__('The recording is too large.', 'castsmith'));
         }
 
         $boundary = 'aaspf' . bin2hex(random_bytes(16));
@@ -120,7 +120,7 @@ final class VoiceChanger
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'podcast-forge') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -135,11 +135,11 @@ final class VoiceChanger
             }
 
             /* translators: 1: HTTP status code, 2: error detail from ElevenLabs */
-            throw new \RuntimeException(sprintf(__('ElevenLabs responded with HTTP %1$d. %2$s', 'podcast-forge'), $code, $detail));
+            throw new \RuntimeException(sprintf(__('ElevenLabs responded with HTTP %1$d. %2$s', 'castsmith'), $code, $detail));
         }
 
         if ($result === '') {
-            throw new \RuntimeException(__('The response contains no audio.', 'podcast-forge'));
+            throw new \RuntimeException(__('The response contains no audio.', 'castsmith'));
         }
 
         return $result;

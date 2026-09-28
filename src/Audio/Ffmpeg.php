@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Audio;
+namespace Castsmith\Audio;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\ProcessRunner;
+use Castsmith\Settings\Options;
+use Castsmith\Support\ProcessRunner;
 
 /**
  * Thin wrapper around ffmpeg and ffprobe.
@@ -271,7 +271,7 @@ final class Ffmpeg
             // Fade out over the end so the bridge gets quieter under the
             // incoming voice (quadratic: quickly gone, softly trailing off).
             $dauer = (int) $separatorAt[$boundaries[0]]['dauer'];
-            $fadeMs = min(\PodcastForge\Audio\MusicBed::SEPARATOR_FADE_MS, (int) ($dauer / 2));
+            $fadeMs = min(\Castsmith\Audio\MusicBed::SEPARATOR_FADE_MS, (int) ($dauer / 2));
             $filters[] = sprintf(
                 '[%d:a]aresample=44100,aformat=channel_layouts=stereo,loudnorm=I=-21:TP=-3:LRA=11,aresample=44100,afade=t=in:d=0.05,afade=t=out:st=%s:d=%s:curve=qua%s',
                 $index++,
@@ -302,7 +302,7 @@ final class Ffmpeg
 
         $result = ProcessRunner::run($command);
         if (!$result['ok'] || !is_readable($output)) {
-            throw new \RuntimeException(__('The music could not be mixed in: ', 'podcast-forge') . mb_substr($result['output'] !== '' ? $result['output'] : $result['error'], -300));
+            throw new \RuntimeException(__('The music could not be mixed in: ', 'castsmith') . mb_substr($result['output'] !== '' ? $result['output'] : $result['error'], -300));
         }
     }
 
@@ -321,13 +321,13 @@ final class Ffmpeg
         int $bitrateKbps = 192
     ): void {
         if ($files === []) {
-            throw new \RuntimeException(__('There is nothing to assemble.', 'podcast-forge'));
+            throw new \RuntimeException(__('There is nothing to assemble.', 'castsmith'));
         }
 
         $reference = self::probe($files[0]);
         if ($reference === null) {
             /* translators: %s: path of the first audio file */
-            throw new \RuntimeException(sprintf(__('The first file could not be read: %s', 'podcast-forge'), $files[0]));
+            throw new \RuntimeException(sprintf(__('The first file could not be read: %s', 'castsmith'), $files[0]));
         }
 
         $rate = $reference['sample_rate'];
@@ -430,7 +430,7 @@ final class Ffmpeg
         $result = ProcessRunner::run($command);
 
         if (!$result['ok'] || !is_readable($output)) {
-            throw new \RuntimeException(__('ffmpeg failed: ', 'podcast-forge') . mb_substr($result['output'], -500));
+            throw new \RuntimeException(__('ffmpeg failed: ', 'castsmith') . mb_substr($result['output'], -500));
         }
     }
 }

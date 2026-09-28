@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Segments;
+namespace Castsmith\Segments;
 
 final class SegmentStatus
 {
@@ -17,11 +17,11 @@ final class SegmentStatus
     public static function labels(): array
     {
         return [
-            self::PENDING   => __( 'pending', 'podcast-forge' ),
-            self::GENERATED => __( 'generated', 'podcast-forge' ),
-            self::FLAGGED   => __( 'flagged', 'podcast-forge' ),
-            self::PATCHED   => __( 're-recorded', 'podcast-forge' ),
-            self::APPROVED  => __( 'approved', 'podcast-forge' ),
+            self::PENDING   => __( 'pending', 'castsmith' ),
+            self::GENERATED => __( 'generated', 'castsmith' ),
+            self::FLAGGED   => __( 'flagged', 'castsmith' ),
+            self::PATCHED   => __( 're-recorded', 'castsmith' ),
+            self::APPROVED  => __( 'approved', 'castsmith' ),
         ];
     }
 }

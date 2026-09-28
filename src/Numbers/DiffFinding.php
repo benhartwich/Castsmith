@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Numbers;
+namespace Castsmith\Numbers;
 
 /**
  * A single discrepancy between the fact script and the spoken script.

@@ -1,8 +1,8 @@
-# Podcast Forge
+# Castsmith
 
 Turns a fact script, a WordPress post or your own source into a finished podcast episode — spoken with a clone of your own voice, checked number by number, mastered and handed to [Podlove](https://podlove.org/) as a draft. Two steps always stay with a human: approving the text and approving the audio.
 
-Podcast Forge grew out of the monthly sky-preview podcast of an astronomy club and is released as open source in the hope that it is useful to others. **There is no support.** Issues and pull requests are welcome, but nobody is obliged to answer them.
+Castsmith grew out of the monthly sky-preview podcast of an astronomy club and is released as open source in the hope that it is useful to others. **There is no support.** Issues and pull requests are welcome, but nobody is obliged to answer them.
 
 ## What it does
 
@@ -42,27 +42,27 @@ The setting *Assembly* chooses automatically; a health check shows which path is
 From a release ZIP: upload it under *Plugins → Add New → Upload*. From source:
 
 ```sh
-git clone https://github.com/benhartwich/podcast-forge.git wp-content/plugins/podcast-forge
-cd wp-content/plugins/podcast-forge && composer install --no-dev
+git clone https://github.com/benhartwich/castsmith.git wp-content/plugins/castsmith
+cd wp-content/plugins/castsmith && composer install --no-dev
 ```
 
-Then open *Podcast Forge → Settings*: podcast details (name, host, sign-off, language), API keys, voice, Auphonic preset. The health checks at the top tell you what is still missing.
+Then open *Castsmith → Settings*: podcast details (name, host, sign-off, language), API keys, voice, Auphonic preset. The health checks at the top tell you what is still missing.
 
 ## Prompts and languages
 
-The prompts live in `prompts/de/` and `prompts/en/` and can be edited in the backend (*Podcast Forge → Prompts*) or overridden by files in a directory of your choice. Placeholders `{podcast}`, `{host}`, `{editor}`, `{sign_off}` are filled from the settings. The interface is English with a German translation; other languages can be added via `languages/podcast-forge.pot`.
+The prompts live in `prompts/de/` and `prompts/en/` and can be edited in the backend (*Castsmith → Prompts*) or overridden by files in a directory of your choice. Placeholders `{podcast}`, `{host}`, `{editor}`, `{sign_off}` are filled from the settings. The interface is English with a German translation; other languages can be added via `languages/castsmith.pot`.
 
 ## Sources
 
 A source brings an episode to an imported fact script; from there the chain is the same for all. Add-ons register their own:
 
 ```php
-add_action('podcast_forge_register_sources', static function (): void {
-    \PodcastForge\Source\Sources::register(new My\Plugin\CalendarSource());
+add_action('castsmith_register_sources', static function (): void {
+    \Castsmith\Source\Sources::register(new My\Plugin\CalendarSource());
 });
 ```
 
-Extend `PodcastForge\Source\AbstractSource` and implement `id()`, `label()`, `description()` and `renderStartForm()`; create episodes with `PodcastForge\Source\EpisodeFactory::fromDocument()`. Sources that work in the background can report progress, contribute checklist items, block the approval, add show-notes sections and more — see `src/Source/Source.php`. Further hooks for add-ons: `podcast_forge_option_defaults`, `podcast_forge_settings_fields`, `podcast_forge_settings_sections`, `podcast_forge_overview_cards`, `podcast_forge_overview_panels`, `podcast_forge_health_checks`, `podcast_forge_daily`.
+Extend `Castsmith\Source\AbstractSource` and implement `id()`, `label()`, `description()` and `renderStartForm()`; create episodes with `Castsmith\Source\EpisodeFactory::fromDocument()`. Sources that work in the background can report progress, contribute checklist items, block the approval, add show-notes sections and more — see `src/Source/Source.php`. Further hooks for add-ons: `castsmith_option_defaults`, `castsmith_settings_fields`, `castsmith_settings_sections`, `castsmith_overview_cards`, `castsmith_overview_panels`, `castsmith_health_checks`, `castsmith_daily`.
 
 ## Development
 
@@ -75,7 +75,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) and [docs/ARCHITECTURE.md](docs/ARCHITECT
 
 ## Privacy
 
-Podcast Forge sends the texts of an episode to Anthropic, the spoken texts (and your re-recordings) to ElevenLabs and the assembled audio with its metadata to Auphonic — only when you start the corresponding step. Details and links to the providers' terms are in `readme.txt` under *External services*.
+Castsmith sends the texts of an episode to Anthropic, the spoken texts (and your re-recordings) to ElevenLabs and the assembled audio with its metadata to Auphonic — only when you start the corresponding step. Details and links to the providers' terms are in `readme.txt` under *External services*.
 
 ## License
 

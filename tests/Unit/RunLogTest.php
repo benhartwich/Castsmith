@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Support\RunLog;
+use Castsmith\Support\RunLog;
 use PHPUnit\Framework\TestCase;
 
 /**

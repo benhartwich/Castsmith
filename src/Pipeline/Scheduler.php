@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Pipeline;
+namespace Castsmith\Pipeline;
 
-use PodcastForge\Jobs\Scheduler as JobScheduler;
+use Castsmith\Jobs\Scheduler as JobScheduler;
 
 /**
  * Queues the pipeline steps as background jobs.
@@ -34,21 +34,21 @@ final class Scheduler
         add_action(self::HOOK_DAILY, [self::class, 'daily'], 10, 0);
         add_action('init', [self::class, 'ensureDaily'], 20);
 
-        \PodcastForge\Ai\BatchGate::register();
+        \Castsmith\Ai\BatchGate::register();
     }
 
     /**
      * Once a day: record the state of the services for the overview, clean up
      * collected batch responses after one week — and give add-ons the
      * opportunity to run their own tasks (such as creating an episode
-     * according to a calendar) via the `podcast_forge_daily` hook.
+     * according to a calendar) via the `castsmith_daily` hook.
      */
     public static function daily(): void
     {
-        \PodcastForge\Health\Registry::runAll();
-        \PodcastForge\Ai\BatchGate::cleanup();
+        \Castsmith\Health\Registry::runAll();
+        \Castsmith\Ai\BatchGate::cleanup();
 
-        do_action('podcast_forge_daily');
+        do_action('castsmith_daily');
     }
 
     /**
@@ -62,9 +62,9 @@ final class Scheduler
             return;
         }
 
-        if (!as_has_scheduled_action(self::HOOK_DAILY, [], \PodcastForge\Jobs\Scheduler::GROUP)) {
+        if (!as_has_scheduled_action(self::HOOK_DAILY, [], \Castsmith\Jobs\Scheduler::GROUP)) {
             $first = new \DateTimeImmutable('tomorrow 06:00', wp_timezone());
-            as_schedule_recurring_action($first->getTimestamp(), DAY_IN_SECONDS, self::HOOK_DAILY, [], \PodcastForge\Jobs\Scheduler::GROUP);
+            as_schedule_recurring_action($first->getTimestamp(), DAY_IN_SECONDS, self::HOOK_DAILY, [], \Castsmith\Jobs\Scheduler::GROUP);
         }
 
         set_transient('aaspf_taeglich_ok', 1, DAY_IN_SECONDS);

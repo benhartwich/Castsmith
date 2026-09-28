@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Audio;
+namespace Castsmith\Audio;
 
 /**
  * Reads the chapter marks (ID3v2 CHAP frames) from the start of an MP3 file.

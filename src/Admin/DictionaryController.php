@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Settings\SettingsPage;
-use PodcastForge\Voice\DictionaryWriter;
-use PodcastForge\Voice\PronunciationDictionary;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Settings\SettingsPage;
+use Castsmith\Voice\DictionaryWriter;
+use Castsmith\Voice\PronunciationDictionary;
 
 /**
  * Path B: create a dictionary rule directly from the segment row.
@@ -29,7 +29,7 @@ final class DictionaryController
     public static function handle(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_send_json_error(['message' => __('You do not have permission to do this.', 'podcast-forge')], 403);
+            wp_send_json_error(['message' => __('You do not have permission to do this.', 'castsmith')], 403);
         }
 
         check_ajax_referer(self::NONCE, 'nonce');
@@ -53,8 +53,8 @@ final class DictionaryController
         if ($segment !== null) {
             EpisodeRepository::log((int) $segment['episode_id'], 'woerterbuch', sprintf(
                 /* translators: 1: created or replaced, 2: rule type (phoneme or alias), 3: term, 4: IPA or alias pronunciation, 5: dictionary version ID, 6: number of rules */
-                __('Rule %1$s (%2$s): "%3$s" is spoken as "%4$s". New version %5$s with %6$d rules.', 'podcast-forge'),
-                !empty($result['ersetzt']) ? __('replaced', 'podcast-forge') : __('created', 'podcast-forge'),
+                __('Rule %1$s (%2$s): "%3$s" is spoken as "%4$s". New version %5$s with %6$d rules.', 'castsmith'),
+                !empty($result['ersetzt']) ? __('replaced', 'castsmith') : __('created', 'castsmith'),
                 (string) ($result['art'] ?? ''),
                 $grapheme,
                 $result['art'] === 'phoneme' ? $ipa : $alias,
@@ -66,8 +66,8 @@ final class DictionaryController
         wp_send_json_success([
             'message' => sprintf(
                 /* translators: 1: created or replaced, 2: term, 3: number of rules */
-                __('Rule for "%2$s" %1$s. The dictionary now has %3$d rules and is bound. Regenerate the affected segments for it to take effect.', 'podcast-forge'),
-                !empty($result['ersetzt']) ? __('replaced', 'podcast-forge') : __('created', 'podcast-forge'),
+                __('Rule for "%2$s" %1$s. The dictionary now has %3$d rules and is bound. Regenerate the affected segments for it to take effect.', 'castsmith'),
+                !empty($result['ersetzt']) ? __('replaced', 'castsmith') : __('created', 'castsmith'),
                 $grapheme,
                 $result['rules']
             ),

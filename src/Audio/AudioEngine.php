@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Audio;
+namespace Castsmith\Audio;
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Support\ProcessRunner;
+use Castsmith\Settings\Options;
+use Castsmith\Support\ProcessRunner;
 
 /**
  * Which assembly path is in use: ffmpeg on the server, or plain PHP with
@@ -45,16 +45,16 @@ final class AudioEngine
         $setting = Options::get('montage_mode');
         if ($setting === self::MODE_FFMPEG) {
             return self::ffmpegAvailable()
-                ? __('ffmpeg, as set.', 'podcast-forge')
-                : __('ffmpeg is set, but cannot be called — assembly will fail.', 'podcast-forge');
+                ? __('ffmpeg, as set.', 'castsmith')
+                : __('ffmpeg is set, but cannot be called — assembly will fail.', 'castsmith');
         }
         if ($setting === self::MODE_PHP) {
-            return __('PHP with Auphonic, as set.', 'podcast-forge');
+            return __('PHP with Auphonic, as set.', 'castsmith');
         }
 
         return self::ffmpegAvailable()
-            ? __('Automatic: ffmpeg is available.', 'podcast-forge')
-            : __('Automatic: ffmpeg is not available here, so segments are joined in PHP and Auphonic adds the music.', 'podcast-forge');
+            ? __('Automatic: ffmpeg is available.', 'castsmith')
+            : __('Automatic: ffmpeg is not available here, so segments are joined in PHP and Auphonic adds the music.', 'castsmith');
     }
 
     /**

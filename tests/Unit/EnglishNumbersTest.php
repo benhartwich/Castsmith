@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Numbers\EnglishNumberParser;
-use PodcastForge\Numbers\NumberDiff;
-use PodcastForge\Numbers\NumberExtractor;
+use Castsmith\Numbers\EnglishNumberParser;
+use Castsmith\Numbers\NumberDiff;
+use Castsmith\Numbers\NumberExtractor;
 use PHPUnit\Framework\TestCase;
 
 /**

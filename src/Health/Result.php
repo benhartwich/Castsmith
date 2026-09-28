@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Health;
+namespace Castsmith\Health;
 
 /**
  * Result of a single check.

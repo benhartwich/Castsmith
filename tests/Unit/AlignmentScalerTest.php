@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Audio\AlignmentScaler;
+use Castsmith\Audio\AlignmentScaler;
 use PHPUnit\Framework\TestCase;
 
 final class AlignmentScalerTest extends TestCase

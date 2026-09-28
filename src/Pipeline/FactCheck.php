@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Pipeline;
+namespace Castsmith\Pipeline;
 
-use PodcastForge\Ai\AnthropicClient;
-use PodcastForge\Ai\FactCheckPrompt;
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Text\SourceDocument;
+use Castsmith\Ai\AnthropicClient;
+use Castsmith\Ai\FactCheckPrompt;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Text\SourceDocument;
 
 /**
  * The content comparison, run after the number diff.
@@ -32,7 +32,7 @@ final class FactCheck
 
         try {
             $client = AnthropicClient::fromSettings();
-            $response = \PodcastForge\Ai\BatchGate::complete(
+            $response = \Castsmith\Ai\BatchGate::complete(
                 $client,
                 $episodeId,
                 'faktenpruefung',
@@ -44,7 +44,7 @@ final class FactCheck
 
             $data = $response->json();
             if ($data === null) {
-                throw new \RuntimeException(__('The response was not JSON.', 'podcast-forge'));
+                throw new \RuntimeException(__('The response was not JSON.', 'castsmith'));
             }
 
             $findings = array_values(array_filter(
@@ -65,7 +65,7 @@ final class FactCheck
 
             EpisodeRepository::log($episodeId, 'faktenpruefung', sprintf(
                 /* translators: 1: number of fact-check findings, 2: number of severe findings, 3: input tokens, 4: output tokens, 5: estimated cost in US cents */
-                __('%1$d findings, %2$d of them severe. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'podcast-forge'),
+                __('%1$d findings, %2$d of them severe. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'castsmith'),
                 count($findings),
                 $severe,
                 $response->inputTokens,
@@ -74,15 +74,15 @@ final class FactCheck
             ));
 
             Gate::evaluate($episodeId);
-        } catch (\PodcastForge\Ai\PendingBatch) {
+        } catch (\Castsmith\Ai\PendingBatch) {
             return;
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'faktenpruefung', __('Failed: ', 'podcast-forge') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'faktenpruefung', __('Failed: ', 'castsmith') . $e->getMessage());
         }
 
         // The mail is only sent once the edited script, the fact check and the
         // metadata are all done; whichever finishes last sends it.
-        \PodcastForge\Notify\Notifier::maybeTextReady($episodeId);
+        \Castsmith\Notify\Notifier::maybeTextReady($episodeId);
     }
 
     /**

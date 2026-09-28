@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Text;
+namespace Castsmith\Text;
 
 /**
  * Turns HTML — the rendered content of a WordPress post — into a

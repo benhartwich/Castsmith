@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Settings\SettingsPage;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Settings\SettingsPage;
 
 /**
  * The state of an episode as JSON, for the live display in the episode view.

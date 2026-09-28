@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
 /**
  * Result of a TTS call, including character timestamps.

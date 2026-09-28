@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fread -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Segments\SegmentRepository;
-use PodcastForge\Settings\SettingsPage;
-use PodcastForge\Storage\EpisodeStorage;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Segments\SegmentRepository;
+use Castsmith\Settings\SettingsPage;
+use Castsmith\Storage\EpisodeStorage;
 
 /**
  * Serves segment and episode audio to the admin area.
@@ -52,14 +52,14 @@ final class AudioStream
     public static function handle(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have permission to do this.', 'podcast-forge'), '', ['response' => 403]);
+            wp_die(esc_html__('You do not have permission to do this.', 'castsmith'), '', ['response' => 403]);
         }
 
         check_admin_referer(self::NONCE);
 
         $relative = self::resolvePath();
         if ($relative === null) {
-            wp_die(esc_html__('This file does not exist.', 'podcast-forge'), '', ['response' => 404]);
+            wp_die(esc_html__('This file does not exist.', 'castsmith'), '', ['response' => 404]);
         }
 
         $path = EpisodeStorage::absolutePath($relative);
@@ -71,7 +71,7 @@ final class AudioStream
         $base = realpath(EpisodeStorage::baseDir());
 
         if ($real === false || $base === false || !str_starts_with($real, $base . '/')) {
-            wp_die(esc_html__('This file does not exist.', 'podcast-forge'), '', ['response' => 404]);
+            wp_die(esc_html__('This file does not exist.', 'castsmith'), '', ['response' => 404]);
         }
 
         self::stream($real);

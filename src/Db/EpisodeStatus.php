@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Db;
+namespace Castsmith\Db;
 
 /**
  * The states of an episode along the pipeline.
@@ -42,18 +42,18 @@ final class EpisodeStatus
     public static function labels(): array
     {
         return [
-            self::NEW             => __('New', 'podcast-forge'),
-            self::SOURCE_RUNNING     => __('Preparing source', 'podcast-forge'),
-            self::SOURCE_FAILED      => __('Preparation failed', 'podcast-forge'),
-            self::PARSED          => __('Imported', 'podcast-forge'),
-            self::REDIGAT_RUNNING => __('Editing in progress', 'podcast-forge'),
-            self::REDIGAT_FAILED  => __('Editing failed', 'podcast-forge'),
-            self::GATE_FAILED     => __('Numbers differ', 'podcast-forge'),
-            self::AWAITING_TEXT   => __('Awaiting text approval', 'podcast-forge'),
-            self::TEXT_APPROVED   => __('Text approved', 'podcast-forge'),
-            self::PRODUCING       => __('Auphonic is producing', 'podcast-forge'),
-            self::AWAITING_AUDIO  => __('Awaiting audio approval', 'podcast-forge'),
-            self::DONE            => __('Completed', 'podcast-forge'),
+            self::NEW             => __('New', 'castsmith'),
+            self::SOURCE_RUNNING     => __('Preparing source', 'castsmith'),
+            self::SOURCE_FAILED      => __('Preparation failed', 'castsmith'),
+            self::PARSED          => __('Imported', 'castsmith'),
+            self::REDIGAT_RUNNING => __('Editing in progress', 'castsmith'),
+            self::REDIGAT_FAILED  => __('Editing failed', 'castsmith'),
+            self::GATE_FAILED     => __('Numbers differ', 'castsmith'),
+            self::AWAITING_TEXT   => __('Awaiting text approval', 'castsmith'),
+            self::TEXT_APPROVED   => __('Text approved', 'castsmith'),
+            self::PRODUCING       => __('Auphonic is producing', 'castsmith'),
+            self::AWAITING_AUDIO  => __('Awaiting audio approval', 'castsmith'),
+            self::DONE            => __('Completed', 'castsmith'),
         ];
     }
 

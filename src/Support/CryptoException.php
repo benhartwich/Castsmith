@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Support;
+namespace Castsmith\Support;
 
 /**
  * Signals any error related to storing the credentials:

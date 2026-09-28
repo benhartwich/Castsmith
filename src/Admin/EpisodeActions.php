@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Admin;
+namespace Castsmith\Admin;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 // phpcs:disable WordPress.Security.NonceVerification.Missing -- Every handler verifies its nonce first (guard() / check_ajax_referer()).
 // phpcs:disable WordPress.WP.AlternativeFunctions.unlink_unlink -- Removing files in the plugin's own storage directory.
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\EpisodeStatus;
-use PodcastForge\Pipeline\Gate;
-use PodcastForge\Pipeline\Scheduler as PipelineScheduler;
-use PodcastForge\Settings\SettingsPage;
-use PodcastForge\Text\DocxParser;
-use PodcastForge\Text\PlainTextParser;
-use PodcastForge\Text\SourceDocument;
-use PodcastForge\Text\Sanitizer;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\EpisodeStatus;
+use Castsmith\Pipeline\Gate;
+use Castsmith\Pipeline\Scheduler as PipelineScheduler;
+use Castsmith\Settings\SettingsPage;
+use Castsmith\Text\DocxParser;
+use Castsmith\Text\PlainTextParser;
+use Castsmith\Text\SourceDocument;
+use Castsmith\Text\Sanitizer;
 
 /**
  * The form actions of the episode view.
@@ -80,7 +80,7 @@ final class EpisodeActions
         }
 
         if ($document->isEmpty()) {
-            self::notice('error', __('The source document contains no text.', 'podcast-forge'));
+            self::notice('error', __('The source document contains no text.', 'castsmith'));
             self::back();
         }
 
@@ -88,15 +88,15 @@ final class EpisodeActions
             ? sanitize_file_name(wp_unslash((string) $_FILES['docx']['name']))
             : '';
 
-        $id = \PodcastForge\Source\EpisodeFactory::fromDocument(
+        $id = \Castsmith\Source\EpisodeFactory::fromDocument(
             $document,
-            \PodcastForge\Source\UploadSource::ID,
+            \Castsmith\Source\UploadSource::ID,
             '',
             $filename,
             !empty($_POST['auto_chain'])
         );
 
-        self::notice('success', __('Source document imported.', 'podcast-forge'));
+        self::notice('success', __('Source document imported.', 'castsmith'));
         self::back($id);
     }
 
@@ -112,30 +112,30 @@ final class EpisodeActions
             : absint(wp_unslash($_POST['post_id'] ?? 0));
         $post = $postId > 0 ? get_post($postId) : null;
 
-        if (!$post instanceof \WP_Post || !in_array($post->post_type, \PodcastForge\Source\PostSource::postTypes(), true)) {
-            self::notice('error', __('This post does not exist, or it cannot become an episode.', 'podcast-forge'));
+        if (!$post instanceof \WP_Post || !in_array($post->post_type, \Castsmith\Source\PostSource::postTypes(), true)) {
+            self::notice('error', __('This post does not exist, or it cannot become an episode.', 'castsmith'));
             self::backToNew();
         }
         if (!current_user_can('read_post', $post->ID)) {
-            self::notice('error', __('You are not allowed to read this post.', 'podcast-forge'));
+            self::notice('error', __('You are not allowed to read this post.', 'castsmith'));
             self::backToNew();
         }
 
-        $document = \PodcastForge\Source\PostSource::document($post);
+        $document = \Castsmith\Source\PostSource::document($post);
         if ($document->isEmpty()) {
-            self::notice('error', __('The post contains no text that can be read aloud.', 'podcast-forge'));
+            self::notice('error', __('The post contains no text that can be read aloud.', 'castsmith'));
             self::backToNew();
         }
 
-        $id = \PodcastForge\Source\EpisodeFactory::fromDocument(
+        $id = \Castsmith\Source\EpisodeFactory::fromDocument(
             $document,
-            \PodcastForge\Source\PostSource::ID,
+            \Castsmith\Source\PostSource::ID,
             (string) $post->ID,
             sprintf('%s (#%d)', html_entity_decode(get_the_title($post), ENT_QUOTES, 'UTF-8'), $post->ID),
             !empty($_POST['auto_chain'])
         );
 
-        self::notice('success', __('Post imported.', 'podcast-forge'));
+        self::notice('success', __('Post imported.', 'castsmith'));
         self::back($id);
     }
 
@@ -145,10 +145,10 @@ final class EpisodeActions
         $id = self::episodeId();
 
         if (PipelineScheduler::queueRedigat($id)) {
-            EpisodeRepository::log($id, 'redigat', __('Scheduled.', 'podcast-forge'));
-            self::notice('success', __('The edit is scheduled and runs in the background.', 'podcast-forge'));
+            EpisodeRepository::log($id, 'redigat', __('Scheduled.', 'castsmith'));
+            self::notice('success', __('The edit is scheduled and runs in the background.', 'castsmith'));
         } else {
-            self::notice('error', __('The job was not accepted by Action Scheduler.', 'podcast-forge'));
+            self::notice('error', __('The job was not accepted by Action Scheduler.', 'castsmith'));
         }
 
         self::back($id);
@@ -181,16 +181,16 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: 1: number of characters in the script, 2: comma-separated list of confirmed deviations or "none" */
-            __('Script saved (%1$d characters). Confirmed deviations: %2$s.', 'podcast-forge'),
+            __('Script saved (%1$d characters). Confirmed deviations: %2$s.', 'castsmith'),
             mb_strlen($script),
-            $acknowledged === [] ? __('none', 'podcast-forge') : implode(', ', $acknowledged)
+            $acknowledged === [] ? __('none', 'castsmith') : implode(', ', $acknowledged)
         ));
 
         self::notice(
             $result['blocking'] ? 'warning' : 'success',
             $result['blocking']
-                ? __('Saved. There are still open deviations.', 'podcast-forge')
-                : __('Saved. The check is clean.', 'podcast-forge')
+                ? __('Saved. There are still open deviations.', 'castsmith')
+                : __('Saved. The check is clean.', 'castsmith')
         );
 
         self::back($id);
@@ -203,7 +203,7 @@ final class EpisodeActions
 
         $result = Gate::evaluate($id);
         if ($result['blocking']) {
-            self::notice('error', __('Approval is locked as long as deviations are open.', 'podcast-forge'));
+            self::notice('error', __('Approval is locked as long as deviations are open.', 'castsmith'));
             self::back($id);
         }
 
@@ -214,21 +214,21 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: %s: display name of the approving user */
-            __('Text approved by %s.', 'podcast-forge'),
+            __('Text approved by %s.', 'castsmith'),
             wp_get_current_user()->display_name
         ));
 
         try {
-            $automatic = \PodcastForge\Pipeline\AutoChain::afterTextApproval($id);
+            $automatic = \Castsmith\Pipeline\AutoChain::afterTextApproval($id);
         } catch (\Throwable $e) {
-            EpisodeRepository::log($id, 'automatik', __('Aborted: ', 'podcast-forge') . $e->getMessage());
-            self::notice('warning', __('The text is approved, but the chain could not be triggered automatically: ', 'podcast-forge') . $e->getMessage());
+            EpisodeRepository::log($id, 'automatik', __('Aborted: ', 'castsmith') . $e->getMessage());
+            self::notice('warning', __('The text is approved, but the chain could not be triggered automatically: ', 'castsmith') . $e->getMessage());
             self::back($id);
         }
 
         self::notice('success', $automatic !== null
-            ? __('The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent.', 'podcast-forge')
-            : __('The text is approved. Next up is the audio.', 'podcast-forge'));
+            ? __('The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent.', 'castsmith')
+            : __('The text is approved. Next up is the audio.', 'castsmith'));
         self::back($id);
     }
 
@@ -239,12 +239,12 @@ final class EpisodeActions
 
         $episode = EpisodeRepository::find($id);
         if (($episode['status'] ?? '') !== EpisodeStatus::TEXT_APPROVED) {
-            self::notice('error', __('The audio is only created after the text approval. That is the first of the two human gates.', 'podcast-forge'));
+            self::notice('error', __('The audio is only created after the text approval. That is the first of the two human gates.', 'castsmith'));
             self::back($id);
         }
 
         try {
-            $result = \PodcastForge\Segments\Segmenter::rebuild($id);
+            $result = \Castsmith\Segments\Segmenter::rebuild($id);
         } catch (\Throwable $e) {
             self::notice('error', $e->getMessage());
             self::back($id);
@@ -252,7 +252,7 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'segmentierung', sprintf(
             /* translators: 1: total number of segments, 2: number of new segments, 3: number of unchanged segments, 4: number of removed segments */
-            __('%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed.', 'podcast-forge'),
+            __('%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed.', 'castsmith'),
             $result['gesamt'],
             $result['angelegt'],
             $result['erhalten'],
@@ -263,7 +263,7 @@ final class EpisodeActions
 
         self::notice('success', sprintf(
             /* translators: 1: new segments, 2: kept segments */
-            __('%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background.', 'podcast-forge'),
+            __('%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background.', 'castsmith'),
             $result['angelegt'],
             $result['erhalten']
         ));
@@ -276,7 +276,7 @@ final class EpisodeActions
         $id = self::episodeId();
 
         PipelineScheduler::queueMontage($id);
-        self::notice('success', __('The montage is scheduled.', 'podcast-forge'));
+        self::notice('success', __('The montage is scheduled.', 'castsmith'));
         self::back($id);
     }
 
@@ -286,33 +286,33 @@ final class EpisodeActions
         $id = self::episodeId();
 
         $segmentId = isset($_POST['segment']) ? (int) $_POST['segment'] : 0;
-        $segment = \PodcastForge\Segments\SegmentRepository::find($segmentId);
+        $segment = \Castsmith\Segments\SegmentRepository::find($segmentId);
 
         if ($segment === null || (int) $segment['episode_id'] !== $id) {
-            self::notice('error', __('This segment does not belong to this episode.', 'podcast-forge'));
+            self::notice('error', __('This segment does not belong to this episode.', 'castsmith'));
             self::back($id);
         }
 
         $note = isset($_POST['note']) ? sanitize_textarea_field(wp_unslash((string) $_POST['note'])) : '';
-        $flagged = (string) $segment['status'] !== \PodcastForge\Segments\SegmentStatus::FLAGGED;
+        $flagged = (string) $segment['status'] !== \Castsmith\Segments\SegmentStatus::FLAGGED;
 
-        \PodcastForge\Segments\SegmentRepository::update($segmentId, [
+        \Castsmith\Segments\SegmentRepository::update($segmentId, [
             'status' => $flagged
-                ? \PodcastForge\Segments\SegmentStatus::FLAGGED
-                : \PodcastForge\Segments\SegmentStatus::GENERATED,
+                ? \Castsmith\Segments\SegmentStatus::FLAGGED
+                : \Castsmith\Segments\SegmentStatus::GENERATED,
             'note'   => $flagged ? $note : '',
         ]);
 
         EpisodeRepository::log($id, 'abhoeren', sprintf(
             'Segment %d %s%s',
             (int) $segment['idx'],
-            $flagged ? __('flagged', 'podcast-forge') : __('approved again', 'podcast-forge'),
+            $flagged ? __('flagged', 'castsmith') : __('approved again', 'castsmith'),
             $flagged && $note !== '' ? ': ' . $note : '.'
         ));
 
         self::notice('success', $flagged
-            ? __('Segment flagged. Regenerate it or re-record it with your own voice.', 'podcast-forge')
-            : __('Flag withdrawn.', 'podcast-forge'));
+            ? __('Segment flagged. Regenerate it or re-record it with your own voice.', 'castsmith')
+            : __('Flag withdrawn.', 'castsmith'));
         self::back($id);
     }
 
@@ -322,27 +322,27 @@ final class EpisodeActions
         $id = self::episodeId();
 
         $segmentId = isset($_POST['segment']) ? (int) $_POST['segment'] : 0;
-        $segment = \PodcastForge\Segments\SegmentRepository::find($segmentId);
+        $segment = \Castsmith\Segments\SegmentRepository::find($segmentId);
 
         if ($segment === null || (int) $segment['episode_id'] !== $id) {
-            self::notice('error', __('This segment does not belong to this episode.', 'podcast-forge'));
+            self::notice('error', __('This segment does not belong to this episode.', 'castsmith'));
             self::back($id);
         }
 
         // New seed: the same segment again with the same seed would sound
         // identical, and that is exactly what you do not want when regenerating.
-        \PodcastForge\Segments\SegmentRepository::update($segmentId, [
+        \Castsmith\Segments\SegmentRepository::update($segmentId, [
             'seed'        => random_int(0, 4294967295),
             'audio_path'  => '',
             'duration_ms' => null,
-            'status'      => \PodcastForge\Segments\SegmentStatus::PENDING,
+            'status'      => \Castsmith\Segments\SegmentStatus::PENDING,
         ]);
 
         PipelineScheduler::queueSynthesis($id);
 
         /* translators: %d: index of the segment */
-        EpisodeRepository::log($id, 'abhoeren', sprintf(__('Segment %d is being regenerated with a new seed.', 'podcast-forge'), (int) $segment['idx']));
-        self::notice('success', __('The segment is being regenerated with a new seed.', 'podcast-forge'));
+        EpisodeRepository::log($id, 'abhoeren', sprintf(__('Segment %d is being regenerated with a new seed.', 'castsmith'), (int) $segment['idx']));
+        self::notice('success', __('The segment is being regenerated with a new seed.', 'castsmith'));
         self::back($id);
     }
 
@@ -359,9 +359,9 @@ final class EpisodeActions
         }
 
         PipelineScheduler::queueProduction($id);
-        EpisodeRepository::log($id, 'auphonic', __('Production scheduled.', 'podcast-forge'));
+        EpisodeRepository::log($id, 'auphonic', __('Production scheduled.', 'castsmith'));
 
-        self::notice('success', __('The episode is going to Auphonic. The callback then creates the Podlove draft.', 'podcast-forge'));
+        self::notice('success', __('The episode is going to Auphonic. The callback then creates the Podlove draft.', 'castsmith'));
         self::back($id);
     }
 
@@ -370,25 +370,25 @@ final class EpisodeActions
         self::guard(self::ACTION_CLEANUP);
         $id = self::episodeId();
 
-        $freed = \PodcastForge\Storage\EpisodeStorage::sizeOfEpisode($id);
-        \PodcastForge\Storage\EpisodeStorage::deleteSegments($id);
+        $freed = \Castsmith\Storage\EpisodeStorage::sizeOfEpisode($id);
+        \Castsmith\Storage\EpisodeStorage::deleteSegments($id);
 
-        foreach (\PodcastForge\Segments\SegmentRepository::forEpisode($id) as $segment) {
-            \PodcastForge\Segments\SegmentRepository::update((int) $segment['id'], [
+        foreach (\Castsmith\Segments\SegmentRepository::forEpisode($id) as $segment) {
+            \Castsmith\Segments\SegmentRepository::update((int) $segment['id'], [
                 'audio_path' => '',
-                'status'     => \PodcastForge\Segments\SegmentStatus::PENDING,
+                'status'     => \Castsmith\Segments\SegmentStatus::PENDING,
             ]);
         }
 
         EpisodeRepository::log($id, 'aufraeumen', sprintf(
             /* translators: %s: formatted size of the freed storage */
-            __('Segment audio files removed, %s freed. The finished episode and the transcript remain.', 'podcast-forge'),
+            __('Segment audio files removed, %s freed. The finished episode and the transcript remain.', 'castsmith'),
             size_format($freed)
         ));
 
         self::notice('success', sprintf(
             /* translators: %s: freed storage */
-            __('Segment audio files removed, %s freed.', 'podcast-forge'),
+            __('Segment audio files removed, %s freed.', 'castsmith'),
             size_format($freed)
         ));
         self::back($id);
@@ -399,7 +399,7 @@ final class EpisodeActions
         self::guard(self::ACTION_RESUME);
         $id = self::episodeId();
 
-        $message = \PodcastForge\Pipeline\Recovery::resume($id);
+        $message = \Castsmith\Pipeline\Recovery::resume($id);
         EpisodeRepository::log($id, 'wiederaufnahme', $message);
 
         self::notice('success', $message);
@@ -420,8 +420,8 @@ final class EpisodeActions
         $episode = EpisodeRepository::find($id);
         $mix = (string) ($episode['mixed_audio_path'] ?? '');
 
-        if ($mix === '' || !\PodcastForge\Storage\EpisodeStorage::exists($mix)) {
-            self::notice('error', __('There is no assembled version to listen to yet.', 'podcast-forge'));
+        if ($mix === '' || !\Castsmith\Storage\EpisodeStorage::exists($mix)) {
+            self::notice('error', __('There is no assembled version to listen to yet.', 'castsmith'));
             self::back($id);
         }
 
@@ -429,7 +429,7 @@ final class EpisodeActions
         // is the mastered version — signing off on the raw montage would mean
         // approving something other than what ends up in the feed.
         if ((string) ($episode['status'] ?? '') !== EpisodeStatus::AWAITING_AUDIO) {
-            self::notice('error', __('The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage.', 'podcast-forge'));
+            self::notice('error', __('The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage.', 'castsmith'));
             self::back($id);
         }
 
@@ -440,11 +440,11 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: %s: display name of the approving user */
-            __('Audio approved by %s.', 'podcast-forge'),
+            __('Audio approved by %s.', 'castsmith'),
             wp_get_current_user()->display_name
         ));
 
-        self::notice('success', __('Audio approved. Publishing is done by hand in Podlove.', 'podcast-forge'));
+        self::notice('success', __('Audio approved. Publishing is done by hand in Podlove.', 'castsmith'));
         self::back($id);
     }
 
@@ -453,9 +453,9 @@ final class EpisodeActions
         self::guard(self::ACTION_DELETE);
         $id = self::episodeId();
 
-        \PodcastForge\Storage\EpisodeStorage::deleteEpisode($id);
+        \Castsmith\Storage\EpisodeStorage::deleteEpisode($id);
         EpisodeRepository::delete($id);
-        self::notice('success', __('Episode and its audio files deleted.', 'podcast-forge'));
+        self::notice('success', __('Episode and its audio files deleted.', 'castsmith'));
         self::back();
     }
 
@@ -468,12 +468,12 @@ final class EpisodeActions
         self::guard(self::ACTION_MUSIC);
 
         $done = [];
-        foreach (\PodcastForge\Audio\MusicBed::allSlots() as $slot) {
+        foreach (\Castsmith\Audio\MusicBed::allSlots() as $slot) {
             if (!empty($_POST['entfernen_' . $slot])) {
-                $file = \PodcastForge\Audio\MusicBed::file($slot);
+                $file = \Castsmith\Audio\MusicBed::file($slot);
                 if (is_file($file) && @unlink($file)) {
                     /* translators: %s: name of the music slot (e.g. opener, outro) */
-                    $done[] = sprintf(__('%s removed', 'podcast-forge'), $slot);
+                    $done[] = sprintf(__('%s removed', 'castsmith'), $slot);
                 }
                 continue;
             }
@@ -484,12 +484,12 @@ final class EpisodeActions
             }
 
             // Readable audio? Without ffmpeg only MP3 can be checked (and used).
-            $readable = \PodcastForge\Audio\AudioEngine::mode() === \PodcastForge\Audio\AudioEngine::MODE_FFMPEG
-                ? \PodcastForge\Audio\Ffmpeg::probe($tmp) !== null
-                : \PodcastForge\Audio\Mp3::durationMs($tmp) !== null;
+            $readable = \Castsmith\Audio\AudioEngine::mode() === \Castsmith\Audio\AudioEngine::MODE_FFMPEG
+                ? \Castsmith\Audio\Ffmpeg::probe($tmp) !== null
+                : \Castsmith\Audio\Mp3::durationMs($tmp) !== null;
             if (!$readable) {
                 /* translators: %s: name of the music slot (e.g. opener, outro) */
-                self::notice('error', sprintf(__('The file for “%s” is not readable audio.', 'podcast-forge'), $slot));
+                self::notice('error', sprintf(__('The file for “%s” is not readable audio.', 'castsmith'), $slot));
                 wp_safe_redirect(Urls::settings());
                 exit;
             }
@@ -498,10 +498,10 @@ final class EpisodeActions
             // then to its fixed place — the montage looks for opener.mp3 etc.
             require_once ABSPATH . 'wp-admin/includes/file.php';
             $handled = wp_handle_upload($_FILES[$slot], ['test_form' => false, 'mimes' => ['mp3' => 'audio/mpeg']]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the upload array is validated by wp_handle_upload()
-            wp_mkdir_p(\PodcastForge\Audio\MusicBed::dir());
+            wp_mkdir_p(\Castsmith\Audio\MusicBed::dir());
             // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- move within the uploads directory
-            if (!empty($handled['error']) || empty($handled['file']) || !@rename($handled['file'], \PodcastForge\Audio\MusicBed::file($slot))) {
-                self::notice('error', __('The file could not be stored.', 'podcast-forge') . (!empty($handled['error']) ? ' ' . (string) $handled['error'] : ''));
+            if (!empty($handled['error']) || empty($handled['file']) || !@rename($handled['file'], \Castsmith\Audio\MusicBed::file($slot))) {
+                self::notice('error', __('The file could not be stored.', 'castsmith') . (!empty($handled['error']) ? ' ' . (string) $handled['error'] : ''));
                 wp_safe_redirect(Urls::settings());
                 exit;
             }
@@ -509,9 +509,9 @@ final class EpisodeActions
         }
 
         self::notice($done === [] ? 'warning' : 'success', $done === []
-            ? __('No file arrived.', 'podcast-forge')
+            ? __('No file arrived.', 'castsmith')
             /* translators: %s: comma-separated list of applied music changes */
-            : sprintf(__('Applied: %s. Takes effect from the next montage.', 'podcast-forge'), implode(', ', $done)));
+            : sprintf(__('Applied: %s. Takes effect from the next montage.', 'castsmith'), implode(', ', $done)));
         wp_safe_redirect(Urls::settings());
         exit;
     }
@@ -527,9 +527,9 @@ final class EpisodeActions
         $hidden = Overview::toggleHidden($id);
         self::notice('success', $hidden
             /* translators: %d: episode ID */
-            ? sprintf(__('Episode %d is hidden.', 'podcast-forge'), $id)
+            ? sprintf(__('Episode %d is hidden.', 'castsmith'), $id)
             /* translators: %d: episode ID */
-            : sprintf(__('Episode %d is visible again.', 'podcast-forge'), $id));
+            : sprintf(__('Episode %d is visible again.', 'castsmith'), $id));
 
         wp_safe_redirect(Urls::episodes($hidden ? [] : ['alle' => 1]));
         exit;
@@ -550,12 +550,12 @@ final class EpisodeActions
             $tmp = (string) $_FILES['docx']['tmp_name']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- temporary upload path, checked below
 
             if (!is_uploaded_file($tmp)) {
-                throw new \RuntimeException(__('The uploaded file is not valid.', 'podcast-forge'));
+                throw new \RuntimeException(__('The uploaded file is not valid.', 'castsmith'));
             }
 
             $name = sanitize_file_name(wp_unslash((string) ($_FILES['docx']['name'] ?? '')));
             if (strtolower((string) pathinfo($name, PATHINFO_EXTENSION)) !== 'docx') {
-                throw new \RuntimeException(__('Only DOCX files are read.', 'podcast-forge'));
+                throw new \RuntimeException(__('Only DOCX files are read.', 'castsmith'));
             }
 
             // The file is only read and never stored anywhere.
@@ -565,7 +565,7 @@ final class EpisodeActions
         // Plain text that is parsed, never output unescaped.
         $pasted = isset($_POST['source_text']) ? Sanitizer::plain((string) wp_unslash($_POST['source_text'])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised by Sanitizer::plain()
         if (trim($pasted) === '') {
-            throw new \RuntimeException(__('Neither a file nor pasted text.', 'podcast-forge'));
+            throw new \RuntimeException(__('Neither a file nor pasted text.', 'castsmith'));
         }
 
         return PlainTextParser::parse($pasted);
@@ -577,7 +577,7 @@ final class EpisodeActions
     public static function guard(string $action): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have the permissions for this.', 'podcast-forge'), '', ['response' => 403]);
+            wp_die(esc_html__('You do not have the permissions for this.', 'castsmith'), '', ['response' => 403]);
         }
 
         check_admin_referer($action);
@@ -588,7 +588,7 @@ final class EpisodeActions
         $id = isset($_POST['episode']) ? (int) $_POST['episode'] : 0;
 
         if ($id <= 0 || EpisodeRepository::find($id) === null) {
-            wp_die(esc_html__('This episode does not exist.', 'podcast-forge'), '', ['response' => 404]);
+            wp_die(esc_html__('This episode does not exist.', 'castsmith'), '', ['response' => 404]);
         }
 
         return $id;

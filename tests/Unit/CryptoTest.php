@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Support\Crypto;
-use PodcastForge\Support\CryptoException;
+use Castsmith\Support\Crypto;
+use Castsmith\Support\CryptoException;
 use PHPUnit\Framework\TestCase;
 
 /**

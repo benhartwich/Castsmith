@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Voice;
+namespace Castsmith\Voice;
 
-use PodcastForge\Settings\Options;
+use Castsmith\Settings\Options;
 
 /**
  * The voice settings of an episode.

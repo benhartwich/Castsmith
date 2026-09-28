@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Source;
+namespace Castsmith\Source;
 
 /**
  * Neutral defaults for everything a simple source does not need.
@@ -17,8 +17,8 @@ abstract class AbstractSource implements Source
     {
         return [
             /* translators: %s: label of the episode source */
-            sprintf(__('%s is being prepared', 'podcast-forge'), $this->label()),
-            __('This runs in the background. Once the text is ready, it continues on its own.', 'podcast-forge'),
+            sprintf(__('%s is being prepared', 'castsmith'), $this->label()),
+            __('This runs in the background. Once the text is ready, it continues on its own.', 'castsmith'),
         ];
     }
 

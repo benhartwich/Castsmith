@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Audio;
+namespace Castsmith\Audio;
 
 /**
  * Builds the WebVTT transcript from the character timestamps of the synthesis.

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Source;
+namespace Castsmith\Source;
 
 /**
  * Where the text of an episode comes from.
@@ -15,7 +15,7 @@ namespace PodcastForge\Source;
  *
  * The core ships with two sources (fact script upload, WordPress
  * post); further ones come from add-ons via the hook
- * `podcast_forge_register_sources`. Most methods have a neutral default in
+ * `castsmith_register_sources`. Most methods have a neutral default in
  * AbstractSource; a simple source only overrides
  * id(), label(), description() and renderStartForm().
  */

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Rest;
+namespace Castsmith\Rest;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 
-use PodcastForge\Db\EpisodeRepository;
-use PodcastForge\Db\Schema;
-use PodcastForge\Pipeline\Scheduler;
-use PodcastForge\Settings\Options;
+use Castsmith\Db\EpisodeRepository;
+use Castsmith\Db\Schema;
+use Castsmith\Pipeline\Scheduler;
+use Castsmith\Settings\Options;
 
 /**
  * The callback from Auphonic.
@@ -27,7 +27,7 @@ use PodcastForge\Settings\Options;
  */
 final class AuphonicWebhook
 {
-    public const NAMESPACE = 'aas-podcast-forge/v1';
+    public const NAMESPACE = 'castsmith/v1';
     public const ROUTE     = '/auphonic/(?P<token>[A-Za-z0-9]{16,64})';
 
     public static function register(): void
@@ -99,8 +99,8 @@ final class AuphonicWebhook
 
         EpisodeRepository::log($episodeId, 'auphonic', sprintf(
             /* translators: %s: Auphonic production status reported in the callback */
-            __('Callback received, status "%s".', 'podcast-forge'),
-            $status !== '' ? $status : __('unknown', 'podcast-forge')
+            __('Callback received, status "%s".', 'castsmith'),
+            $status !== '' ? $status : __('unknown', 'castsmith')
         ));
 
         // No work is done in the callback itself: downloading the finished

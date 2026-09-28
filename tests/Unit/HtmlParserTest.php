@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Tests\Unit;
+namespace Castsmith\Tests\Unit;
 
-use PodcastForge\Text\HtmlParser;
-use PodcastForge\Text\SourceBlock;
+use Castsmith\Text\HtmlParser;
+use Castsmith\Text\SourceBlock;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace PodcastForge\Ai;
+namespace Castsmith\Ai;
 
-use PodcastForge\Settings\Options;
-use PodcastForge\Voice\PronunciationDictionary;
+use Castsmith\Settings\Options;
+use Castsmith\Voice\PronunciationDictionary;
 
 /**
  * Assembles the prompt for the spoken script together with the dictionary list
