@@ -9,7 +9,7 @@ namespace Sonoquill\Ai;
  *
  * Both forms are requested: the phonetic transcription and a German
  * respelling. The one that is stored is the one that works on the configured
- * model — phonetic transcription on Eleven v3, otherwise the respelling. The
+ * model — phonetic transcription on Eleven v3 or v4, otherwise the respelling. The
  * prompt must therefore deliver both and must not declare either form to be
  * secondary.
  */

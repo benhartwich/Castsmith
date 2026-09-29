@@ -27,6 +27,8 @@ final class TextToSpeechModelTest extends TestCase
             'turbo v2.5'        => ['eleven_turbo_v2_5', true],
             'eleven v3'         => ['eleven_v3', false],
             'v3 conversational' => ['eleven_v3_conversational', false],
+            'eleven v4'         => ['eleven_v4', true],
+            'v4 turbo'          => ['eleven_v4_turbo', true],
         ];
     }
 

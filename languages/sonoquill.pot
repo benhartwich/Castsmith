@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-29T05:15:12+00:00\n"
+"POT-Creation-Date: 2026-09-29T17:30:09+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: sonoquill\n"
@@ -1464,7 +1464,7 @@ msgid "Compares the spoken script with the source for changed, missing and inven
 msgstr ""
 
 #: src/Admin/PromptsPage.php:52
-#: src/Health/Checks/DictionaryCheck.php:49
+#: src/Health/Checks/DictionaryCheck.php:44
 msgid "Pronunciation dictionary"
 msgstr ""
 
@@ -1573,9 +1573,9 @@ msgstr ""
 #: src/Auphonic/AuphonicClient.php:118
 #: src/Auphonic/AuphonicClient.php:258
 #: src/Auphonic/AuphonicClient.php:288
-#: src/Voice/DictionaryWriter.php:153
-#: src/Voice/DictionaryWriter.php:314
-#: src/Voice/TextToSpeech.php:160
+#: src/Voice/DictionaryWriter.php:149
+#: src/Voice/DictionaryWriter.php:310
+#: src/Voice/TextToSpeech.php:156
 #: src/Voice/VoiceChanger.php:123
 msgid "Connection failed: "
 msgstr ""
@@ -1588,7 +1588,7 @@ msgstr ""
 
 #: src/Ai/AnthropicClient.php:187
 #: src/Ai/AnthropicClient.php:249
-#: src/Voice/TextToSpeech.php:146
+#: src/Voice/TextToSpeech.php:142
 msgid "The request could not be encoded as JSON."
 msgstr ""
 
@@ -1832,7 +1832,7 @@ msgstr ""
 
 #: src/Health/Checks/AnthropicCheck.php:39
 #: src/Health/Checks/AuphonicCheck.php:38
-#: src/Health/Checks/DictionaryCheck.php:57
+#: src/Health/Checks/DictionaryCheck.php:52
 #: src/Health/Checks/ElevenLabsCheck.php:36
 msgid "Credentials could not be read."
 msgstr ""
@@ -1850,7 +1850,7 @@ msgid "Could not reach the service."
 msgstr ""
 
 #: src/Health/Checks/AnthropicCheck.php:76
-#: src/Health/Checks/DictionaryCheck.php:107
+#: src/Health/Checks/DictionaryCheck.php:102
 #: src/Health/Checks/ElevenLabsCheck.php:59
 msgid "API key not accepted (HTTP 401)."
 msgstr ""
@@ -1876,7 +1876,7 @@ msgstr ""
 #. translators: %d: HTTP status code
 #: src/Health/Checks/AnthropicCheck.php:100
 #: src/Health/Checks/AuphonicCheck.php:67
-#: src/Health/Checks/DictionaryCheck.php:118
+#: src/Health/Checks/DictionaryCheck.php:113
 #: src/Health/Checks/ElevenLabsCheck.php:64
 #, php-format
 msgid "Unexpected response (HTTP %d)."
@@ -1893,7 +1893,7 @@ msgid "No API token configured."
 msgstr ""
 
 #: src/Health/Checks/AuphonicCheck.php:54
-#: src/Health/Checks/DictionaryCheck.php:101
+#: src/Health/Checks/DictionaryCheck.php:96
 msgid "Not reachable."
 msgstr ""
 
@@ -1955,129 +1955,129 @@ msgstr ""
 msgid "It costs credit and produces a faulty transcript. Chapters and transcript come from the assembly step and are exact. Switch it off in the Auphonic preset."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:61
+#: src/Health/Checks/DictionaryCheck.php:56
 msgid "No ElevenLabs API key configured."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:66
+#: src/Health/Checks/DictionaryCheck.php:61
 msgid "No dictionary configured."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:72
+#: src/Health/Checks/DictionaryCheck.php:67
 msgid "No version pinned."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:73
+#: src/Health/Checks/DictionaryCheck.php:68
 msgid "Every request must pass the version_id explicitly. Without it, the latest version applies, and later maintenance retroactively changes the result of a re-run."
 msgstr ""
 
 #. translators: %s: dictionary ID
-#: src/Health/Checks/DictionaryCheck.php:112
+#: src/Health/Checks/DictionaryCheck.php:107
 #, php-format
 msgid "Dictionary \"%s\" does not exist."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:137
+#: src/Health/Checks/DictionaryCheck.php:132
 msgid "Pinned version could not be retrieved."
 msgstr ""
 
 #. translators: %s: pinned dictionary version ID
-#: src/Health/Checks/DictionaryCheck.php:145
+#: src/Health/Checks/DictionaryCheck.php:140
 #, php-format
 msgid "The pinned version \"%s\" does not exist."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:146
+#: src/Health/Checks/DictionaryCheck.php:141
 msgid "Was the dictionary created anew instead of extended? Then all existing pins point to nothing."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: src/Health/Checks/DictionaryCheck.php:152
+#: src/Health/Checks/DictionaryCheck.php:147
 #, php-format
 msgid "Pinned version responds with HTTP %d."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:158
+#: src/Health/Checks/DictionaryCheck.php:153
 msgid "The pinned version is not a readable PLS file."
 msgstr ""
 
 #. translators: 1: dictionary name, 2: number of rules, 3: number of phonetic transcription rules, 4: number of terms
-#: src/Health/Checks/DictionaryCheck.php:173
+#: src/Health/Checks/DictionaryCheck.php:168
 #, php-format
 msgid "Dictionary \"%1$s\", pinned version: %2$d rules, %3$d of them as phonetic transcription. %4$d terms for the system prompt."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:185
+#: src/Health/Checks/DictionaryCheck.php:180
 msgid "The local PLS file is not writable."
 msgstr ""
 
 #. translators: 1: number of phonetic transcription rules, 2: model ID
-#: src/Health/Checks/DictionaryCheck.php:193
+#: src/Health/Checks/DictionaryCheck.php:188
 #, php-format
 msgid "%1$d phonetic transcription rules are silently discarded by model \"%2$s\"."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:194
+#: src/Health/Checks/DictionaryCheck.php:189
 msgid " Only alias rules take effect on this model."
 msgstr ""
 
 #. translators: %s: model ID
-#: src/Health/Checks/DictionaryCheck.php:201
+#: src/Health/Checks/DictionaryCheck.php:196
 #, php-format
 msgid "Model \"%s\" evaluates phonetic transcription for English only."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:202
-msgid " German phonetic transcription requires eleven_v3."
+#: src/Health/Checks/DictionaryCheck.php:197
+msgid " Phonetic transcription beyond English requires eleven_v4 or eleven_v3."
 msgstr ""
 
 #. translators: %d: number of affected rules
-#: src/Health/Checks/DictionaryCheck.php:221
+#: src/Health/Checks/DictionaryCheck.php:216
 #, php-format
 msgid "%d rules contain characters that the voice mispronounces."
 msgstr ""
 
 #. translators: %s: comma-separated list of affected terms
-#: src/Health/Checks/DictionaryCheck.php:224
+#: src/Health/Checks/DictionaryCheck.php:219
 #, php-format
 msgid " Affected: %s. The phonetic transcription must not contain ◌̯, ◌̩ or ç."
 msgstr ""
 
-#: src/Health/Checks/DictionaryCheck.php:232
+#: src/Health/Checks/DictionaryCheck.php:227
 msgid "There is a newer version than the pinned one."
 msgstr ""
 
 #. translators: %s: number of rules in the latest version, or "?" if unknown
-#: src/Health/Checks/DictionaryCheck.php:235
+#: src/Health/Checks/DictionaryCheck.php:230
 #, php-format
 msgid " The latest version has %s rules. Until it is entered, every rule added since then has no effect anywhere."
 msgstr ""
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:242
+#: src/Health/Checks/DictionaryCheck.php:237
 msgid "Pinned and up to date."
 msgstr ""
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:242
+#: src/Health/Checks/DictionaryCheck.php:237
 #, php-format
 msgid "Local file: %s"
 msgstr ""
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:256
+#: src/Health/Checks/DictionaryCheck.php:251
 #, php-format
 msgid "The file %s belongs to another user and could not be modified."
 msgstr ""
 
 #. translators: %s: directory path
-#: src/Health/Checks/DictionaryCheck.php:262
+#: src/Health/Checks/DictionaryCheck.php:257
 #, php-format
 msgid "The directory %s does not exist."
 msgstr ""
 
 #. translators: %s: directory path
-#: src/Health/Checks/DictionaryCheck.php:268
+#: src/Health/Checks/DictionaryCheck.php:263
 #, php-format
 msgid "The directory %s is not writable by the web server."
 msgstr ""
@@ -2817,7 +2817,7 @@ msgstr ""
 #: src/Storage/EpisodeStorage.php:112
 #: src/Storage/EpisodeStorage.php:134
 #: src/Storage/EpisodeStorage.php:178
-#: src/Voice/DictionaryWriter.php:521
+#: src/Voice/DictionaryWriter.php:517
 #, php-format
 msgid "Directory could not be created: %s"
 msgstr ""
@@ -2995,7 +2995,7 @@ msgid "Model"
 msgstr ""
 
 #: src/Settings/SettingsPage.php:170
-msgid "Recommended: eleven_v3 — only this model applies phonetic (IPA) pronunciation rules; eleven_multilingual_v2 ignores them."
+msgid "Recommended: eleven_v4 — like eleven_v3 it applies phonetic (IPA) pronunciation rules in German too; eleven_multilingual_v2 ignores them."
 msgstr ""
 
 #: src/Settings/SettingsPage.php:171
@@ -3481,102 +3481,102 @@ msgstr ""
 msgid "File could not be read: %s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:89
+#: src/Voice/DictionaryWriter.php:85
 msgid "The term the rule should apply to is missing."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:103
+#: src/Voice/DictionaryWriter.php:99
 msgid "Both the phonetic transcription and the respelling are missing."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:113
-#: src/Voice/DictionaryWriter.php:253
+#: src/Voice/DictionaryWriter.php:109
+#: src/Voice/DictionaryWriter.php:249
 msgid "No dictionary is configured."
 msgstr ""
 
 #. translators: 1: HTTP status code, 2: error detail from ElevenLabs
-#: src/Voice/DictionaryWriter.php:165
+#: src/Voice/DictionaryWriter.php:161
 #, php-format
 msgid "ElevenLabs responds with HTTP %1$d. %2$s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:240
+#: src/Voice/DictionaryWriter.php:236
 msgid "An empty rule set would empty the dictionary."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:284
+#: src/Voice/DictionaryWriter.php:280
 #, php-format
 msgid "Old rules cannot be removed, HTTP %d."
 msgstr ""
 
 #. translators: 1: HTTP status code, 2: start of the response body from ElevenLabs
-#: src/Voice/DictionaryWriter.php:323
+#: src/Voice/DictionaryWriter.php:319
 #, php-format
 msgid "New rules not accepted, HTTP %1$d: %2$s"
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:362
+#: src/Voice/DictionaryWriter.php:358
 msgid "Old rule cannot be removed: "
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:370
+#: src/Voice/DictionaryWriter.php:366
 #, php-format
 msgid "Old rule cannot be removed, HTTP %d."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:444
+#: src/Voice/DictionaryWriter.php:440
 msgid "No dictionary version is bound."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:453
+#: src/Voice/DictionaryWriter.php:449
 msgid "The bound dictionary version could not be loaded."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:501
+#: src/Voice/DictionaryWriter.php:497
 msgid "The PLS file has no closing lexicon element."
 msgstr ""
 
 #. translators: %s: path of the dictionary file
-#: src/Voice/DictionaryWriter.php:526
+#: src/Voice/DictionaryWriter.php:522
 #, php-format
 msgid "The file %s could not be written."
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:535
-#: src/Voice/TextToSpeech.php:56
+#: src/Voice/DictionaryWriter.php:531
+#: src/Voice/TextToSpeech.php:47
 #: src/Voice/VoiceChanger.php:47
 msgid "ElevenLabs credentials could not be read: "
 msgstr ""
 
-#: src/Voice/DictionaryWriter.php:539
+#: src/Voice/DictionaryWriter.php:535
 msgid "No ElevenLabs API key is stored."
 msgstr ""
 
-#: src/Voice/TextToSpeech.php:60
+#: src/Voice/TextToSpeech.php:51
 msgid "No ElevenLabs API key has been stored."
 msgstr ""
 
-#: src/Voice/TextToSpeech.php:65
+#: src/Voice/TextToSpeech.php:56
 msgid "No voice ID has been stored."
 msgstr ""
 
-#: src/Voice/TextToSpeech.php:73
+#: src/Voice/TextToSpeech.php:64
 msgid "The dictionary is entered without a version. Without an explicit version, "
 msgstr ""
 
-#: src/Voice/TextToSpeech.php:74
+#: src/Voice/TextToSpeech.php:65
 msgid "later maintenance would retroactively change the result of a rerun."
 msgstr ""
 
 #. translators: 1: HTTP status code, 2: error detail returned by ElevenLabs
-#: src/Voice/TextToSpeech.php:177
+#: src/Voice/TextToSpeech.php:173
 #, php-format
 msgid "ElevenLabs request failed with HTTP %1$d. %2$s"
 msgstr ""
 
-#: src/Voice/TextToSpeech.php:182
+#: src/Voice/TextToSpeech.php:178
 msgid "Synthesis failed: the response contains no audio."
 msgstr ""
 

@@ -25,15 +25,6 @@ final class TextToSpeech
 {
     private const BASE = 'https://api.elevenlabs.io/v1/text-to-speech/';
 
-    /**
-     * Models that do not accept the neighbouring text.
-     *
-     * Eleven v3 rejects `previous_text` and `next_text` with HTTP 400
-     * ("not yet supported"). Without this exception, every single call would
-     * fail after switching the model — measured, not assumed.
-     */
-    private const WITHOUT_NEIGHBOUR_TEXT = ['eleven_v3', 'eleven_v3_conversational'];
-
     private function __construct(
         private readonly string $apiKey,
         private readonly string $voiceId,
@@ -93,14 +84,19 @@ final class TextToSpeech
         return $this->outputFormat;
     }
 
+    /**
+     * Some models reject `previous_text` and `next_text` (see Models).
+     * Without this distinction every single call would fail after switching
+     * the model.
+     */
     public function supportsNeighbourText(): bool
     {
-        return !in_array($this->modelId, self::WITHOUT_NEIGHBOUR_TEXT, true);
+        return Models::acceptsNeighbourText($this->modelId);
     }
 
     public static function modelSupportsNeighbourText(string $modelId): bool
     {
-        return !in_array($modelId, self::WITHOUT_NEIGHBOUR_TEXT, true);
+        return Models::acceptsNeighbourText($modelId);
     }
 
     public function fileExtension(): string

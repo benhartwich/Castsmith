@@ -80,6 +80,7 @@ Terms: https://auphonic.com/terms_of_service — Privacy: https://auphonic.com/p
 * DOCX files are read without a bundled document library.
 * Database tables use the aaspf_ prefix; the upgrade works on MySQL as well as MariaDB.
 * Requires WordPress 6.9 (Action Scheduler 4.2).
+* Supports ElevenLabs Eleven v4: phonetic (IPA) dictionary rules in German and other languages, and neighbouring text for smoother transitions between segments.
 
 = 0.2.0 =
 * First public release: pluggable sources (upload, WordPress post), editable prompts in German and English, English number check, assembly with or without ffmpeg, English interface with German translation.

@@ -167,7 +167,7 @@ final class SettingsPage
             [
                 self::secretRow('elevenlabs_api_key', __('API key', 'sonoquill'), $values),
                 self::textRow('elevenlabs_voice_id', __('Voice ID', 'sonoquill'), $values, __('ID of the voice clone.', 'sonoquill')),
-                self::textRow('elevenlabs_model_id', __('Model', 'sonoquill'), $values, __('Recommended: eleven_v3 — only this model applies phonetic (IPA) pronunciation rules; eleven_multilingual_v2 ignores them.', 'sonoquill')),
+                self::textRow('elevenlabs_model_id', __('Model', 'sonoquill'), $values, __('Recommended: eleven_v4 — like eleven_v3 it applies phonetic (IPA) pronunciation rules in German too; eleven_multilingual_v2 ignores them.', 'sonoquill')),
                 self::textRow('elevenlabs_dictionary_id', __('Dictionary ID', 'sonoquill'), $values, __('There is exactly one dictionary, which grows through new versions. If it is created anew instead of extended, all existing bindings point to nothing.', 'sonoquill')),
                 self::textRow('elevenlabs_dictionary_version_id', __('Dictionary version', 'sonoquill'), $values, __('Required. Passed explicitly with every request so that later maintenance does not retroactively change the result of a rerun.', 'sonoquill')),
             ]

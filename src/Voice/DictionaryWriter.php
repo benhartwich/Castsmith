@@ -53,20 +53,16 @@ final class DictionaryWriter
     /**
      * Which rule type actually takes effect on the configured model.
      *
-     * Phonetic transcription is more precise, but is silently discarded
-     * outside of Eleven v3 — measured: with v3 a forced phonetic transcription
-     * lengthens the sentence by a full second, with Multilingual v2 nothing happens.
-     * The rule type therefore depends on the model and is not hard-coded.
+     * Phonetic transcription is more precise, but models that do not
+     * evaluate it beyond English discard it silently (see Models). The rule
+     * type therefore depends on the model and is not hard-coded.
      */
     public static function preferredRuleType(): string
     {
-        return in_array(Options::get('elevenlabs_model_id'), self::PHONEME_MODELS, true)
+        return Models::evaluatesPhonemesBeyondEnglish(Options::get('elevenlabs_model_id'))
             ? 'phoneme'
             : 'alias';
     }
-
-    /** Models that evaluate phonetic transcription beyond English. */
-    private const PHONEME_MODELS = ['eleven_v3', 'eleven_v3_conversational'];
 
     /**
      * Creates a rule or replaces an existing one.

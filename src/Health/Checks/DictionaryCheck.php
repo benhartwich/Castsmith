@@ -8,6 +8,7 @@ namespace Sonoquill\Health\Checks;
 use Sonoquill\Health\CheckInterface;
 use Sonoquill\Health\Result;
 use Sonoquill\Settings\Options;
+use Sonoquill\Voice\Models;
 use Sonoquill\Voice\PhonemeGuard;
 use Sonoquill\Support\CryptoException;
 use Sonoquill\Support\PlsDocument;
@@ -25,19 +26,13 @@ use Sonoquill\Voice\DictionaryWriter;
  *    This counts as an error here, not as a notice.
  * 2. **Phoneme rules on the wrong model.** ElevenLabs discards them without
  *    any error message if the model does not evaluate them. For German
- *    phonetic transcription, only `eleven_v3` does.
+ *    phonetic transcription, only Eleven v3 and v4 do (see Models).
  * 3. **Maintained but not pinned.** If a rule was added and the new version
  *    was not entered, the rule has no effect anywhere.
  */
 final class DictionaryCheck implements CheckInterface
 {
     private const BASE = 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/';
-
-    /** Models that evaluate phoneme rules at all. */
-    private const PHONEME_MODELS = ['eleven_flash_v2', 'eleven_v3'];
-
-    /** Models that evaluate phonetic transcription beyond English as well. */
-    private const MULTILINGUAL_PHONEME_MODELS = ['eleven_v3'];
 
     public function id(): string
     {
@@ -187,7 +182,7 @@ final class DictionaryCheck implements CheckInterface
 
         $model = Options::get('elevenlabs_model_id');
 
-        if ($document->phonemeRuleCount() > 0 && !in_array($model, self::PHONEME_MODELS, true)) {
+        if ($document->phonemeRuleCount() > 0 && !Models::evaluatesPhonemes($model)) {
             return Result::warn(
                 /* translators: 1: number of phonetic transcription rules, 2: model ID */
                 sprintf(__('%1$d phonetic transcription rules are silently discarded by model "%2$s".', 'sonoquill'), $document->phonemeRuleCount(), $model),
@@ -195,11 +190,11 @@ final class DictionaryCheck implements CheckInterface
             );
         }
 
-        if ($document->phonemeRuleCount() > 0 && !in_array($model, self::MULTILINGUAL_PHONEME_MODELS, true)) {
+        if ($document->phonemeRuleCount() > 0 && !Models::evaluatesPhonemesBeyondEnglish($model)) {
             return Result::warn(
                 /* translators: %s: model ID */
                 sprintf(__('Model "%s" evaluates phonetic transcription for English only.', 'sonoquill'), $model),
-                $detail . __(' German phonetic transcription requires eleven_v3.', 'sonoquill')
+                $detail . __(' Phonetic transcription beyond English requires eleven_v4 or eleven_v3.', 'sonoquill')
             );
         }
 

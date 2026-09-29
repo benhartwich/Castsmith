@@ -1663,7 +1663,7 @@ msgstr ""
 "Vergleicht Sprechskript und Vorlage auf veränderte, fehlende und erfundene "
 "Aussagen."
 
-#: src/Admin/PromptsPage.php:52 src/Health/Checks/DictionaryCheck.php:49
+#: src/Admin/PromptsPage.php:52 src/Health/Checks/DictionaryCheck.php:44
 msgid "Pronunciation dictionary"
 msgstr "Aussprachewörterbuch"
 
@@ -1779,8 +1779,8 @@ msgstr "Unerwartete Adresse für Batch-Ergebnisse."
 #: src/Ai/AnthropicClient.php:154 src/Ai/AnthropicClient.php:194
 #: src/Ai/AnthropicClient.php:259 src/Auphonic/AuphonicClient.php:118
 #: src/Auphonic/AuphonicClient.php:258 src/Auphonic/AuphonicClient.php:288
-#: src/Voice/DictionaryWriter.php:153 src/Voice/DictionaryWriter.php:314
-#: src/Voice/TextToSpeech.php:160 src/Voice/VoiceChanger.php:123
+#: src/Voice/DictionaryWriter.php:149 src/Voice/DictionaryWriter.php:310
+#: src/Voice/TextToSpeech.php:156 src/Voice/VoiceChanger.php:123
 msgid "Connection failed: "
 msgstr "Verbindungsfehler: "
 
@@ -1791,7 +1791,7 @@ msgid "Batch results: HTTP %d."
 msgstr "Batch-Ergebnisse: HTTP %d."
 
 #: src/Ai/AnthropicClient.php:187 src/Ai/AnthropicClient.php:249
-#: src/Voice/TextToSpeech.php:146
+#: src/Voice/TextToSpeech.php:142
 msgid "The request could not be encoded as JSON."
 msgstr "Die Anfrage ließ sich nicht als JSON kodieren."
 
@@ -2042,7 +2042,7 @@ msgstr "Die Prüfung ist mit einem Fehler abgebrochen."
 
 #: src/Health/Checks/AnthropicCheck.php:39
 #: src/Health/Checks/AuphonicCheck.php:38
-#: src/Health/Checks/DictionaryCheck.php:57
+#: src/Health/Checks/DictionaryCheck.php:52
 #: src/Health/Checks/ElevenLabsCheck.php:36
 msgid "Credentials could not be read."
 msgstr "Zugangsdaten nicht lesbar."
@@ -2060,7 +2060,7 @@ msgid "Could not reach the service."
 msgstr "Nicht erreichbar."
 
 #: src/Health/Checks/AnthropicCheck.php:76
-#: src/Health/Checks/DictionaryCheck.php:107
+#: src/Health/Checks/DictionaryCheck.php:102
 #: src/Health/Checks/ElevenLabsCheck.php:59
 msgid "API key not accepted (HTTP 401)."
 msgstr "API-Key wird abgelehnt (HTTP 401)."
@@ -2093,7 +2093,7 @@ msgstr ""
 #. translators: %d: HTTP status code
 #: src/Health/Checks/AnthropicCheck.php:100
 #: src/Health/Checks/AuphonicCheck.php:67
-#: src/Health/Checks/DictionaryCheck.php:118
+#: src/Health/Checks/DictionaryCheck.php:113
 #: src/Health/Checks/ElevenLabsCheck.php:64
 #, php-format
 msgid "Unexpected response (HTTP %d)."
@@ -2110,7 +2110,7 @@ msgid "No API token configured."
 msgstr "Kein API-Token hinterlegt."
 
 #: src/Health/Checks/AuphonicCheck.php:54
-#: src/Health/Checks/DictionaryCheck.php:101
+#: src/Health/Checks/DictionaryCheck.php:96
 msgid "Not reachable."
 msgstr "Nicht erreichbar."
 
@@ -2183,19 +2183,19 @@ msgstr ""
 "Transkript kommen aus der Montage und sind exakt. Im Auphonic-Preset "
 "abschalten."
 
-#: src/Health/Checks/DictionaryCheck.php:61
+#: src/Health/Checks/DictionaryCheck.php:56
 msgid "No ElevenLabs API key configured."
 msgstr "Kein ElevenLabs-API-Key hinterlegt."
 
-#: src/Health/Checks/DictionaryCheck.php:66
+#: src/Health/Checks/DictionaryCheck.php:61
 msgid "No dictionary configured."
 msgstr "Kein Wörterbuch hinterlegt."
 
-#: src/Health/Checks/DictionaryCheck.php:72
+#: src/Health/Checks/DictionaryCheck.php:67
 msgid "No version pinned."
 msgstr "Keine Version gebunden."
 
-#: src/Health/Checks/DictionaryCheck.php:73
+#: src/Health/Checks/DictionaryCheck.php:68
 msgid ""
 "Every request must pass the version_id explicitly. Without it, the latest "
 "version applies, and later maintenance retroactively changes the result of a"
@@ -2206,22 +2206,22 @@ msgstr ""
 "rückwirkend das Ergebnis einer Wiederholung."
 
 #. translators: %s: dictionary ID
-#: src/Health/Checks/DictionaryCheck.php:112
+#: src/Health/Checks/DictionaryCheck.php:107
 #, php-format
 msgid "Dictionary \"%s\" does not exist."
 msgstr "Wörterbuch \"%s\" existiert nicht."
 
-#: src/Health/Checks/DictionaryCheck.php:137
+#: src/Health/Checks/DictionaryCheck.php:132
 msgid "Pinned version could not be retrieved."
 msgstr "Gebundene Version nicht abrufbar."
 
 #. translators: %s: pinned dictionary version ID
-#: src/Health/Checks/DictionaryCheck.php:145
+#: src/Health/Checks/DictionaryCheck.php:140
 #, php-format
 msgid "The pinned version \"%s\" does not exist."
 msgstr "Die gebundene Version \"%s\" gibt es nicht."
 
-#: src/Health/Checks/DictionaryCheck.php:146
+#: src/Health/Checks/DictionaryCheck.php:141
 msgid ""
 "Was the dictionary created anew instead of extended? Then all existing pins "
 "point to nothing."
@@ -2230,18 +2230,18 @@ msgstr ""
 " Bindungen ins Leere."
 
 #. translators: %d: HTTP status code
-#: src/Health/Checks/DictionaryCheck.php:152
+#: src/Health/Checks/DictionaryCheck.php:147
 #, php-format
 msgid "Pinned version responds with HTTP %d."
 msgstr "Gebundene Version antwortet mit HTTP %d."
 
-#: src/Health/Checks/DictionaryCheck.php:158
+#: src/Health/Checks/DictionaryCheck.php:153
 msgid "The pinned version is not a readable PLS file."
 msgstr "Die gebundene Version ist keine lesbare PLS-Datei."
 
 #. translators: 1: dictionary name, 2: number of rules, 3: number of phonetic
 #. transcription rules, 4: number of terms
-#: src/Health/Checks/DictionaryCheck.php:173
+#: src/Health/Checks/DictionaryCheck.php:168
 #, php-format
 msgid ""
 "Dictionary \"%1$s\", pinned version: %2$d rules, %3$d of them as phonetic "
@@ -2250,50 +2250,52 @@ msgstr ""
 "Wörterbuch \"%1$s\", gebundene Version: %2$d Regeln, davon %3$d als "
 "Lautschrift. %4$d Begriffe für den System Prompt."
 
-#: src/Health/Checks/DictionaryCheck.php:185
+#: src/Health/Checks/DictionaryCheck.php:180
 msgid "The local PLS file is not writable."
 msgstr "Die lokale PLS-Datei ist nicht beschreibbar."
 
 #. translators: 1: number of phonetic transcription rules, 2: model ID
-#: src/Health/Checks/DictionaryCheck.php:193
+#: src/Health/Checks/DictionaryCheck.php:188
 #, php-format
 msgid ""
 "%1$d phonetic transcription rules are silently discarded by model \"%2$s\"."
 msgstr "%1$d Lautschrift-Regeln werden von Modell \"%2$s\" still verworfen."
 
-#: src/Health/Checks/DictionaryCheck.php:194
+#: src/Health/Checks/DictionaryCheck.php:189
 msgid " Only alias rules take effect on this model."
 msgstr " Auf diesem Modell wirken nur Alias-Regeln."
 
 #. translators: %s: model ID
-#: src/Health/Checks/DictionaryCheck.php:201
+#: src/Health/Checks/DictionaryCheck.php:196
 #, php-format
 msgid "Model \"%s\" evaluates phonetic transcription for English only."
 msgstr "Modell \"%s\" wertet Lautschrift nur für Englisch aus."
 
-#: src/Health/Checks/DictionaryCheck.php:202
-msgid " German phonetic transcription requires eleven_v3."
-msgstr " Für deutsche Lautschrift braucht es eleven_v3."
+#: src/Health/Checks/DictionaryCheck.php:197
+msgid ""
+" Phonetic transcription beyond English requires eleven_v4 or eleven_v3."
+msgstr ""
+" Lautschrift außerhalb des Englischen braucht eleven_v4 oder eleven_v3."
 
 #. translators: %d: number of affected rules
-#: src/Health/Checks/DictionaryCheck.php:221
+#: src/Health/Checks/DictionaryCheck.php:216
 #, php-format
 msgid "%d rules contain characters that the voice mispronounces."
 msgstr "%d Regeln enthalten Zeichen, die die Stimme falsch ausspricht."
 
 #. translators: %s: comma-separated list of affected terms
-#: src/Health/Checks/DictionaryCheck.php:224
+#: src/Health/Checks/DictionaryCheck.php:219
 #, php-format
 msgid ""
 " Affected: %s. The phonetic transcription must not contain ◌̯, ◌̩ or ç."
 msgstr " Betroffen: %s. Die Lautschrift darf ◌̯, ◌̩ und ç nicht enthalten."
 
-#: src/Health/Checks/DictionaryCheck.php:232
+#: src/Health/Checks/DictionaryCheck.php:227
 msgid "There is a newer version than the pinned one."
 msgstr "Es gibt eine neuere Version als die gebundene."
 
 #. translators: %s: number of rules in the latest version, or "?" if unknown
-#: src/Health/Checks/DictionaryCheck.php:235
+#: src/Health/Checks/DictionaryCheck.php:230
 #, php-format
 msgid ""
 " The latest version has %s rules. Until it is entered, every rule added "
@@ -2303,31 +2305,31 @@ msgstr ""
 "jede seither ergänzte Regel nirgends."
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:242
+#: src/Health/Checks/DictionaryCheck.php:237
 msgid "Pinned and up to date."
 msgstr "Gebunden und aktuell."
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:242
+#: src/Health/Checks/DictionaryCheck.php:237
 #, php-format
 msgid "Local file: %s"
 msgstr "Lokale Datei: %s"
 
 #. translators: %s: path of the local PLS file
-#: src/Health/Checks/DictionaryCheck.php:256
+#: src/Health/Checks/DictionaryCheck.php:251
 #, php-format
 msgid "The file %s belongs to another user and could not be modified."
 msgstr ""
 "Die Datei %s gehört einem anderen Benutzer und lässt sich nicht ändern."
 
 #. translators: %s: directory path
-#: src/Health/Checks/DictionaryCheck.php:262
+#: src/Health/Checks/DictionaryCheck.php:257
 #, php-format
 msgid "The directory %s does not exist."
 msgstr "Das Verzeichnis %s gibt es nicht."
 
 #. translators: %s: directory path
-#: src/Health/Checks/DictionaryCheck.php:268
+#: src/Health/Checks/DictionaryCheck.php:263
 #, php-format
 msgid "The directory %s is not writable by the web server."
 msgstr "Das Verzeichnis %s ist für den Webserver nicht beschreibbar."
@@ -3197,7 +3199,7 @@ msgstr "Der Beitrag ließ sich nicht anlegen."
 #. translators: %s: directory path of the dictionary file
 #: src/Podlove/MediaStore.php:111 src/Storage/EpisodeStorage.php:112
 #: src/Storage/EpisodeStorage.php:134 src/Storage/EpisodeStorage.php:178
-#: src/Voice/DictionaryWriter.php:521
+#: src/Voice/DictionaryWriter.php:517
 #, php-format
 msgid "Directory could not be created: %s"
 msgstr "Verzeichnis lässt sich nicht anlegen: %s"
@@ -3397,11 +3399,11 @@ msgstr "Modell"
 
 #: src/Settings/SettingsPage.php:170
 msgid ""
-"Recommended: eleven_v3 — only this model applies phonetic (IPA) "
-"pronunciation rules; eleven_multilingual_v2 ignores them."
+"Recommended: eleven_v4 — like eleven_v3 it applies phonetic (IPA) "
+"pronunciation rules in German too; eleven_multilingual_v2 ignores them."
 msgstr ""
-"Empfohlen: eleven_v3 — nur dieses Modell wendet Lautschrift-Regeln (IPA) an;"
-" eleven_multilingual_v2 ignoriert sie."
+"Empfohlen: eleven_v4 — wie eleven_v3 wendet es Lautschrift-Regeln (IPA) auch"
+" auf Deutsch an; eleven_multilingual_v2 ignoriert sie."
 
 #: src/Settings/SettingsPage.php:171
 msgid "Dictionary ID"
@@ -3925,21 +3927,21 @@ msgid ""
 msgstr ""
 "automatisch bis zum Podlove-Entwurf weiterlaufen und per Mail Bescheid geben"
 
-#: src/Storage/EpisodeStorage.php:251
+#: src/Storage/EpisodeStorage.php:255
 msgid "Will be created on the first run."
 msgstr "Wird beim ersten Lauf angelegt."
 
 #. translators: %s: path of the parent directory of the storage
-#: src/Storage/EpisodeStorage.php:253
+#: src/Storage/EpisodeStorage.php:257
 #, php-format
 msgid "The parent directory %s is not writable."
 msgstr "Das übergeordnete Verzeichnis %s ist nicht beschreibbar."
 
-#: src/Storage/EpisodeStorage.php:260
+#: src/Storage/EpisodeStorage.php:264
 msgid "Present and writable."
 msgstr "Vorhanden und beschreibbar."
 
-#: src/Storage/EpisodeStorage.php:260
+#: src/Storage/EpisodeStorage.php:264
 msgid "Present, but not writable."
 msgstr "Vorhanden, aber nicht beschreibbar."
 
@@ -4009,104 +4011,104 @@ msgstr "Datei nicht lesbar: %s"
 msgid "File could not be read: %s"
 msgstr "Datei konnte nicht gelesen werden: %s"
 
-#: src/Voice/DictionaryWriter.php:89
+#: src/Voice/DictionaryWriter.php:85
 msgid "The term the rule should apply to is missing."
 msgstr "Es fehlt der Begriff, für den die Regel gelten soll."
 
-#: src/Voice/DictionaryWriter.php:103
+#: src/Voice/DictionaryWriter.php:99
 msgid "Both the phonetic transcription and the respelling are missing."
 msgstr "Es fehlt sowohl die Lautschrift als auch die Umschreibung."
 
-#: src/Voice/DictionaryWriter.php:113 src/Voice/DictionaryWriter.php:253
+#: src/Voice/DictionaryWriter.php:109 src/Voice/DictionaryWriter.php:249
 msgid "No dictionary is configured."
 msgstr "Es ist kein Wörterbuch eingetragen."
 
 #. translators: 1: HTTP status code, 2: error detail from ElevenLabs
-#: src/Voice/DictionaryWriter.php:165
+#: src/Voice/DictionaryWriter.php:161
 #, php-format
 msgid "ElevenLabs responds with HTTP %1$d. %2$s"
 msgstr "ElevenLabs antwortet mit HTTP %1$d. %2$s"
 
-#: src/Voice/DictionaryWriter.php:240
+#: src/Voice/DictionaryWriter.php:236
 msgid "An empty rule set would empty the dictionary."
 msgstr "Ein leerer Regelsatz würde das Wörterbuch leeren."
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:284
+#: src/Voice/DictionaryWriter.php:280
 #, php-format
 msgid "Old rules cannot be removed, HTTP %d."
 msgstr "Alte Regeln nicht entfernbar, HTTP %d."
 
 #. translators: 1: HTTP status code, 2: start of the response body from
 #. ElevenLabs
-#: src/Voice/DictionaryWriter.php:323
+#: src/Voice/DictionaryWriter.php:319
 #, php-format
 msgid "New rules not accepted, HTTP %1$d: %2$s"
 msgstr "Neue Regeln nicht angenommen, HTTP %1$d: %2$s"
 
-#: src/Voice/DictionaryWriter.php:362
+#: src/Voice/DictionaryWriter.php:358
 msgid "Old rule cannot be removed: "
 msgstr "Alte Regel nicht entfernbar: "
 
 #. translators: %d: HTTP status code
-#: src/Voice/DictionaryWriter.php:370
+#: src/Voice/DictionaryWriter.php:366
 #, php-format
 msgid "Old rule cannot be removed, HTTP %d."
 msgstr "Alte Regel nicht entfernbar, HTTP %d."
 
-#: src/Voice/DictionaryWriter.php:444
+#: src/Voice/DictionaryWriter.php:440
 msgid "No dictionary version is bound."
 msgstr "Es ist keine Wörterbuchversion gebunden."
 
-#: src/Voice/DictionaryWriter.php:453
+#: src/Voice/DictionaryWriter.php:449
 msgid "The bound dictionary version could not be loaded."
 msgstr "Die gebundene Wörterbuchfassung ließ sich nicht laden."
 
-#: src/Voice/DictionaryWriter.php:501
+#: src/Voice/DictionaryWriter.php:497
 msgid "The PLS file has no closing lexicon element."
 msgstr "Die PLS-Datei hat kein schließendes lexicon-Element."
 
 #. translators: %s: path of the dictionary file
-#: src/Voice/DictionaryWriter.php:526
+#: src/Voice/DictionaryWriter.php:522
 #, php-format
 msgid "The file %s could not be written."
 msgstr "Die Datei %s lässt sich nicht schreiben."
 
-#: src/Voice/DictionaryWriter.php:535 src/Voice/TextToSpeech.php:56
+#: src/Voice/DictionaryWriter.php:531 src/Voice/TextToSpeech.php:47
 #: src/Voice/VoiceChanger.php:47
 msgid "ElevenLabs credentials could not be read: "
 msgstr "ElevenLabs-Zugangsdaten nicht lesbar: "
 
-#: src/Voice/DictionaryWriter.php:539
+#: src/Voice/DictionaryWriter.php:535
 msgid "No ElevenLabs API key is stored."
 msgstr "Es ist kein ElevenLabs-API-Key hinterlegt."
 
-#: src/Voice/TextToSpeech.php:60
+#: src/Voice/TextToSpeech.php:51
 msgid "No ElevenLabs API key has been stored."
 msgstr "Es ist kein ElevenLabs-API-Key hinterlegt."
 
-#: src/Voice/TextToSpeech.php:65
+#: src/Voice/TextToSpeech.php:56
 msgid "No voice ID has been stored."
 msgstr "Es ist keine Voice-ID hinterlegt."
 
-#: src/Voice/TextToSpeech.php:73
+#: src/Voice/TextToSpeech.php:64
 msgid ""
 "The dictionary is entered without a version. Without an explicit version, "
 msgstr ""
 "Das Wörterbuch ist ohne Version eingetragen. Ohne ausdrückliche Version "
 "würde eine "
 
-#: src/Voice/TextToSpeech.php:74
+#: src/Voice/TextToSpeech.php:65
 msgid "later maintenance would retroactively change the result of a rerun."
 msgstr "spätere Pflege das Ergebnis einer Wiederholung rückwirkend verändern."
 
 #. translators: 1: HTTP status code, 2: error detail returned by ElevenLabs
-#: src/Voice/TextToSpeech.php:177
+#: src/Voice/TextToSpeech.php:173
 #, php-format
 msgid "ElevenLabs request failed with HTTP %1$d. %2$s"
 msgstr "ElevenLabs antwortet mit HTTP %1$d. %2$s"
 
-#: src/Voice/TextToSpeech.php:182
+#: src/Voice/TextToSpeech.php:178
 msgid "Synthesis failed: the response contains no audio."
 msgstr "Die Antwort enthält kein Audio."
 
