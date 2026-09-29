@@ -23,8 +23,10 @@ Give IPA in English phonology. It is the form that is actually used.
 - **Mark the stress.** The symbol ˈ goes directly before the stressed
   syllable. Wrong stress is the most common error.
 - **Mark vowel length** with ː where it matters.
-- Keep it simple: prefer plain symbols over narrow diacritics. The voice
-  handles broad transcriptions most reliably.
+- Write the transcription precisely, including diacritics where they
+  belong. Current voices (Eleven v4) render them correctly; for older models
+  the plugin simplifies the transcription itself when it is saved.
+- Use the IPA ɡ (U+0261), not the ordinary letter g.
 
 ## The respelling is the fallback
 

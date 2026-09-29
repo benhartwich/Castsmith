@@ -99,9 +99,10 @@ final class DictionaryWriter
             throw new \RuntimeException(__('Both the phonetic transcription and the respelling are missing.', 'sonoquill'));
         }
 
-        // Filter out characters that the voice demonstrably renders incorrectly.
+        // Filter out characters that the model demonstrably renders incorrectly.
+        $model = Options::get('elevenlabs_model_id');
         if ($art === 'phoneme') {
-            $wert = PhonemeGuard::bereinige($wert);
+            $wert = PhonemeGuard::fuerModell($wert, $model);
         }
 
         $dictionaryId = Options::get('elevenlabs_dictionary_id');
@@ -115,7 +116,7 @@ final class DictionaryWriter
         //    An existing rule is replaced, not duplicated.
         $local = self::currentDocumentSource($key, $dictionaryId);
         $hadRule = self::hasGrapheme($local, $grapheme);
-        $nebenform = $art === 'phoneme' ? $alias : PhonemeGuard::bereinige($ipa);
+        $nebenform = $art === 'phoneme' ? $alias : PhonemeGuard::fuerModell($ipa, $model);
         $updated = self::appendLexeme(self::removeLexeme($local, $grapheme), $grapheme, $wert, $art, $nebenform);
         self::writeLocal($updated);
 
@@ -238,9 +239,10 @@ final class DictionaryWriter
 
         // Clean up once right at the start, so that the local file and the service
         // get the same state. buildDocument() reads the result too.
+        $model = Options::get('elevenlabs_model_id');
         foreach ($rules as $i => $rule) {
             if ((string) $rule['type'] === 'phoneme') {
-                $rules[$i]['value'] = PhonemeGuard::bereinige((string) $rule['value']);
+                $rules[$i]['value'] = PhonemeGuard::fuerModell((string) $rule['value'], $model);
             }
         }
 

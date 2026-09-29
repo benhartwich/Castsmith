@@ -33,6 +33,14 @@ final class Models
      */
     private const WITHOUT_NEIGHBOUR_TEXT = ['eleven_v3', 'eleven_v3_conversational'];
 
+    /**
+     * Models that render three IPA characters wrongly (◌̯, ◌̩, ç — see
+     * PhonemeGuard). Eleven v4 renders them correctly (listening test with
+     * all 58 dictionary terms, 29.09.2026), so there the transcription stays
+     * as precise as it was written.
+     */
+    private const COARSE_IPA = ['eleven_v3', 'eleven_v3_conversational'];
+
     public static function evaluatesPhonemes(string $modelId): bool
     {
         return in_array($modelId, self::PHONEME, true);
@@ -41,6 +49,11 @@ final class Models
     public static function evaluatesPhonemesBeyondEnglish(string $modelId): bool
     {
         return in_array($modelId, self::MULTILINGUAL_PHONEME, true);
+    }
+
+    public static function needsCoarseIpa(string $modelId): bool
+    {
+        return in_array($modelId, self::COARSE_IPA, true);
     }
 
     public static function acceptsNeighbourText(string $modelId): bool

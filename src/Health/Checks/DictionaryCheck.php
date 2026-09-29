@@ -205,7 +205,7 @@ final class DictionaryCheck implements CheckInterface
             if ((string) $rule['type'] !== 'phoneme') {
                 continue;
             }
-            if (!PhonemeGuard::istSauber((string) $rule['value'])) {
+            if (Models::needsCoarseIpa($model) && !PhonemeGuard::istSauber((string) $rule['value'])) {
                 $unbrauchbar[] = (string) $rule['grapheme'];
             }
         }

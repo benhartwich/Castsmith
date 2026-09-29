@@ -87,4 +87,12 @@ final class PhonemeGuardTest extends TestCase
         self::assertSame('', PhonemeGuard::bereinige(''));
         self::assertTrue(PhonemeGuard::istSauber(''));
     }
+
+    public function testCoarseningDependsOnTheModel(): void
+    {
+        $precise = 'ʔɛm ˈdʁaɪ̯sɪç';
+        self::assertSame($precise, PhonemeGuard::fuerModell($precise, 'eleven_v4'));
+        self::assertSame(PhonemeGuard::bereinige($precise), PhonemeGuard::fuerModell($precise, 'eleven_v3'));
+        self::assertNotSame($precise, PhonemeGuard::fuerModell($precise, 'eleven_v3'));
+    }
 }

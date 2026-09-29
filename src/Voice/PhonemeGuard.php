@@ -17,6 +17,9 @@ namespace Sonoquill\Voice;
  * This rules out model language, spaces and glottal stop as the cause; it is
  * exactly these three characters.
  *
+ * This applies to Eleven v3. Eleven v4 renders all three characters
+ * correctly, so fuerModell() leaves the transcription untouched there.
+ *
  * @see DECISIONS.md, entry "Lautschrift ohne Kombinationszeichen"
  */
 final class PhonemeGuard
@@ -50,6 +53,15 @@ final class PhonemeGuard
         }
 
         return $gefunden;
+    }
+
+    /**
+     * The transcription as the configured model should get it: coarsened
+     * for models that mispronounce the three characters, otherwise unchanged.
+     */
+    public static function fuerModell(string $ipa, string $modelId): string
+    {
+        return Models::needsCoarseIpa($modelId) ? self::bereinige($ipa) : $ipa;
     }
 
     public static function istSauber(string $ipa): bool

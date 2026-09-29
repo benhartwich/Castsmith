@@ -27,18 +27,21 @@ verwendet wird.
 - **Vokallänge angeben.** ː nach dem Vokal für lang, ohne Zeichen für kurz.
 - Deutsches r als ʁ, Glottisverschluss vor vokalischem Wortanfang als ʔ.
 
-**Drei Zeichen sind verboten.** Die Stimme setzt sie nachweislich falsch um,
-auch dort, wo sie sprachwissenschaftlich richtig wären:
+**Präzise Lautschrift.** Schreib die Lautung vollständig, auch mit den
+feinen Zeichen:
 
-| verboten | stattdessen | Beispiel |
+| Zeichen | wofür | Beispiel |
 |---|---|---|
-| ◌̯ (U+032F, nicht-silbisch) | ersatzlos weglassen | Mauer ˈmaʊɐ, nicht ˈmaʊɐ̯ |
-| ◌̩ (U+0329, silbisch) | Schwa davor: ən, əl, əm | Garten ˈɡaʁtən, nicht ˈɡaʁtn̩ |
-| ç (ich-Laut) | k bei der Endung -ig, sonst eine Umschreibung | dreißig ˈdʁaɪsɪk, nicht ˈdʁaɪsɪç |
+| ◌̯ (nicht-silbisch) | zweiter Teil eines Diphthongs, vokalisiertes r | Mauer ˈmaʊ̯ɐ, Heu hɔʏ̯ |
+| ◌̩ (silbisch) | silbisches n, l, m in unbetonten Endungen | Garten ˈɡaʁtn̩ |
+| ç (ich-Laut) | ich-Laut, auch in der Endung -ig | dreißig ˈdʁaɪ̯sɪç |
+| t͡s | z und tz | Zeit t͡saɪ̯t |
+| ɡ (U+0261) | g — das IPA-Zeichen, nicht der normale Buchstabe | Garten ˈɡaʁtn̩ |
 
-Maßgeblich ist, was die Stimme daraus macht: aus ç wird „sch“, aus ◌̯ wird
-ein verschlucktes Wort. Mehrere Wörter in einer Regel sind dagegen
-unbedenklich.
+Aktuelle Stimmen (Eleven v4) setzen diese Zeichen richtig um. Für ältere
+Modelle, bei denen sie falsch klangen, vereinfacht das Plugin die Lautschrift
+beim Speichern selbst — schreib sie hier deshalb immer vollständig. Mehrere
+Wörter in einer Regel sind unbedenklich.
 
 ## Die Umschreibung ist die Rückfallebene
 
