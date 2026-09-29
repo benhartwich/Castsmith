@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Health\Registry;
-use Castsmith\Settings\Options;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Health\Registry;
+use Sonoquill\Settings\Options;
 
 /**
  * The overview: key figures, episodes in progress, add-on panels, all
@@ -26,13 +26,13 @@ final class Overview
         $hidden = self::hiddenIds();
         $episodes = EpisodeRepository::recent(60);
 
-        echo '<h1 class="wp-heading-inline">' . esc_html__('Castsmith — Overview', 'castsmith') . '</h1> ';
+        echo '<h1 class="wp-heading-inline">' . esc_html__('Sonoquill — Overview', 'sonoquill') . '</h1> ';
         echo '<a class="page-title-action" href="' . esc_url(Urls::episodes(['neu' => 1])) . '">'
-            . esc_html__('New episode', 'castsmith') . '</a>';
+            . esc_html__('New episode', 'sonoquill') . '</a>';
         echo '<hr class="wp-header-end">';
         echo '<p class="description">' . esc_html(sprintf(
             /* translators: %s: name of the podcast */
-            __('%s — two approvals stay with you: text and audio.', 'castsmith'),
+            __('%s — two approvals stay with you: text and audio.', 'sonoquill'),
             Options::podcastName()
         )) . '</p>';
 
@@ -47,10 +47,10 @@ final class Overview
             self::renderActive($episode);
         }
 
-        // Add-ons can show their own panels here (action `castsmith_overview_panels`,
+        // Add-ons can show their own panels here (action `sonoquill_overview_panels`,
         // one <section class="aaspf-panel"> per panel).
         ob_start();
-        do_action('castsmith_overview_panels');
+        do_action('sonoquill_overview_panels');
         $panels = trim((string) ob_get_clean());
         if ($panels !== '') {
             echo '<div class="aaspf-zweispaltig">' . wp_kses($panels, Html::allowed()) . '</div>';
@@ -70,18 +70,18 @@ final class Overview
         if ($first !== null) {
             $current = Workflow::current(Workflow::stations($first));
             self::card(
-                __('In progress', 'castsmith'),
+                __('In progress', 'sonoquill'),
                 self::shortTitle($first),
                 $current !== null ? sprintf('%s · %s', $current['titel'], $current['wort']) : EpisodeStatus::label((string) $first['status'])
             );
         } else {
-            self::card(__('In progress', 'castsmith'), __('nothing', 'castsmith'), __('no open episode', 'castsmith'));
+            self::card(__('In progress', 'sonoquill'), __('nothing', 'sonoquill'), __('no open episode', 'sonoquill'));
         }
 
         /**
          * Filter: additional key figures for the overview, each as [title, value, subline, tone ''|'warn'].
          */
-        foreach ((array) apply_filters('castsmith_overview_cards', []) as $extra) {
+        foreach ((array) apply_filters('sonoquill_overview_cards', []) as $extra) {
             if (is_array($extra) && count($extra) >= 3) {
                 self::card((string) $extra[0], (string) $extra[1], (string) $extra[2], (string) ($extra[3] ?? ''));
             }
@@ -90,20 +90,20 @@ final class Overview
         $quota = self::elevenLabsQuota();
         if ($quota !== null) {
             self::card(
-                __('ElevenLabs quota', 'castsmith'),
+                __('ElevenLabs quota', 'sonoquill'),
                 number_format_i18n($quota['genutzt']),
                 /* translators: %s: character limit of the ElevenLabs plan */
-                sprintf(__('of %s characters in this billing month', 'castsmith'), number_format_i18n($quota['grenze'])),
+                sprintf(__('of %s characters in this billing month', 'sonoquill'), number_format_i18n($quota['grenze'])),
                 $quota['grenze'] > 0 && $quota['genutzt'] / $quota['grenze'] > 0.85 ? 'warn' : ''
             );
         } else {
-            self::card(__('ElevenLabs quota', 'castsmith'), '—', __('unavailable', 'castsmith'));
+            self::card(__('ElevenLabs quota', 'sonoquill'), '—', __('unavailable', 'sonoquill'));
         }
 
         $results = Registry::lastResults();
         $total = count(Registry::all());
         if ($results === []) {
-            self::card(__('Services', 'castsmith'), '—', __('not checked yet · check in the settings', 'castsmith'));
+            self::card(__('Services', 'sonoquill'), '—', __('not checked yet · check in the settings', 'sonoquill'));
         } else {
             $ok = count(array_filter($results, static fn (array $r): bool => $r['status'] === 'ok'));
             $problem = null;
@@ -115,11 +115,11 @@ final class Overview
             }
             $oldest = min(array_map(static fn (array $r): int => (int) $r['zeit'], $results));
             self::card(
-                __('Services', 'castsmith'),
+                __('Services', 'sonoquill'),
                 /* translators: 1: number of services working fine, 2: total number of services */
-                sprintf(__('%1$d of %2$d', 'castsmith'), $ok, $total),
+                sprintf(__('%1$d of %2$d', 'sonoquill'), $ok, $total),
                 /* translators: %s: time since the last check, e.g. "5 mins" */
-                $problem ?? sprintf(__('all fine · checked %s ago', 'castsmith'), human_time_diff($oldest)),
+                $problem ?? sprintf(__('all fine · checked %s ago', 'sonoquill'), human_time_diff($oldest)),
                 $ok === $total && count($results) === $total ? 'ok' : 'warn'
             );
         }
@@ -140,7 +140,7 @@ final class Overview
         echo '<div class="aaspf-panel-kopf">';
         echo '<h2>' . esc_html(self::title($episode)) . '</h2>';
         echo wp_kses(EpisodesPage::statusPill($episode), Html::allowed());
-        echo '<a class="button button-primary" href="' . esc_url(Urls::episode($id)) . '">' . esc_html__('Open', 'castsmith') . '</a>';
+        echo '<a class="button button-primary" href="' . esc_url(Urls::episode($id)) . '">' . esc_html__('Open', 'sonoquill') . '</a>';
         echo '</div>';
 
         EpisodesPage::renderSteps($stations, true);
@@ -157,19 +157,19 @@ final class Overview
      */
     private static function renderTable(array $episodes, array $hidden, bool $showHidden): void
     {
-        echo '<h2 class="aaspf-abschnitt">' . esc_html__('All episodes', 'castsmith') . '</h2>';
+        echo '<h2 class="aaspf-abschnitt">' . esc_html__('All episodes', 'sonoquill') . '</h2>';
 
         if ($episodes === []) {
-            echo '<p>' . esc_html__('No episode created yet.', 'castsmith') . '</p>';
+            echo '<p>' . esc_html__('No episode created yet.', 'sonoquill') . '</p>';
 
             return;
         }
 
         echo '<table class="widefat striped aaspf-folgen"><thead><tr>';
         foreach ([
-            [__('No.', 'castsmith'), ''], [__('Title', 'castsmith'), ''], [__('Source', 'castsmith'), 'aaspf-schmal-weg'],
-            [__('Status', 'castsmith'), ''], [__('Length', 'castsmith'), 'aaspf-rechts aaspf-schmal-weg'],
-            [__('Cost', 'castsmith'), 'aaspf-rechts aaspf-schmal-weg'], [__('Created', 'castsmith'), 'aaspf-schmal-weg'], ['', ''],
+            [__('No.', 'sonoquill'), ''], [__('Title', 'sonoquill'), ''], [__('Source', 'sonoquill'), 'aaspf-schmal-weg'],
+            [__('Status', 'sonoquill'), ''], [__('Length', 'sonoquill'), 'aaspf-rechts aaspf-schmal-weg'],
+            [__('Cost', 'sonoquill'), 'aaspf-rechts aaspf-schmal-weg'], [__('Created', 'sonoquill'), 'aaspf-schmal-weg'], ['', ''],
         ] as [$head, $class]) {
             echo '<th scope="col" class="' . esc_attr($class) . '">' . esc_html($head) . '</th>';
         }
@@ -189,7 +189,7 @@ final class Overview
             echo '<tr' . ($isHidden ? ' class="aaspf-ausgeblendet"' : '') . '>';
             echo '<td>' . esc_html((string) $id) . '</td>';
             echo '<td><a href="' . esc_url(Urls::episode($id)) . '"><strong>' . esc_html(self::title($episode)) . '</strong></a></td>';
-            echo '<td class="aaspf-schmal-weg">' . esc_html(\Castsmith\Source\Sources::forEpisode($episode)->label()) . '</td>';
+            echo '<td class="aaspf-schmal-weg">' . esc_html(\Sonoquill\Source\Sources::forEpisode($episode)->label()) . '</td>';
             echo '<td>' . wp_kses(EpisodesPage::statusPill($episode), Html::allowed()) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(EpisodesPage::lengthLabel($episode)) . '</td>';
             echo '<td class="aaspf-rechts aaspf-schmal-weg">' . esc_html(number_format_i18n((float) $episode['cost_cents'] / 100, 2) . ' $') . '</td>';
@@ -199,7 +199,7 @@ final class Overview
             wp_nonce_field(EpisodeActions::ACTION_HIDE);
             echo '<input type="hidden" name="action" value="' . esc_attr(EpisodeActions::ACTION_HIDE) . '">';
             echo '<input type="hidden" name="episode" value="' . esc_attr((string) $id) . '">';
-            echo '<button type="submit" class="button-link">' . esc_html($isHidden ? __('show', 'castsmith') : __('hide', 'castsmith')) . '</button>';
+            echo '<button type="submit" class="button-link">' . esc_html($isHidden ? __('show', 'sonoquill') : __('hide', 'sonoquill')) . '</button>';
             echo '</form></td>';
             echo '</tr>';
         }
@@ -209,13 +209,13 @@ final class Overview
         if ($hiddenCount > 0) {
             echo '<p class="description">';
             if ($showHidden) {
-                echo '<a href="' . esc_url(Urls::episodes()) . '">' . esc_html__('Hide hidden episodes again', 'castsmith') . '</a>';
+                echo '<a href="' . esc_url(Urls::episodes()) . '">' . esc_html__('Hide hidden episodes again', 'sonoquill') . '</a>';
             } else {
                 echo esc_html(sprintf(
                     /* translators: %d: number of episodes */
-                    _n('%d episode is hidden', '%d episodes are hidden', $hiddenCount, 'castsmith'),
+                    _n('%d episode is hidden', '%d episodes are hidden', $hiddenCount, 'sonoquill'),
                     $hiddenCount
-                )) . ' · <a href="' . esc_url(Urls::episodes(['alle' => 1])) . '">' . esc_html__('show', 'castsmith') . '</a>';
+                )) . ' · <a href="' . esc_url(Urls::episodes(['alle' => 1])) . '">' . esc_html__('show', 'sonoquill') . '</a>';
             }
             echo '</p>';
         }
@@ -254,7 +254,7 @@ final class Overview
         }
 
         /* translators: %d: episode ID */
-        return sprintf(__('Episode %d', 'castsmith'), (int) $episode['id']);
+        return sprintf(__('Episode %d', 'sonoquill'), (int) $episode['id']);
     }
 
     /**
@@ -264,7 +264,7 @@ final class Overview
      */
     private static function shortTitle(array $episode): string
     {
-        $fromSource = \Castsmith\Source\Sources::forEpisode($episode)->shortName($episode);
+        $fromSource = \Sonoquill\Source\Sources::forEpisode($episode)->shortName($episode);
         if ($fromSource !== '') {
             return mb_strimwidth($fromSource, 0, 32, '…');
         }

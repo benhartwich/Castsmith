@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Voice;
+namespace Sonoquill\Voice;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use Castsmith\Settings\Options;
-use Castsmith\Support\CryptoException;
+use Sonoquill\Settings\Options;
+use Sonoquill\Support\CryptoException;
 
 /**
  * Speech synthesis via ElevenLabs, one call per segment.
@@ -53,16 +53,16 @@ final class TextToSpeech
         try {
             $key = Options::secret('elevenlabs_api_key');
         } catch (CryptoException $e) {
-            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'castsmith') . $e->getMessage(), 0, $e);
+            throw new \RuntimeException(__('ElevenLabs credentials could not be read: ', 'sonoquill') . $e->getMessage(), 0, $e);
         }
 
         if ($key === '') {
-            throw new \RuntimeException(__('No ElevenLabs API key has been stored.', 'castsmith'));
+            throw new \RuntimeException(__('No ElevenLabs API key has been stored.', 'sonoquill'));
         }
 
         $voiceId = Options::get('elevenlabs_voice_id');
         if ($voiceId === '') {
-            throw new \RuntimeException(__('No voice ID has been stored.', 'castsmith'));
+            throw new \RuntimeException(__('No voice ID has been stored.', 'sonoquill'));
         }
 
         $dictionaryId = Options::get('elevenlabs_dictionary_id');
@@ -70,8 +70,8 @@ final class TextToSpeech
 
         if ($dictionaryId !== '' && $dictionaryVersion === '') {
             throw new \RuntimeException(
-                __('The dictionary is entered without a version. Without an explicit version, ', 'castsmith')
-                . __('later maintenance would retroactively change the result of a rerun.', 'castsmith')
+                __('The dictionary is entered without a version. Without an explicit version, ', 'sonoquill')
+                . __('later maintenance would retroactively change the result of a rerun.', 'sonoquill')
             );
         }
 
@@ -143,7 +143,7 @@ final class TextToSpeech
 
         $body = wp_json_encode($payload);
         if ($body === false) {
-            throw new \RuntimeException(__('The request could not be encoded as JSON.', 'castsmith'));
+            throw new \RuntimeException(__('The request could not be encoded as JSON.', 'sonoquill'));
         }
 
         $response = wp_remote_post($url, [
@@ -157,7 +157,7 @@ final class TextToSpeech
         ]);
 
         if (is_wp_error($response)) {
-            throw new \RuntimeException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
+            throw new \RuntimeException(__('Connection failed: ', 'sonoquill') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
@@ -174,12 +174,12 @@ final class TextToSpeech
             }
 
             /* translators: 1: HTTP status code, 2: error detail returned by ElevenLabs */
-            throw new \RuntimeException(sprintf(__('ElevenLabs request failed with HTTP %1$d. %2$s', 'castsmith'), $code, $detail));
+            throw new \RuntimeException(sprintf(__('ElevenLabs request failed with HTTP %1$d. %2$s', 'sonoquill'), $code, $detail));
         }
 
         $audio = base64_decode((string) ($decoded['audio_base64'] ?? ''), true);
         if ($audio === false || $audio === '') {
-            throw new \RuntimeException(__('Synthesis failed: the response contains no audio.', 'castsmith'));
+            throw new \RuntimeException(__('Synthesis failed: the response contains no audio.', 'sonoquill'));
         }
 
         // The normalized alignment reflects what was actually spoken. For our

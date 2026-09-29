@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Voice\PhonemeGuard;
+use Sonoquill\Voice\PhonemeGuard;
 use PHPUnit\Framework\TestCase;
 
 /**

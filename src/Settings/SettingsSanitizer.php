@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Settings;
+namespace Sonoquill\Settings;
 
-use Castsmith\Support\Crypto;
-use Castsmith\Support\CryptoException;
-use Castsmith\Support\KeyStore;
+use Sonoquill\Support\Crypto;
+use Sonoquill\Support\CryptoException;
+use Sonoquill\Support\KeyStore;
 
 /**
  * Validates and encrypts the submitted settings.
@@ -69,7 +69,7 @@ final class SettingsSanitizer
     /**
      * The fields of one kind, extended by those of the add-ons.
      *
-     * Filter `castsmith_settings_fields`: an array with the keys
+     * Filter `sonoquill_settings_fields`: an array with the keys
      * text, textarea, checkbox (each a list of field names) and number
      * (field name => [min, max]).
      *
@@ -85,7 +85,7 @@ final class SettingsSanitizer
             default    => [],
         };
 
-        $extra = (array) apply_filters('castsmith_settings_fields', []);
+        $extra = (array) apply_filters('sonoquill_settings_fields', []);
         $added = (array) ($extra[$kind] ?? []);
 
         return $kind === 'number' ? $core + $added : array_values(array_unique(array_merge($core, $added)));
@@ -131,7 +131,7 @@ final class SettingsSanitizer
                 $out[$field] = $raw;
             } else {
                 /* translators: %s: name of the settings field */
-                add_settings_error(Options::OPTION, 'aaspf_number_' . $field, sprintf(__('Invalid value for %s — the previous value is kept.', 'castsmith'), $field), 'warning');
+                add_settings_error(Options::OPTION, 'aaspf_number_' . $field, sprintf(__('Invalid value for %s — the previous value is kept.', 'sonoquill'), $field), 'warning');
             }
         }
 
@@ -139,7 +139,7 @@ final class SettingsSanitizer
             $mails = array_filter(array_map('trim', explode(',', (string) $input['notify_email'])));
             $valid = array_values(array_filter(array_map('sanitize_email', $mails), 'is_email'));
             if (count($valid) !== count($mails)) {
-                add_settings_error(Options::OPTION, 'aaspf_notify_email', __('At least one e-mail address was invalid and has been discarded.', 'castsmith'), 'warning');
+                add_settings_error(Options::OPTION, 'aaspf_notify_email', __('At least one e-mail address was invalid and has been discarded.', 'sonoquill'), 'warning');
             }
             $out['notify_email'] = implode(', ', $valid);
         }
@@ -162,7 +162,7 @@ final class SettingsSanitizer
                 add_settings_error(
                     Options::OPTION,
                     'aaspf_missing_key',
-                    KeyStore::missingKeyMessage() . __(' Nothing was saved.', 'castsmith'),
+                    KeyStore::missingKeyMessage() . __(' Nothing was saved.', 'sonoquill'),
                     'error'
                 );
 
@@ -172,7 +172,7 @@ final class SettingsSanitizer
             try {
                 $crypto = KeyStore::crypto();
             } catch (CryptoException $e) {
-                add_settings_error(Options::OPTION, 'aaspf_broken_key', $e->getMessage() . __(' Nothing was saved.', 'castsmith'), 'error');
+                add_settings_error(Options::OPTION, 'aaspf_broken_key', $e->getMessage() . __(' Nothing was saved.', 'sonoquill'), 'error');
 
                 return $current;
             }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Jobs;
+namespace Sonoquill\Jobs;
 
 /**
  * Integration with Action Scheduler.
@@ -19,7 +19,7 @@ namespace Castsmith\Jobs;
 final class Scheduler
 {
     public const HOOK_PING = 'aaspf_ping';
-    public const GROUP     = 'castsmith';
+    public const GROUP     = 'sonoquill';
     public const STATE_OPTION = 'aaspf_ping_state';
 
     public static function register(): void
@@ -40,7 +40,7 @@ final class Scheduler
     public static function schedulePing(): array
     {
         if (!self::isAvailable()) {
-            return ['ok' => false, 'message' => __('Action Scheduler is not loaded.', 'castsmith')];
+            return ['ok' => false, 'message' => __('Action Scheduler is not loaded.', 'sonoquill')];
         }
 
         $token = wp_generate_password(12, false);
@@ -53,7 +53,7 @@ final class Scheduler
         );
 
         if (!$actionId) {
-            return ['ok' => false, 'message' => __('The job was not accepted by Action Scheduler.', 'castsmith')];
+            return ['ok' => false, 'message' => __('The job was not accepted by Action Scheduler.', 'sonoquill')];
         }
 
         update_option(self::STATE_OPTION, [
@@ -67,7 +67,7 @@ final class Scheduler
         return [
             'ok'      => true,
             /* translators: %d: Action Scheduler action ID of the scheduled test job */
-            'message' => sprintf(__('Test job scheduled as action #%d.', 'castsmith'), (int) $actionId),
+            'message' => sprintf(__('Test job scheduled as action #%d.', 'sonoquill'), (int) $actionId),
         ];
     }
 

@@ -1,21 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 // phpcs:disable WordPress.Security.NonceVerification.Missing -- Every handler verifies its nonce first (guard() / check_ajax_referer()).
 // phpcs:disable WordPress.WP.AlternativeFunctions.unlink_unlink -- Removing files in the plugin's own storage directory.
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Pipeline\Gate;
-use Castsmith\Pipeline\Scheduler as PipelineScheduler;
-use Castsmith\Settings\SettingsPage;
-use Castsmith\Text\DocxParser;
-use Castsmith\Text\PlainTextParser;
-use Castsmith\Text\SourceDocument;
-use Castsmith\Text\Sanitizer;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Pipeline\Gate;
+use Sonoquill\Pipeline\Scheduler as PipelineScheduler;
+use Sonoquill\Settings\SettingsPage;
+use Sonoquill\Text\DocxParser;
+use Sonoquill\Text\PlainTextParser;
+use Sonoquill\Text\SourceDocument;
+use Sonoquill\Text\Sanitizer;
 
 /**
  * The form actions of the episode view.
@@ -80,7 +80,7 @@ final class EpisodeActions
         }
 
         if ($document->isEmpty()) {
-            self::notice('error', __('The source document contains no text.', 'castsmith'));
+            self::notice('error', __('The source document contains no text.', 'sonoquill'));
             self::back();
         }
 
@@ -88,15 +88,15 @@ final class EpisodeActions
             ? sanitize_file_name(wp_unslash((string) $_FILES['docx']['name']))
             : '';
 
-        $id = \Castsmith\Source\EpisodeFactory::fromDocument(
+        $id = \Sonoquill\Source\EpisodeFactory::fromDocument(
             $document,
-            \Castsmith\Source\UploadSource::ID,
+            \Sonoquill\Source\UploadSource::ID,
             '',
             $filename,
             !empty($_POST['auto_chain'])
         );
 
-        self::notice('success', __('Source document imported.', 'castsmith'));
+        self::notice('success', __('Source document imported.', 'sonoquill'));
         self::back($id);
     }
 
@@ -112,30 +112,30 @@ final class EpisodeActions
             : absint(wp_unslash($_POST['post_id'] ?? 0));
         $post = $postId > 0 ? get_post($postId) : null;
 
-        if (!$post instanceof \WP_Post || !in_array($post->post_type, \Castsmith\Source\PostSource::postTypes(), true)) {
-            self::notice('error', __('This post does not exist, or it cannot become an episode.', 'castsmith'));
+        if (!$post instanceof \WP_Post || !in_array($post->post_type, \Sonoquill\Source\PostSource::postTypes(), true)) {
+            self::notice('error', __('This post does not exist, or it cannot become an episode.', 'sonoquill'));
             self::backToNew();
         }
         if (!current_user_can('read_post', $post->ID)) {
-            self::notice('error', __('You are not allowed to read this post.', 'castsmith'));
+            self::notice('error', __('You are not allowed to read this post.', 'sonoquill'));
             self::backToNew();
         }
 
-        $document = \Castsmith\Source\PostSource::document($post);
+        $document = \Sonoquill\Source\PostSource::document($post);
         if ($document->isEmpty()) {
-            self::notice('error', __('The post contains no text that can be read aloud.', 'castsmith'));
+            self::notice('error', __('The post contains no text that can be read aloud.', 'sonoquill'));
             self::backToNew();
         }
 
-        $id = \Castsmith\Source\EpisodeFactory::fromDocument(
+        $id = \Sonoquill\Source\EpisodeFactory::fromDocument(
             $document,
-            \Castsmith\Source\PostSource::ID,
+            \Sonoquill\Source\PostSource::ID,
             (string) $post->ID,
             sprintf('%s (#%d)', html_entity_decode(get_the_title($post), ENT_QUOTES, 'UTF-8'), $post->ID),
             !empty($_POST['auto_chain'])
         );
 
-        self::notice('success', __('Post imported.', 'castsmith'));
+        self::notice('success', __('Post imported.', 'sonoquill'));
         self::back($id);
     }
 
@@ -145,10 +145,10 @@ final class EpisodeActions
         $id = self::episodeId();
 
         if (PipelineScheduler::queueRedigat($id)) {
-            EpisodeRepository::log($id, 'redigat', __('Scheduled.', 'castsmith'));
-            self::notice('success', __('The edit is scheduled and runs in the background.', 'castsmith'));
+            EpisodeRepository::log($id, 'redigat', __('Scheduled.', 'sonoquill'));
+            self::notice('success', __('The edit is scheduled and runs in the background.', 'sonoquill'));
         } else {
-            self::notice('error', __('The job was not accepted by Action Scheduler.', 'castsmith'));
+            self::notice('error', __('The job was not accepted by Action Scheduler.', 'sonoquill'));
         }
 
         self::back($id);
@@ -181,16 +181,16 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: 1: number of characters in the script, 2: comma-separated list of confirmed deviations or "none" */
-            __('Script saved (%1$d characters). Confirmed deviations: %2$s.', 'castsmith'),
+            __('Script saved (%1$d characters). Confirmed deviations: %2$s.', 'sonoquill'),
             mb_strlen($script),
-            $acknowledged === [] ? __('none', 'castsmith') : implode(', ', $acknowledged)
+            $acknowledged === [] ? __('none', 'sonoquill') : implode(', ', $acknowledged)
         ));
 
         self::notice(
             $result['blocking'] ? 'warning' : 'success',
             $result['blocking']
-                ? __('Saved. There are still open deviations.', 'castsmith')
-                : __('Saved. The check is clean.', 'castsmith')
+                ? __('Saved. There are still open deviations.', 'sonoquill')
+                : __('Saved. The check is clean.', 'sonoquill')
         );
 
         self::back($id);
@@ -203,7 +203,7 @@ final class EpisodeActions
 
         $result = Gate::evaluate($id);
         if ($result['blocking']) {
-            self::notice('error', __('Approval is locked as long as deviations are open.', 'castsmith'));
+            self::notice('error', __('Approval is locked as long as deviations are open.', 'sonoquill'));
             self::back($id);
         }
 
@@ -214,21 +214,21 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: %s: display name of the approving user */
-            __('Text approved by %s.', 'castsmith'),
+            __('Text approved by %s.', 'sonoquill'),
             wp_get_current_user()->display_name
         ));
 
         try {
-            $automatic = \Castsmith\Pipeline\AutoChain::afterTextApproval($id);
+            $automatic = \Sonoquill\Pipeline\AutoChain::afterTextApproval($id);
         } catch (\Throwable $e) {
-            EpisodeRepository::log($id, 'automatik', __('Aborted: ', 'castsmith') . $e->getMessage());
-            self::notice('warning', __('The text is approved, but the chain could not be triggered automatically: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($id, 'automatik', __('Aborted: ', 'sonoquill') . $e->getMessage());
+            self::notice('warning', __('The text is approved, but the chain could not be triggered automatically: ', 'sonoquill') . $e->getMessage());
             self::back($id);
         }
 
         self::notice('success', $automatic !== null
-            ? __('The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent.', 'castsmith')
-            : __('The text is approved. Next up is the audio.', 'castsmith'));
+            ? __('The text is approved. Synthesis, montage and Auphonic now run on their own; when the Podlove draft is ready, an e-mail will be sent.', 'sonoquill')
+            : __('The text is approved. Next up is the audio.', 'sonoquill'));
         self::back($id);
     }
 
@@ -239,12 +239,12 @@ final class EpisodeActions
 
         $episode = EpisodeRepository::find($id);
         if (($episode['status'] ?? '') !== EpisodeStatus::TEXT_APPROVED) {
-            self::notice('error', __('The audio is only created after the text approval. That is the first of the two human gates.', 'castsmith'));
+            self::notice('error', __('The audio is only created after the text approval. That is the first of the two human gates.', 'sonoquill'));
             self::back($id);
         }
 
         try {
-            $result = \Castsmith\Segments\Segmenter::rebuild($id);
+            $result = \Sonoquill\Segments\Segmenter::rebuild($id);
         } catch (\Throwable $e) {
             self::notice('error', $e->getMessage());
             self::back($id);
@@ -252,7 +252,7 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'segmentierung', sprintf(
             /* translators: 1: total number of segments, 2: number of new segments, 3: number of unchanged segments, 4: number of removed segments */
-            __('%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed.', 'castsmith'),
+            __('%1$d segments: %2$d new, %3$d kept unchanged, %4$d removed.', 'sonoquill'),
             $result['gesamt'],
             $result['angelegt'],
             $result['erhalten'],
@@ -263,7 +263,7 @@ final class EpisodeActions
 
         self::notice('success', sprintf(
             /* translators: 1: new segments, 2: kept segments */
-            __('%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background.', 'castsmith'),
+            __('%1$d segments are being generated, %2$d stay unchanged. The synthesis runs in the background.', 'sonoquill'),
             $result['angelegt'],
             $result['erhalten']
         ));
@@ -276,7 +276,7 @@ final class EpisodeActions
         $id = self::episodeId();
 
         PipelineScheduler::queueMontage($id);
-        self::notice('success', __('The montage is scheduled.', 'castsmith'));
+        self::notice('success', __('The montage is scheduled.', 'sonoquill'));
         self::back($id);
     }
 
@@ -286,33 +286,33 @@ final class EpisodeActions
         $id = self::episodeId();
 
         $segmentId = isset($_POST['segment']) ? (int) $_POST['segment'] : 0;
-        $segment = \Castsmith\Segments\SegmentRepository::find($segmentId);
+        $segment = \Sonoquill\Segments\SegmentRepository::find($segmentId);
 
         if ($segment === null || (int) $segment['episode_id'] !== $id) {
-            self::notice('error', __('This segment does not belong to this episode.', 'castsmith'));
+            self::notice('error', __('This segment does not belong to this episode.', 'sonoquill'));
             self::back($id);
         }
 
         $note = isset($_POST['note']) ? sanitize_textarea_field(wp_unslash((string) $_POST['note'])) : '';
-        $flagged = (string) $segment['status'] !== \Castsmith\Segments\SegmentStatus::FLAGGED;
+        $flagged = (string) $segment['status'] !== \Sonoquill\Segments\SegmentStatus::FLAGGED;
 
-        \Castsmith\Segments\SegmentRepository::update($segmentId, [
+        \Sonoquill\Segments\SegmentRepository::update($segmentId, [
             'status' => $flagged
-                ? \Castsmith\Segments\SegmentStatus::FLAGGED
-                : \Castsmith\Segments\SegmentStatus::GENERATED,
+                ? \Sonoquill\Segments\SegmentStatus::FLAGGED
+                : \Sonoquill\Segments\SegmentStatus::GENERATED,
             'note'   => $flagged ? $note : '',
         ]);
 
         EpisodeRepository::log($id, 'abhoeren', sprintf(
             'Segment %d %s%s',
             (int) $segment['idx'],
-            $flagged ? __('flagged', 'castsmith') : __('approved again', 'castsmith'),
+            $flagged ? __('flagged', 'sonoquill') : __('approved again', 'sonoquill'),
             $flagged && $note !== '' ? ': ' . $note : '.'
         ));
 
         self::notice('success', $flagged
-            ? __('Segment flagged. Regenerate it or re-record it with your own voice.', 'castsmith')
-            : __('Flag withdrawn.', 'castsmith'));
+            ? __('Segment flagged. Regenerate it or re-record it with your own voice.', 'sonoquill')
+            : __('Flag withdrawn.', 'sonoquill'));
         self::back($id);
     }
 
@@ -322,27 +322,27 @@ final class EpisodeActions
         $id = self::episodeId();
 
         $segmentId = isset($_POST['segment']) ? (int) $_POST['segment'] : 0;
-        $segment = \Castsmith\Segments\SegmentRepository::find($segmentId);
+        $segment = \Sonoquill\Segments\SegmentRepository::find($segmentId);
 
         if ($segment === null || (int) $segment['episode_id'] !== $id) {
-            self::notice('error', __('This segment does not belong to this episode.', 'castsmith'));
+            self::notice('error', __('This segment does not belong to this episode.', 'sonoquill'));
             self::back($id);
         }
 
         // New seed: the same segment again with the same seed would sound
         // identical, and that is exactly what you do not want when regenerating.
-        \Castsmith\Segments\SegmentRepository::update($segmentId, [
+        \Sonoquill\Segments\SegmentRepository::update($segmentId, [
             'seed'        => random_int(0, 4294967295),
             'audio_path'  => '',
             'duration_ms' => null,
-            'status'      => \Castsmith\Segments\SegmentStatus::PENDING,
+            'status'      => \Sonoquill\Segments\SegmentStatus::PENDING,
         ]);
 
         PipelineScheduler::queueSynthesis($id);
 
         /* translators: %d: index of the segment */
-        EpisodeRepository::log($id, 'abhoeren', sprintf(__('Segment %d is being regenerated with a new seed.', 'castsmith'), (int) $segment['idx']));
-        self::notice('success', __('The segment is being regenerated with a new seed.', 'castsmith'));
+        EpisodeRepository::log($id, 'abhoeren', sprintf(__('Segment %d is being regenerated with a new seed.', 'sonoquill'), (int) $segment['idx']));
+        self::notice('success', __('The segment is being regenerated with a new seed.', 'sonoquill'));
         self::back($id);
     }
 
@@ -359,9 +359,9 @@ final class EpisodeActions
         }
 
         PipelineScheduler::queueProduction($id);
-        EpisodeRepository::log($id, 'auphonic', __('Production scheduled.', 'castsmith'));
+        EpisodeRepository::log($id, 'auphonic', __('Production scheduled.', 'sonoquill'));
 
-        self::notice('success', __('The episode is going to Auphonic. The callback then creates the Podlove draft.', 'castsmith'));
+        self::notice('success', __('The episode is going to Auphonic. The callback then creates the Podlove draft.', 'sonoquill'));
         self::back($id);
     }
 
@@ -370,25 +370,25 @@ final class EpisodeActions
         self::guard(self::ACTION_CLEANUP);
         $id = self::episodeId();
 
-        $freed = \Castsmith\Storage\EpisodeStorage::sizeOfEpisode($id);
-        \Castsmith\Storage\EpisodeStorage::deleteSegments($id);
+        $freed = \Sonoquill\Storage\EpisodeStorage::sizeOfEpisode($id);
+        \Sonoquill\Storage\EpisodeStorage::deleteSegments($id);
 
-        foreach (\Castsmith\Segments\SegmentRepository::forEpisode($id) as $segment) {
-            \Castsmith\Segments\SegmentRepository::update((int) $segment['id'], [
+        foreach (\Sonoquill\Segments\SegmentRepository::forEpisode($id) as $segment) {
+            \Sonoquill\Segments\SegmentRepository::update((int) $segment['id'], [
                 'audio_path' => '',
-                'status'     => \Castsmith\Segments\SegmentStatus::PENDING,
+                'status'     => \Sonoquill\Segments\SegmentStatus::PENDING,
             ]);
         }
 
         EpisodeRepository::log($id, 'aufraeumen', sprintf(
             /* translators: %s: formatted size of the freed storage */
-            __('Segment audio files removed, %s freed. The finished episode and the transcript remain.', 'castsmith'),
+            __('Segment audio files removed, %s freed. The finished episode and the transcript remain.', 'sonoquill'),
             size_format($freed)
         ));
 
         self::notice('success', sprintf(
             /* translators: %s: freed storage */
-            __('Segment audio files removed, %s freed.', 'castsmith'),
+            __('Segment audio files removed, %s freed.', 'sonoquill'),
             size_format($freed)
         ));
         self::back($id);
@@ -399,7 +399,7 @@ final class EpisodeActions
         self::guard(self::ACTION_RESUME);
         $id = self::episodeId();
 
-        $message = \Castsmith\Pipeline\Recovery::resume($id);
+        $message = \Sonoquill\Pipeline\Recovery::resume($id);
         EpisodeRepository::log($id, 'wiederaufnahme', $message);
 
         self::notice('success', $message);
@@ -420,8 +420,8 @@ final class EpisodeActions
         $episode = EpisodeRepository::find($id);
         $mix = (string) ($episode['mixed_audio_path'] ?? '');
 
-        if ($mix === '' || !\Castsmith\Storage\EpisodeStorage::exists($mix)) {
-            self::notice('error', __('There is no assembled version to listen to yet.', 'castsmith'));
+        if ($mix === '' || !\Sonoquill\Storage\EpisodeStorage::exists($mix)) {
+            self::notice('error', __('There is no assembled version to listen to yet.', 'sonoquill'));
             self::back($id);
         }
 
@@ -429,7 +429,7 @@ final class EpisodeActions
         // is the mastered version — signing off on the raw montage would mean
         // approving something other than what ends up in the feed.
         if ((string) ($episode['status'] ?? '') !== EpisodeStatus::AWAITING_AUDIO) {
-            self::notice('error', __('The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage.', 'castsmith'));
+            self::notice('error', __('The episode has not been to Auphonic yet. The mastered version is approved, not the raw montage.', 'sonoquill'));
             self::back($id);
         }
 
@@ -440,11 +440,11 @@ final class EpisodeActions
 
         EpisodeRepository::log($id, 'freigabe', sprintf(
             /* translators: %s: display name of the approving user */
-            __('Audio approved by %s.', 'castsmith'),
+            __('Audio approved by %s.', 'sonoquill'),
             wp_get_current_user()->display_name
         ));
 
-        self::notice('success', __('Audio approved. Publishing is done by hand in Podlove.', 'castsmith'));
+        self::notice('success', __('Audio approved. Publishing is done by hand in Podlove.', 'sonoquill'));
         self::back($id);
     }
 
@@ -453,9 +453,9 @@ final class EpisodeActions
         self::guard(self::ACTION_DELETE);
         $id = self::episodeId();
 
-        \Castsmith\Storage\EpisodeStorage::deleteEpisode($id);
+        \Sonoquill\Storage\EpisodeStorage::deleteEpisode($id);
         EpisodeRepository::delete($id);
-        self::notice('success', __('Episode and its audio files deleted.', 'castsmith'));
+        self::notice('success', __('Episode and its audio files deleted.', 'sonoquill'));
         self::back();
     }
 
@@ -468,12 +468,12 @@ final class EpisodeActions
         self::guard(self::ACTION_MUSIC);
 
         $done = [];
-        foreach (\Castsmith\Audio\MusicBed::allSlots() as $slot) {
+        foreach (\Sonoquill\Audio\MusicBed::allSlots() as $slot) {
             if (!empty($_POST['entfernen_' . $slot])) {
-                $file = \Castsmith\Audio\MusicBed::file($slot);
+                $file = \Sonoquill\Audio\MusicBed::file($slot);
                 if (is_file($file) && @unlink($file)) {
                     /* translators: %s: name of the music slot (e.g. opener, outro) */
-                    $done[] = sprintf(__('%s removed', 'castsmith'), $slot);
+                    $done[] = sprintf(__('%s removed', 'sonoquill'), $slot);
                 }
                 continue;
             }
@@ -484,12 +484,12 @@ final class EpisodeActions
             }
 
             // Readable audio? Without ffmpeg only MP3 can be checked (and used).
-            $readable = \Castsmith\Audio\AudioEngine::mode() === \Castsmith\Audio\AudioEngine::MODE_FFMPEG
-                ? \Castsmith\Audio\Ffmpeg::probe($tmp) !== null
-                : \Castsmith\Audio\Mp3::durationMs($tmp) !== null;
+            $readable = \Sonoquill\Audio\AudioEngine::mode() === \Sonoquill\Audio\AudioEngine::MODE_FFMPEG
+                ? \Sonoquill\Audio\Ffmpeg::probe($tmp) !== null
+                : \Sonoquill\Audio\Mp3::durationMs($tmp) !== null;
             if (!$readable) {
                 /* translators: %s: name of the music slot (e.g. opener, outro) */
-                self::notice('error', sprintf(__('The file for “%s” is not readable audio.', 'castsmith'), $slot));
+                self::notice('error', sprintf(__('The file for “%s” is not readable audio.', 'sonoquill'), $slot));
                 wp_safe_redirect(Urls::settings());
                 exit;
             }
@@ -498,10 +498,10 @@ final class EpisodeActions
             // then to its fixed place — the montage looks for opener.mp3 etc.
             require_once ABSPATH . 'wp-admin/includes/file.php';
             $handled = wp_handle_upload($_FILES[$slot], ['test_form' => false, 'mimes' => ['mp3' => 'audio/mpeg']]); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- the upload array is validated by wp_handle_upload()
-            wp_mkdir_p(\Castsmith\Audio\MusicBed::dir());
+            wp_mkdir_p(\Sonoquill\Audio\MusicBed::dir());
             // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- move within the uploads directory
-            if (!empty($handled['error']) || empty($handled['file']) || !@rename($handled['file'], \Castsmith\Audio\MusicBed::file($slot))) {
-                self::notice('error', __('The file could not be stored.', 'castsmith') . (!empty($handled['error']) ? ' ' . (string) $handled['error'] : ''));
+            if (!empty($handled['error']) || empty($handled['file']) || !@rename($handled['file'], \Sonoquill\Audio\MusicBed::file($slot))) {
+                self::notice('error', __('The file could not be stored.', 'sonoquill') . (!empty($handled['error']) ? ' ' . (string) $handled['error'] : ''));
                 wp_safe_redirect(Urls::settings());
                 exit;
             }
@@ -509,9 +509,9 @@ final class EpisodeActions
         }
 
         self::notice($done === [] ? 'warning' : 'success', $done === []
-            ? __('No file arrived.', 'castsmith')
+            ? __('No file arrived.', 'sonoquill')
             /* translators: %s: comma-separated list of applied music changes */
-            : sprintf(__('Applied: %s. Takes effect from the next montage.', 'castsmith'), implode(', ', $done)));
+            : sprintf(__('Applied: %s. Takes effect from the next montage.', 'sonoquill'), implode(', ', $done)));
         wp_safe_redirect(Urls::settings());
         exit;
     }
@@ -527,9 +527,9 @@ final class EpisodeActions
         $hidden = Overview::toggleHidden($id);
         self::notice('success', $hidden
             /* translators: %d: episode ID */
-            ? sprintf(__('Episode %d is hidden.', 'castsmith'), $id)
+            ? sprintf(__('Episode %d is hidden.', 'sonoquill'), $id)
             /* translators: %d: episode ID */
-            : sprintf(__('Episode %d is visible again.', 'castsmith'), $id));
+            : sprintf(__('Episode %d is visible again.', 'sonoquill'), $id));
 
         wp_safe_redirect(Urls::episodes($hidden ? [] : ['alle' => 1]));
         exit;
@@ -550,12 +550,12 @@ final class EpisodeActions
             $tmp = (string) $_FILES['docx']['tmp_name']; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- temporary upload path, checked below
 
             if (!is_uploaded_file($tmp)) {
-                throw new \RuntimeException(__('The uploaded file is not valid.', 'castsmith'));
+                throw new \RuntimeException(__('The uploaded file is not valid.', 'sonoquill'));
             }
 
             $name = sanitize_file_name(wp_unslash((string) ($_FILES['docx']['name'] ?? '')));
             if (strtolower((string) pathinfo($name, PATHINFO_EXTENSION)) !== 'docx') {
-                throw new \RuntimeException(__('Only DOCX files are read.', 'castsmith'));
+                throw new \RuntimeException(__('Only DOCX files are read.', 'sonoquill'));
             }
 
             // The file is only read and never stored anywhere.
@@ -565,7 +565,7 @@ final class EpisodeActions
         // Plain text that is parsed, never output unescaped.
         $pasted = isset($_POST['source_text']) ? Sanitizer::plain((string) wp_unslash($_POST['source_text'])) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised by Sanitizer::plain()
         if (trim($pasted) === '') {
-            throw new \RuntimeException(__('Neither a file nor pasted text.', 'castsmith'));
+            throw new \RuntimeException(__('Neither a file nor pasted text.', 'sonoquill'));
         }
 
         return PlainTextParser::parse($pasted);
@@ -577,7 +577,7 @@ final class EpisodeActions
     public static function guard(string $action): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have the permissions for this.', 'castsmith'), '', ['response' => 403]);
+            wp_die(esc_html__('You do not have the permissions for this.', 'sonoquill'), '', ['response' => 403]);
         }
 
         check_admin_referer($action);
@@ -588,7 +588,7 @@ final class EpisodeActions
         $id = isset($_POST['episode']) ? (int) $_POST['episode'] : 0;
 
         if ($id <= 0 || EpisodeRepository::find($id) === null) {
-            wp_die(esc_html__('This episode does not exist.', 'castsmith'), '', ['response' => 404]);
+            wp_die(esc_html__('This episode does not exist.', 'sonoquill'), '', ['response' => 404]);
         }
 
         return $id;

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
@@ -34,12 +34,12 @@ final class DocxParser
     {
         if (!is_readable($path)) {
             /* translators: %s: file path of the DOCX file */
-            throw new \RuntimeException(sprintf(__('DOCX file could not be read: %s', 'castsmith'), $path));
+            throw new \RuntimeException(sprintf(__('DOCX file could not be read: %s', 'sonoquill'), $path));
         }
 
         $document = self::part($path, 'word/document.xml');
         if ($document === null) {
-            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'castsmith') . __('it contains no word/document.xml.', 'castsmith'));
+            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'sonoquill') . __('it contains no word/document.xml.', 'sonoquill'));
         }
 
         return self::fromXml($document, self::part($path, 'word/styles.xml') ?? '');
@@ -52,7 +52,7 @@ final class DocxParser
     {
         $dom = self::load($documentXml);
         if ($dom === null) {
-            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'castsmith') . __('word/document.xml is not valid XML.', 'castsmith'));
+            throw new \RuntimeException(__('The DOCX file could not be opened: ', 'sonoquill') . __('word/document.xml is not valid XML.', 'sonoquill'));
         }
 
         $levels = self::styleLevels($stylesXml);

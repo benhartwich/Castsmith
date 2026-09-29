@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Audio;
+namespace Sonoquill\Audio;
 
 /**
  * Stretches a character alignment to a new total duration.

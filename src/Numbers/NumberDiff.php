@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Numbers;
+namespace Sonoquill\Numbers;
 
 /**
  * The hard gate for numbers: every figure in the script is checked against the source.

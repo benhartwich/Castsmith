@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Support;
+namespace Sonoquill\Support;
 
 /**
  * Signals any error related to storing the credentials:

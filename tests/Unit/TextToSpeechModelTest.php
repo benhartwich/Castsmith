@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Voice\TextToSpeech;
+use Sonoquill\Voice\TextToSpeech;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

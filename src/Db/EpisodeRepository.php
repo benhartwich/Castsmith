@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Db;
+namespace Sonoquill\Db;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
@@ -133,7 +133,7 @@ final class EpisodeRepository
 
         // A failure in an episode that keeps running unattended should not
         // go unnoticed until the next time someone looks at the backend.
-        \Castsmith\Notify\Notifier::maybeFailure($id, $step, $message);
+        \Sonoquill\Notify\Notifier::maybeFailure($id, $step, $message);
     }
 
     /**

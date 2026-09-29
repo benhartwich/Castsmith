@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Numbers;
+namespace Sonoquill\Numbers;
 
 /**
  * The second of the number and content checks, applied to the speech script.
@@ -37,7 +37,7 @@ final class ScriptGuard
                 'severity' => self::SEVERITY_BLOCK,
                 'message'  => sprintf(
                     /* translators: %d: number of digit sequences found outside break tags */
-                    __( 'The speech script contains %d digit sequences outside the break tags. Numbers must be written out.', 'castsmith' ),
+                    __( 'The speech script contains %d digit sequences outside the break tags. Numbers must be written out.', 'sonoquill' ),
                     count($digits)
                 ),
                 'samples' => array_slice($digits, 0, 10),
@@ -50,7 +50,7 @@ final class ScriptGuard
                 'severity' => self::SEVERITY_BLOCK,
                 'message'  => sprintf(
                     /* translators: %d: number of inserted "Uhr null" occurrences */
-                    __( 'The speech script contains an inserted "Uhr null" %d times. Correct would be, for example, "zwanzig Uhr vier".', 'castsmith' ),
+                    __( 'The speech script contains an inserted "Uhr null" %d times. Correct would be, for example, "zwanzig Uhr vier".', 'sonoquill' ),
                     count($uhrNull)
                 ),
                 'samples' => array_slice($uhrNull, 0, 10),
@@ -63,7 +63,7 @@ final class ScriptGuard
                 'severity' => self::SEVERITY_NOTE,
                 'message'  => sprintf(
                     /* translators: 1: number of break tags in the script, 2: maximum recommended number of break tags */
-                    __( 'The speech script has %1$d break tags. The system prompt allows at most %2$d, because more destabilise the model.', 'castsmith' ),
+                    __( 'The speech script has %1$d break tags. The system prompt allows at most %2$d, because more destabilise the model.', 'sonoquill' ),
                     $breaks,
                     self::MAX_BREAKS
                 ),

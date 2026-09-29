@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Voice;
+namespace Sonoquill\Voice;
 
 /**
  * Result of a TTS call, including character timestamps.

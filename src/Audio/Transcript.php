@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Audio;
+namespace Sonoquill\Audio;
 
 /**
  * Builds the WebVTT transcript from the character timestamps of the synthesis.

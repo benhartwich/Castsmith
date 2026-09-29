@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 /**
  * Sanitises the long texts that are typed or pasted in the admin: the fact

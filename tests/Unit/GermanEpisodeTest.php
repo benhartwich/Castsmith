@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Numbers\NumberDiff;
-use Castsmith\Numbers\NumberExtractor;
-use Castsmith\Numbers\ScriptGuard;
+use Sonoquill\Numbers\NumberDiff;
+use Sonoquill\Numbers\NumberExtractor;
+use Sonoquill\Numbers\ScriptGuard;
 use PHPUnit\Framework\TestCase;
 
 /**

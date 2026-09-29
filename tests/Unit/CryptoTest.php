@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Support\Crypto;
-use Castsmith\Support\CryptoException;
+use Sonoquill\Support\Crypto;
+use Sonoquill\Support\CryptoException;
 use PHPUnit\Framework\TestCase;
 
 /**

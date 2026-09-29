@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Audio\Transcript;
+use Sonoquill\Audio\Transcript;
 use PHPUnit\Framework\TestCase;
 
 final class TranscriptShiftTest extends TestCase

@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Text\HtmlParser;
-use Castsmith\Text\SourceBlock;
+use Sonoquill\Text\HtmlParser;
+use Sonoquill\Text\SourceBlock;
 use PHPUnit\Framework\TestCase;
 
 /**

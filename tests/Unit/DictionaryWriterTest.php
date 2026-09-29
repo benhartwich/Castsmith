@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Support\PlsDocument;
-use Castsmith\Voice\DictionaryWriter;
+use Sonoquill\Support\PlsDocument;
+use Sonoquill\Voice\DictionaryWriter;
 use PHPUnit\Framework\TestCase;
 
 /**

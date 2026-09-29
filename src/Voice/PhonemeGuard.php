@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Castsmith\Voice;
+namespace Sonoquill\Voice;
 
 /**
  * Keeps phonetic transcriptions free of characters that ElevenLabs

@@ -2,54 +2,54 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Castsmith – AI Podcast Production 0.3.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/castsmith\n"
+"Project-Id-Version: Sonoquill – AI Podcast Production 0.3.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/sonoquill\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-28T10:28:22+00:00\n"
+"POT-Creation-Date: 2026-09-29T05:15:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: castsmith\n"
+"X-Domain: sonoquill\n"
 
 #. Plugin Name of the plugin
-#: castsmith.php
-msgid "Castsmith – AI Podcast Production"
+#: sonoquill.php
+msgid "Sonoquill – AI Podcast Production"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: castsmith.php
-msgid "https://github.com/benhartwich/castsmith"
+#: sonoquill.php
+msgid "https://github.com/benhartwich/sonoquill"
 msgstr ""
 
 #. Description of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid "Turns a fact script, a post or a custom source into a finished podcast episode: speaking script via language model, number and fact checking, speech synthesis with your own voice clone, assembly, mastering and a Podlove draft — with two human approvals."
 msgstr ""
 
 #. Author of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid "Benjamin Hartwich"
 msgstr ""
 
 #. Author URI of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid "https://astroblog.org"
 msgstr ""
 
 #. translators: %s: running PHP version
-#: castsmith.php:43
+#: sonoquill.php:43
 #, php-format
 msgid "The plugin requires PHP 8.2 or newer, but is running under %s. It stays deactivated."
 msgstr ""
 
-#: castsmith.php:59
+#: sonoquill.php:59
 msgid "The Composer autoloader is missing. Run \"composer install\" in the plugin directory."
 msgstr ""
 
-#: castsmith.php:92
+#: sonoquill.php:92
 msgid "Startup failed — "
 msgstr ""
 
@@ -326,12 +326,12 @@ msgstr ""
 #: src/Admin/EpisodesPage.php:44
 #: src/Admin/EpisodesPage.php:45
 #: src/Settings/SettingsPage.php:95
-msgid "Castsmith"
+msgid "Sonoquill"
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:56
 #: src/Admin/Overview.php:29
-msgid "Castsmith — Overview"
+msgid "Sonoquill — Overview"
 msgstr ""
 
 #: src/Admin/EpisodesPage.php:57
@@ -1435,7 +1435,7 @@ msgid "Segment %1$d failed: %2$s"
 msgstr ""
 
 #: src/Admin/PromptsPage.php:35
-msgid "Castsmith — Prompts"
+msgid "Sonoquill — Prompts"
 msgstr ""
 
 #: src/Admin/PromptsPage.php:35
@@ -2440,7 +2440,7 @@ msgstr ""
 msgid ""
 "\n"
 "\n"
-"— Castsmith on "
+"— Sonoquill on "
 msgstr ""
 
 #. translators: %d: number of digit sequences found outside break tags
@@ -2879,7 +2879,7 @@ msgid "The field \"%s\" is stored unencrypted in the database. Please enter it a
 msgstr ""
 
 #: src/Settings/SettingsPage.php:37
-msgid "Castsmith — Settings"
+msgid "Sonoquill — Settings"
 msgstr ""
 
 #: src/Settings/SettingsPage.php:82
@@ -3408,21 +3408,21 @@ msgstr ""
 msgid "continue automatically up to the Podlove draft and send an e-mail notification"
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:251
+#: src/Storage/EpisodeStorage.php:255
 msgid "Will be created on the first run."
 msgstr ""
 
 #. translators: %s: path of the parent directory of the storage
-#: src/Storage/EpisodeStorage.php:253
+#: src/Storage/EpisodeStorage.php:257
 #, php-format
 msgid "The parent directory %s is not writable."
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:260
+#: src/Storage/EpisodeStorage.php:264
 msgid "Present and writable."
 msgstr ""
 
-#: src/Storage/EpisodeStorage.php:260
+#: src/Storage/EpisodeStorage.php:264
 msgid "Present, but not writable."
 msgstr ""
 

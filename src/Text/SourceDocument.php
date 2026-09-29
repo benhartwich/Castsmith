@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 /**
  * The imported fact script as an ordered list of blocks.

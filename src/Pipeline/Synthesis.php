@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Audio\Ffmpeg;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Segments\SegmentRepository;
-use Castsmith\Segments\SegmentStatus;
-use Castsmith\Storage\EpisodeStorage;
-use Castsmith\Voice\TextToSpeech;
+use Sonoquill\Audio\Ffmpeg;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Segments\SegmentRepository;
+use Sonoquill\Segments\SegmentStatus;
+use Sonoquill\Storage\EpisodeStorage;
+use Sonoquill\Voice\TextToSpeech;
 
 /**
  * Speech synthesis: one TTS call per open segment.
@@ -40,14 +40,14 @@ final class Synthesis
             $tts = TextToSpeech::fromSettings();
             EpisodeStorage::ensureEpisodeDir($episodeId);
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'synthese', __('Could not be started: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'synthese', __('Could not be started: ', 'sonoquill') . $e->getMessage());
 
             return;
         }
 
         $segments = SegmentRepository::forEpisode($episodeId);
         if ($segments === []) {
-            EpisodeRepository::log($episodeId, 'synthese', __('There are no segments.', 'castsmith'));
+            EpisodeRepository::log($episodeId, 'synthese', __('There are no segments.', 'sonoquill'));
 
             return;
         }
@@ -68,7 +68,7 @@ final class Synthesis
             }
 
             if (!self::stillApproved($episodeId)) {
-                EpisodeRepository::log($episodeId, 'synthese', __('Paused: the text is no longer approved.', 'castsmith'));
+                EpisodeRepository::log($episodeId, 'synthese', __('Paused: the text is no longer approved.', 'sonoquill'));
 
                 return;
             }
@@ -76,7 +76,7 @@ final class Synthesis
             if (time() - $started > self::TIME_BUDGET_SECONDS) {
                 EpisodeRepository::log($episodeId, 'synthese', sprintf(
                     /* translators: %d: number of segments synthesized in this pass */
-                    __('Time budget reached after %d segments, continuing.', 'castsmith'),
+                    __('Time budget reached after %d segments, continuing.', 'sonoquill'),
                     $done
                 ));
                 Scheduler::continueSynthesis($episodeId);
@@ -97,7 +97,7 @@ final class Synthesis
                 $relative = EpisodeStorage::segmentRelativePath($episodeId, $index, $tts->fileExtension());
                 EpisodeStorage::write($relative, $result->audio);
 
-                $measured = \Castsmith\Audio\AudioEngine::durationMs(EpisodeStorage::absolutePath($relative));
+                $measured = \Sonoquill\Audio\AudioEngine::durationMs(EpisodeStorage::absolutePath($relative));
 
                 SegmentRepository::update((int) $segment['id'], [
                     'audio_path'     => $relative,
@@ -113,7 +113,7 @@ final class Synthesis
                 $failed++;
                 EpisodeRepository::log($episodeId, 'synthese', sprintf(
                     /* translators: 1: segment index, 2: error message */
-                    __('Segment %1$d failed: %2$s', 'castsmith'),
+                    __('Segment %1$d failed: %2$s', 'sonoquill'),
                     $index,
                     $e->getMessage()
                 ));
@@ -122,7 +122,7 @@ final class Synthesis
                 // errors should — otherwise a configuration error burns
                 // through the entire queue.
                 if ($failed >= 3) {
-                    EpisodeRepository::log($episodeId, 'synthese', __('Aborted after three errors.', 'castsmith'));
+                    EpisodeRepository::log($episodeId, 'synthese', __('Aborted after three errors.', 'sonoquill'));
 
                     return;
                 }
@@ -139,7 +139,7 @@ final class Synthesis
 
         EpisodeRepository::log($episodeId, 'synthese', sprintf(
             /* translators: 1: segments generated, 2: characters used, 3: segments ready, 4: total segments, 5: total duration */
-            __('%1$d segments generated, %2$d characters used. Status: %3$d of %4$d ready, total duration %5$s.', 'castsmith'),
+            __('%1$d segments generated, %2$d characters used. Status: %3$d of %4$d ready, total duration %5$s.', 'sonoquill'),
             $done,
             $charactersUsed,
             $summary['erzeugt'] + $summary['beanstandet'],

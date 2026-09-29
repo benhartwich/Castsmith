@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Segments\Segmenter;
+use Sonoquill\Segments\Segmenter;
 use PHPUnit\Framework\TestCase;
 
 /**

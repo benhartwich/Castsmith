@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Segments;
+namespace Sonoquill\Segments;
 
-use Castsmith\Voice\VoiceSettings;
+use Sonoquill\Voice\VoiceSettings;
 
 /**
  * Decides whether a segment has to be regenerated.

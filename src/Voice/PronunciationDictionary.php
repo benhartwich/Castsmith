@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Voice;
+namespace Sonoquill\Voice;
 
-use Castsmith\Settings\Options;
-use Castsmith\Support\CryptoException;
-use Castsmith\Support\PlsDocument;
-use Castsmith\Support\PlsException;
+use Sonoquill\Settings\Options;
+use Sonoquill\Support\CryptoException;
+use Sonoquill\Support\PlsDocument;
+use Sonoquill\Support\PlsException;
 
 /**
  * Loads the pinned version of the pronunciation dictionary.
@@ -124,7 +124,7 @@ final class PronunciationDictionary
     {
         $graphemes = self::graphemes();
 
-        if (\Castsmith\Settings\Options::language() === 'en') {
+        if (\Sonoquill\Settings\Options::language() === 'en') {
             if ($graphemes === []) {
                 return "## PRONUNCIATION DICTIONARY\n\n"
                     . "No pronunciation dictionary is connected at the moment.\n\n"

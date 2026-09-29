@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Health;
+namespace Sonoquill\Health;
 
-use Castsmith\Health\Checks\AnthropicCheck;
-use Castsmith\Health\Checks\AuphonicCheck;
-use Castsmith\Health\Checks\DictionaryCheck;
-use Castsmith\Health\Checks\ElevenLabsCheck;
-use Castsmith\Health\Checks\FfmpegCheck;
-use Castsmith\Health\Checks\PodloveCheck;
-use Castsmith\Health\Checks\StorageCheck;
+use Sonoquill\Health\Checks\AnthropicCheck;
+use Sonoquill\Health\Checks\AuphonicCheck;
+use Sonoquill\Health\Checks\DictionaryCheck;
+use Sonoquill\Health\Checks\ElevenLabsCheck;
+use Sonoquill\Health\Checks\FfmpegCheck;
+use Sonoquill\Health\Checks\PodloveCheck;
+use Sonoquill\Health\Checks\StorageCheck;
 
 final class Registry
 {
@@ -24,13 +24,13 @@ final class Registry
             new AnthropicCheck(),
             new AuphonicCheck(),
             new PodloveCheck(),
-            new \Castsmith\Health\Checks\MontageCheck(),
+            new \Sonoquill\Health\Checks\MontageCheck(),
             new FfmpegCheck(),
             new StorageCheck(),
         ];
 
         /** Filter: additional checks from add-ons (CheckInterface objects). */
-        foreach ((array) apply_filters('castsmith_health_checks', []) as $extra) {
+        foreach ((array) apply_filters('sonoquill_health_checks', []) as $extra) {
             if ($extra instanceof CheckInterface) {
                 $checks[] = $extra;
             }
@@ -72,7 +72,7 @@ final class Registry
             try {
                 $result = $check->run();
             } catch (\Throwable $e) {
-                $result = Result::fail(__('The check aborted with an error.', 'castsmith'), $e->getMessage());
+                $result = Result::fail(__('The check aborted with an error.', 'sonoquill'), $e->getMessage());
             }
             self::remember($check->id(), $result);
         }

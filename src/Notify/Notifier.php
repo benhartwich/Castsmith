@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Notify;
+namespace Sonoquill\Notify;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 
-use Castsmith\Admin\EpisodesPage;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Settings\Options;
-use Castsmith\Support\RunLog;
+use Sonoquill\Admin\EpisodesPage;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Settings\Options;
+use Sonoquill\Support\RunLog;
 
 /**
  * E-mails to the person who guards the two gates.
@@ -66,39 +66,39 @@ final class Notifier
 
         $lines = [];
         /* translators: %s: episode title */
-        $lines[] = sprintf(__('The episode “%s” has been written and is awaiting your approval.', 'castsmith'), (string) $episode['episode_title']);
+        $lines[] = sprintf(__('The episode “%s” has been written and is awaiting your approval.', 'sonoquill'), (string) $episode['episode_title']);
         if ($version > 1) {
             /* translators: %d: version number of the episode text */
-            $lines[] = sprintf(__('This is version %d of this episode. Earlier mails about the text or audio approval of this episode are therefore outdated.', 'castsmith'), $version);
+            $lines[] = sprintf(__('This is version %d of this episode. Earlier mails about the text or audio approval of this episode are therefore outdated.', 'sonoquill'), $version);
         }
         $lines[] = '';
         /* translators: 1: number of characters in the speech script, 2: estimated spoken minutes */
-        $lines[] = sprintf(__('Length: %1$s characters of speech script, about %2$d minutes spoken.', 'castsmith'), number_format_i18n($chars), self::minutes($chars));
+        $lines[] = sprintf(__('Length: %1$s characters of speech script, about %2$d minutes spoken.', 'sonoquill'), number_format_i18n($chars), self::minutes($chars));
         $lines[] = sprintf(
             /* translators: 1: number of invented figures, 2: number of missing figures, 3: number of changed figures */
-            __('Number diff: %1$d invented, %2$d missing, %3$d changed.', 'castsmith'),
+            __('Number diff: %1$d invented, %2$d missing, %3$d changed.', 'sonoquill'),
             count((array) ($diff['erfunden'] ?? [])),
             count((array) ($diff['fehlt'] ?? [])),
             count((array) ($diff['geaendert'] ?? []))
         );
         /* translators: 1: total number of fact check findings, 2: number of severe findings */
-        $lines[] = sprintf(__('Fact check: %1$d findings, %2$d of them severe.', 'castsmith'), count($facts), $severe);
+        $lines[] = sprintf(__('Fact check: %1$d findings, %2$d of them severe.', 'sonoquill'), count($facts), $severe);
 
-        foreach (\Castsmith\Source\Sources::forEpisode($episode)->mailLines($episode) as $line) {
+        foreach (\Sonoquill\Source\Sources::forEpisode($episode)->mailLines($episode) as $line) {
             $lines[] = $line;
         }
 
         $lines[] = '';
         $lines[] = $status === EpisodeStatus::GATE_FAILED
-            ? __('Approval is locked until the open issues have been resolved or confirmed.', 'castsmith')
-            : __('The checks are clean. After approval everything runs on its own up to the Podlove draft; the audio approval comes as a separate mail.', 'castsmith');
+            ? __('Approval is locked until the open issues have been resolved or confirmed.', 'sonoquill')
+            : __('The checks are clean. After approval everything runs on its own up to the Podlove draft; the audio approval comes as a separate mail.', 'sonoquill');
         $lines[] = '';
-        $lines[] = __('To approve: ', 'castsmith') . self::url($episodeId, 'skript');
+        $lines[] = __('To approve: ', 'sonoquill') . self::url($episodeId, 'skript');
 
         $subject = sprintf(
             /* translators: 1: approval status label, 2: short episode name, 3: version number, 4: estimated spoken minutes */
-            __('%1$s: %2$s · Version %3$d · ≈ %4$d min', 'castsmith'),
-            $status === EpisodeStatus::GATE_FAILED ? __('Text locked, please review', 'castsmith') : __('Text awaiting approval', 'castsmith'),
+            __('%1$s: %2$s · Version %3$d · ≈ %4$d min', 'sonoquill'),
+            $status === EpisodeStatus::GATE_FAILED ? __('Text locked, please review', 'sonoquill') : __('Text awaiting approval', 'sonoquill'),
             self::shortName($episode),
             max(1, $version),
             self::minutes($chars)
@@ -106,7 +106,7 @@ final class Notifier
 
         if (self::send($subject, implode("\n", $lines))) {
             EpisodeRepository::update($episodeId, ['text_notified_at' => current_time('mysql')]);
-            self::log($episodeId, __('Notification about the pending text approval sent.', 'castsmith'));
+            self::log($episodeId, __('Notification about the pending text approval sent.', 'sonoquill'));
         }
     }
 
@@ -127,7 +127,7 @@ final class Notifier
 
         $lines = [
             /* translators: %s: episode title */
-            sprintf(__('The episode “%s” has been mastered at Auphonic and is ready as a Podlove draft.', 'castsmith'), (string) $episode['episode_title']),
+            sprintf(__('The episode “%s” has been mastered at Auphonic and is ready as a Podlove draft.', 'sonoquill'), (string) $episode['episode_title']),
         ];
         if ($warning !== '') {
             $lines[] = '';
@@ -135,21 +135,21 @@ final class Notifier
         }
         if ($version > 1) {
             /* translators: %d: version number of the audio */
-            $lines[] = sprintf(__('This is version %d of the audio. Earlier mails about the audio approval of this episode are therefore outdated; the Podlove draft now contains this version.', 'castsmith'), $version);
+            $lines[] = sprintf(__('This is version %d of the audio. Earlier mails about the audio approval of this episode are therefore outdated; the Podlove draft now contains this version.', 'sonoquill'), $version);
         }
         $lines = array_merge($lines, [
             '',
             /* translators: 1: duration minutes, 2: duration seconds, 3: number of chapters */
-            sprintf(__('Duration: %1$d:%2$02d minutes, %3$d chapters.', 'castsmith'), intdiv($duration, 60000), intdiv($duration % 60000, 1000), count($chapters)),
+            sprintf(__('Duration: %1$d:%2$02d minutes, %3$d chapters.', 'sonoquill'), intdiv($duration, 60000), intdiv($duration % 60000, 1000), count($chapters)),
             '',
-            __('Listen and approve: ', 'castsmith') . self::url($episodeId),
+            __('Listen and approve: ', 'sonoquill') . self::url($episodeId),
             '',
-            __('Publishing is then done by hand in Podlove.', 'castsmith'),
+            __('Publishing is then done by hand in Podlove.', 'sonoquill'),
         ]);
 
         $subject = sprintf(
             /* translators: 1: short episode name, 2: version number, 3: duration minutes, 4: duration seconds */
-            __('Audio awaiting approval: %1$s · Version %2$d · %3$d:%4$02d', 'castsmith'),
+            __('Audio awaiting approval: %1$s · Version %2$d · %3$d:%4$02d', 'sonoquill'),
             self::shortName($episode),
             max(1, $version),
             intdiv($duration, 60000),
@@ -158,7 +158,7 @@ final class Notifier
 
         if (self::send($subject, implode("\n", $lines))) {
             EpisodeRepository::update($episodeId, ['audio_notified_at' => current_time('mysql')]);
-            self::log($episodeId, __('Notification about the pending audio approval sent.', 'castsmith'));
+            self::log($episodeId, __('Notification about the pending audio approval sent.', 'sonoquill'));
         }
     }
 
@@ -187,25 +187,25 @@ final class Notifier
         $title = trim((string) ($episode['episode_title'] ?? ''));
         if ($title === '') {
             /* translators: %d: episode ID */
-            $title = trim((string) ($episode['source_filename'] ?? '')) ?: sprintf(__('Episode %d', 'castsmith'), $episodeId);
+            $title = trim((string) ($episode['source_filename'] ?? '')) ?: sprintf(__('Episode %d', 'sonoquill'), $episodeId);
         }
 
         $body = implode("\n", [
             /* translators: %s: episode title */
-            sprintf(__('A step got stuck on “%s”.', 'castsmith'), $title),
+            sprintf(__('A step got stuck on “%s”.', 'sonoquill'), $title),
             '',
             /* translators: %s: name of the failed step */
-            sprintf(__('Step: %s', 'castsmith'), $step),
+            sprintf(__('Step: %s', 'sonoquill'), $step),
             /* translators: %s: error message */
-            sprintf(__('Message: %s', 'castsmith'), $message),
+            sprintf(__('Message: %s', 'sonoquill'), $message),
             '',
-            __('The episode view has a “Resume run” button: ', 'castsmith') . self::url($episodeId),
+            __('The episode view has a “Resume run” button: ', 'sonoquill') . self::url($episodeId),
         ]);
 
         /* translators: 1: short episode name, 2: name of the failed step */
-        if (self::send(sprintf(__('Error in %1$s · step %2$s', 'castsmith'), self::shortName($episode), $step), $body)) {
+        if (self::send(sprintf(__('Error in %1$s · step %2$s', 'sonoquill'), self::shortName($episode), $step), $body)) {
             /* translators: %s: name of the failed step */
-            self::log($episodeId, sprintf(__('Notification about the error in step “%s” sent.', 'castsmith'), $step));
+            self::log($episodeId, sprintf(__('Notification about the error in step “%s” sent.', 'sonoquill'), $step));
         }
     }
 
@@ -231,8 +231,8 @@ final class Notifier
         try {
             $ok = wp_mail(
                 self::recipients(),
-                '[Castsmith] ' . $subject,
-                $body . __("\n\n— Castsmith on ", 'castsmith') . wp_parse_url(home_url(), PHP_URL_HOST),
+                '[Sonoquill] ' . $subject,
+                $body . __("\n\n— Sonoquill on ", 'sonoquill') . wp_parse_url(home_url(), PHP_URL_HOST),
                 ['Content-Type: text/plain; charset=UTF-8']
             );
         } finally {
@@ -276,7 +276,7 @@ final class Notifier
      */
     private static function shortName(array $episode): string
     {
-        $fromSource = \Castsmith\Source\Sources::forEpisode($episode)->shortName($episode);
+        $fromSource = \Sonoquill\Source\Sources::forEpisode($episode)->shortName($episode);
         if ($fromSource !== '') {
             return $fromSource;
         }
@@ -284,12 +284,12 @@ final class Notifier
         $title = trim((string) ($episode['episode_title'] ?? ''));
 
         /* translators: %d: episode ID */
-        return mb_strimwidth($title !== '' ? $title : sprintf(__('Episode %d', 'castsmith'), (int) $episode['id']), 0, 60, '…');
+        return mb_strimwidth($title !== '' ? $title : sprintf(__('Episode %d', 'sonoquill'), (int) $episode['id']), 0, 60, '…');
     }
 
     private static function url(int $episodeId, string $tab = ''): string
     {
-        return \Castsmith\Admin\Urls::episode($episodeId, $tab);
+        return \Sonoquill\Admin\Urls::episode($episodeId, $tab);
     }
 
     /**
@@ -304,7 +304,7 @@ final class Notifier
     {
         global $wpdb;
 
-        $table = \Castsmith\Db\Schema::episodesTable();
+        $table = \Sonoquill\Db\Schema::episodesTable();
         $row = $wpdb->get_row(
             "SELECT CHAR_LENGTH(script_text) AS zeichen, duration_ms FROM {$table} WHERE duration_ms > 60000 AND script_text IS NOT NULL ORDER BY id DESC LIMIT 1",
             ARRAY_A

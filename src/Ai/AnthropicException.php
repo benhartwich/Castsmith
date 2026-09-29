@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
 final class AnthropicException extends \RuntimeException
 {

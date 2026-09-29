@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Support;
+namespace Sonoquill\Support;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
@@ -44,7 +44,7 @@ final class KeyStore
             throw new CryptoException(
                 sprintf(
                     /* translators: 1: name of the constant, 2: underlying error message */
-                    __('The constant %1$s in wp-config.php is unusable: %2$s Expected are 32 random bytes in Base64.', 'castsmith'),
+                    __('The constant %1$s in wp-config.php is unusable: %2$s Expected are 32 random bytes in Base64.', 'sonoquill'),
                     self::CONSTANT,
                     $e->getMessage()
                 ),
@@ -60,7 +60,7 @@ final class KeyStore
     {
         return sprintf(
             /* translators: %s: name of the constant */
-            __('The encryption key %s is missing from wp-config.php. Without it, no credentials will be saved.', 'castsmith'),
+            __('The encryption key %s is missing from wp-config.php. Without it, no credentials will be saved.', 'sonoquill'),
             self::CONSTANT
         );
     }

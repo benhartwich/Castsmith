@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
-use Castsmith\Settings\Options;
-use Castsmith\Voice\PronunciationDictionary;
+use Sonoquill\Settings\Options;
+use Sonoquill\Voice\PronunciationDictionary;
 
 /**
  * Assembles the prompt for the spoken script together with the dictionary list

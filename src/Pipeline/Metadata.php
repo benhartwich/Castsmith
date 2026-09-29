@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Ai\AnthropicClient;
-use Castsmith\Ai\MetadataPrompt;
-use Castsmith\Db\EpisodeRepository;
+use Sonoquill\Ai\AnthropicClient;
+use Sonoquill\Ai\MetadataPrompt;
+use Sonoquill\Db\EpisodeRepository;
 
 /**
  * The second call: title, descriptions, keywords, chapters and
@@ -32,7 +32,7 @@ final class Metadata
             $client = AnthropicClient::fromSettings();
             $sections = MetadataPrompt::sections($script);
 
-            $response = \Castsmith\Ai\BatchGate::complete(
+            $response = \Sonoquill\Ai\BatchGate::complete(
                 $client,
                 $episodeId,
                 'metadaten',
@@ -47,7 +47,7 @@ final class Metadata
 
             $data = $response->json();
             if ($data === null) {
-                throw new \RuntimeException(__('The response was not JSON.', 'castsmith'));
+                throw new \RuntimeException(__('The response was not JSON.', 'sonoquill'));
             }
 
             EpisodeRepository::update($episodeId, [
@@ -67,22 +67,22 @@ final class Metadata
 
             EpisodeRepository::log($episodeId, 'metadaten', sprintf(
                 /* translators: 1: number of chapters, 2: number of keywords, 3: input tokens, 4: output tokens, 5: estimated cost in US cents */
-                __('Generated: %1$d chapters, %2$d keywords. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'castsmith'),
+                __('Generated: %1$d chapters, %2$d keywords. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'sonoquill'),
                 count((array) ($data['chapters'] ?? [])),
                 count((array) ($data['keywords'] ?? [])),
                 $response->inputTokens,
                 $response->outputTokens,
                 number_format_i18n($response->estimatedCents(), 2)
             ));
-        } catch (\Castsmith\Ai\PendingBatch) {
+        } catch (\Sonoquill\Ai\PendingBatch) {
             return;
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'metadaten', __('Failed: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'metadaten', __('Failed: ', 'sonoquill') . $e->getMessage());
         }
 
         // The mail goes out only once editing, fact check and metadata are
         // all done; whichever finishes last sends it.
-        \Castsmith\Notify\Notifier::maybeTextReady($episodeId);
+        \Sonoquill\Notify\Notifier::maybeTextReady($episodeId);
     }
 
     /**

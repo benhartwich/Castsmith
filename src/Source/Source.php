@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Source;
+namespace Sonoquill\Source;
 
 /**
  * Where the text of an episode comes from.
@@ -15,7 +15,7 @@ namespace Castsmith\Source;
  *
  * The core ships with two sources (fact script upload, WordPress
  * post); further ones come from add-ons via the hook
- * `castsmith_register_sources`. Most methods have a neutral default in
+ * `sonoquill_register_sources`. Most methods have a neutral default in
  * AbstractSource; a simple source only overrides
  * id(), label(), description() and renderStartForm().
  */

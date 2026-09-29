@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Support;
+namespace Sonoquill\Support;
 
 /**
  * Evaluation of an episode's run log.

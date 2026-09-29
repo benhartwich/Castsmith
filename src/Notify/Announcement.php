@@ -1,15 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Notify;
+namespace Sonoquill\Notify;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\Schema;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\Schema;
 
 /**
  * A prepared e-mail that is sent exactly when a specific Podlove episode
@@ -70,7 +70,7 @@ final class Announcement
             delete_option(self::OPTION);
             if ($episodeId !== null) {
                 /* translators: %s: comma-separated list of recipient addresses */
-                EpisodeRepository::log($episodeId, 'mail', sprintf(__('Announcement sent to %s.', 'castsmith'), implode(', ', (array) $mail['to'])));
+                EpisodeRepository::log($episodeId, 'mail', sprintf(__('Announcement sent to %s.', 'sonoquill'), implode(', ', (array) $mail['to'])));
             }
 
             return;
@@ -78,7 +78,7 @@ final class Announcement
 
         if ($episodeId !== null) {
             /* translators: %s: comma-separated list of recipient addresses */
-            EpisodeRepository::log($episodeId, 'mail', sprintf(__('Announcement to %s failed; it remains queued.', 'castsmith'), implode(', ', (array) $mail['to'])));
+            EpisodeRepository::log($episodeId, 'mail', sprintf(__('Announcement to %s failed; it remains queued.', 'sonoquill'), implode(', ', (array) $mail['to'])));
         }
     }
 

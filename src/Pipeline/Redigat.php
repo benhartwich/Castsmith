@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Ai\AnthropicClient;
-use Castsmith\Ai\AnthropicException;
-use Castsmith\Ai\PromptLoader;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
+use Sonoquill\Ai\AnthropicClient;
+use Sonoquill\Ai\AnthropicException;
+use Sonoquill\Ai\PromptLoader;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
 
 /**
  * The fact script is turned into the spoken script.
@@ -32,23 +32,23 @@ final class Redigat
             $source = (string) ($episode['source_text'] ?? '');
 
             if (trim($source) === '') {
-                throw new AnthropicException(__('The episode has no fact script.', 'castsmith'));
+                throw new AnthropicException(__('The episode has no fact script.', 'sonoquill'));
             }
 
             $blocks = EpisodeRepository::decodeList($episode['source_blocks'] ?? null);
-            $document = \Castsmith\Text\SourceDocument::fromArray($blocks);
+            $document = \Sonoquill\Text\SourceDocument::fromArray($blocks);
             $vorlage = $blocks === [] ? $source : $document->forPrompt();
 
             EpisodeRepository::log($episodeId, 'redigat', sprintf(
                 /* translators: 1: model name, 2: length of the source text in characters */
-                __('Calling %1$s, source text %2$d characters.', 'castsmith'),
+                __('Calling %1$s, source text %2$d characters.', 'sonoquill'),
                 $client->model(),
                 mb_strlen($vorlage)
             ));
 
             // Set effort explicitly: without it, Opus 5.5 thinks at "medium",
             // Opus 5 at "high". "medium" is enough for the rewording.
-            $response = \Castsmith\Ai\BatchGate::complete(
+            $response = \Sonoquill\Ai\BatchGate::complete(
                 $client,
                 $episodeId,
                 'redigat',
@@ -71,7 +71,7 @@ final class Redigat
 
             EpisodeRepository::log($episodeId, 'redigat', sprintf(
                 /* translators: 1: script length in characters, 2: input tokens, 3: output tokens, 4: estimated cost in US cents */
-                __('Spoken script generated: %1$d characters. Tokens: %2$d in, %3$d out, estimated %4$s US cents.', 'castsmith'),
+                __('Spoken script generated: %1$d characters. Tokens: %2$d in, %3$d out, estimated %4$s US cents.', 'sonoquill'),
                 mb_strlen($script),
                 $response->inputTokens,
                 $response->outputTokens,
@@ -81,12 +81,12 @@ final class Redigat
             Gate::evaluate($episodeId);
             Scheduler::queueMetadata($episodeId);
             Scheduler::queueFactCheck($episodeId);
-        } catch (\Castsmith\Ai\PendingBatch) {
+        } catch (\Sonoquill\Ai\PendingBatch) {
             // The response arrives as a batch; the step is triggered again afterwards.
             return;
         } catch (\Throwable $e) {
             EpisodeRepository::update($episodeId, ['status' => EpisodeStatus::REDIGAT_FAILED]);
-            EpisodeRepository::log($episodeId, 'redigat', __('Failed: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'redigat', __('Failed: ', 'sonoquill') . $e->getMessage());
         }
     }
 }

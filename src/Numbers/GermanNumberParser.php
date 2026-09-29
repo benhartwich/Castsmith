@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Numbers;
+namespace Sonoquill\Numbers;
 
 /**
  * Converts German number words back into numbers.

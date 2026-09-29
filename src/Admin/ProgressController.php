@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Segments\SegmentRepository;
-use Castsmith\Settings\SettingsPage;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Segments\SegmentRepository;
+use Sonoquill\Settings\SettingsPage;
 
 /**
  * The state of an episode as JSON, for the live display in the episode view.

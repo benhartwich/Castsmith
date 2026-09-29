@@ -1,4 +1,4 @@
-=== Castsmith – AI Podcast Production ===
+=== Sonoquill – AI Podcast Production ===
 Contributors: yoursql719
 Tags: podcast, text to speech, voice clone, podlove, auphonic
 Requires at least: 6.9
@@ -12,7 +12,7 @@ Turns a fact script or a post into a finished podcast episode spoken with your o
 
 == Description ==
 
-Castsmith produces podcast episodes from text:
+Sonoquill produces podcast episodes from text:
 
 * **Sources:** upload a DOCX, paste text, pick a post or page of your site, or add your own source through a hook.
 * **Spoken script:** a language model rewrites the fact script for the ear — numbers as words, spoken transitions, a fixed opening and sign-off. Prompts are editable, in German and English.
@@ -22,7 +22,7 @@ Castsmith produces podcast episodes from text:
 * **Assembly:** pauses, opener, rotating music bridges between chapters, outro, chapter marks and a WebVTT transcript — with ffmpeg on the server, or in plain PHP with Auphonic adding the music.
 * **Publishing:** mastering with Auphonic and a Podlove draft with title, descriptions, chapters, transcript and an AI disclosure. The episode goes online only when you publish it.
 
-Castsmith is an open-source project without support. Bug reports and pull requests are welcome on GitHub.
+Sonoquill is an open-source project without support. Bug reports and pull requests are welcome on GitHub.
 
 = Requirements =
 
@@ -34,9 +34,9 @@ Castsmith is an open-source project without support. Bug reports and pull reques
 == Installation ==
 
 1. Install Podlove Podcast Publisher.
-2. Upload and activate Castsmith.
+2. Upload and activate Sonoquill.
 3. Add the encryption key to wp-config.php (see Requirements).
-4. Open Castsmith → Settings, enter the podcast details and API keys. The health checks show what is still missing.
+4. Open Sonoquill → Settings, enter the podcast details and API keys. The health checks show what is still missing.
 
 == Frequently Asked Questions ==
 
@@ -50,7 +50,7 @@ The interface is English with a German translation. Prompts and the number check
 
 = Can I use a voice that is not mine? =
 
-Only if you have the rights to it. The voice clone is created in your own ElevenLabs account; Castsmith only uses it.
+Only if you have the rights to it. The voice clone is created in your own ElevenLabs account; Sonoquill only uses it.
 
 == External services ==
 
@@ -74,8 +74,8 @@ Terms: https://auphonic.com/terms_of_service — Privacy: https://auphonic.com/p
 == Changelog ==
 
 = 0.3.0 =
-* Renamed to Castsmith.
-* Episode data is stored in uploads/castsmith/ (protected, movable with the castsmith_storage_dir filter); the storage check tests whether the folder can be downloaded from the web.
+* Renamed to Sonoquill.
+* Episode data is stored in uploads/sonoquill/ (protected, movable with the sonoquill_storage_dir filter); the storage check tests whether the folder can be downloaded from the web.
 * Admin texts are sanitised with an allowlist; admin output is escaped with wp_kses().
 * DOCX files are read without a bundled document library.
 * Database tables use the aaspf_ prefix; the upgrade works on MySQL as well as MariaDB.

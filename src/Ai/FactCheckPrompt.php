@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
 /**
  * Content-level verification of the spoken script against the source.
@@ -31,7 +31,7 @@ final class FactCheckPrompt
 
     public static function user(string $source, string $script): string
     {
-        $en = \Castsmith\Settings\Options::language() === 'en';
+        $en = \Sonoquill\Settings\Options::language() === 'en';
 
         return ($en ? "## Source, the fact script\n\n" : "## Vorlage, das Faktenskript\n\n") . trim($source)
             . ($en ? "\n\n---\n\n## Spoken script, to check\n\n" : "\n\n---\n\n## Sprechskript, zu prüfen\n\n") . trim($script);

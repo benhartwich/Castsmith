@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 
-use Castsmith\Settings\SettingsPage;
+use Sonoquill\Settings\SettingsPage;
 
 /**
  * All backend addresses in one place.

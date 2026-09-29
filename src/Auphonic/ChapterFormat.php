@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Auphonic;
+namespace Sonoquill\Auphonic;
 
 /**
  * Converts the measured chapter times into the line format that Auphonic expects.

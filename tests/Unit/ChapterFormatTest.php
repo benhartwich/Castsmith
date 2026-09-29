@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Auphonic\ChapterFormat;
+use Sonoquill\Auphonic\ChapterFormat;
 use PHPUnit\Framework\TestCase;
 
 final class ChapterFormatTest extends TestCase

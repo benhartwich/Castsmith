@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 /**
  * A paragraph or a heading of the fact script.

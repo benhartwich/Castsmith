@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
-use Castsmith\Voice\PronunciationDictionary;
+use Sonoquill\Voice\PronunciationDictionary;
 
 /**
  * The second call: title, descriptions, keywords, chapters.
@@ -34,7 +34,7 @@ final class MetadataPrompt
      */
     public static function user(array $sections): string
     {
-        $en = \Castsmith\Settings\Options::language() === 'en';
+        $en = \Sonoquill\Settings\Options::language() === 'en';
         $parts = [];
         foreach ($sections as $index => $section) {
             $parts[] = sprintf($en ? "### Section %d\n\n%s" : "### Abschnitt %d\n\n%s", $index + 1, trim($section));

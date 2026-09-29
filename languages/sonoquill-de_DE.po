@@ -1,8 +1,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Castsmith 0.3.0\n"
-"Report-Msgid-Bugs-To: https://github.com/benhartwich/castsmith/issues\n"
+"Project-Id-Version: Sonoquill 0.3.0\n"
+"Report-Msgid-Bugs-To: https://github.com/benhartwich/sonoquill/issues\n"
 "POT-Creation-Date: 2026-09-26T20:59:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
@@ -12,21 +12,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Domain: castsmith\n"
+"X-Domain: sonoquill\n"
 "X-Generator: WP-CLI 2.12.0\n"
 
 #. Plugin Name of the plugin
-#: castsmith.php
-msgid "Castsmith – AI Podcast Production"
-msgstr "Castsmith – KI-Podcast-Produktion"
+#: sonoquill.php
+msgid "Sonoquill – AI Podcast Production"
+msgstr "Sonoquill – KI-Podcast-Produktion"
 
 #. Plugin URI of the plugin
-#: castsmith.php
-msgid "https://github.com/benhartwich/castsmith"
-msgstr "https://github.com/benhartwich/castsmith"
+#: sonoquill.php
+msgid "https://github.com/benhartwich/sonoquill"
+msgstr "https://github.com/benhartwich/sonoquill"
 
 #. Description of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid ""
 "Turns a fact script, a post or a custom source into a finished podcast "
 "episode: speaking script via language model, number and fact checking, "
@@ -39,17 +39,17 @@ msgstr ""
 "und Podlove-Entwurf — mit zwei menschlichen Freigaben."
 
 #. Author of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid "Benjamin Hartwich"
 msgstr "Benjamin Hartwich"
 
 #. Author URI of the plugin
-#: castsmith.php
+#: sonoquill.php
 msgid "https://astroblog.org"
 msgstr "https://astroblog.org"
 
 #. translators: %s: running PHP version
-#: castsmith.php:43
+#: sonoquill.php:43
 #, php-format
 msgid ""
 "The plugin requires PHP 8.2 or newer, but is running under %s. It stays "
@@ -58,7 +58,7 @@ msgstr ""
 "Das Plugin braucht PHP 8.2 oder neuer, läuft aber unter %s. Es bleibt "
 "deaktiviert."
 
-#: castsmith.php:59
+#: sonoquill.php:59
 msgid ""
 "The Composer autoloader is missing. Run \"composer install\" in the plugin "
 "directory."
@@ -66,7 +66,7 @@ msgstr ""
 "Der Composer-Autoloader fehlt. Im Plugin-Verzeichnis \"composer install\" "
 "ausführen."
 
-#: castsmith.php:92
+#: sonoquill.php:92
 msgid "Startup failed — "
 msgstr "Start fehlgeschlagen — "
 
@@ -373,12 +373,12 @@ msgstr "Diese Folge gibt es nicht."
 
 #: src/Admin/EpisodesPage.php:44 src/Admin/EpisodesPage.php:45
 #: src/Settings/SettingsPage.php:95
-msgid "Castsmith"
-msgstr "Castsmith"
+msgid "Sonoquill"
+msgstr "Sonoquill"
 
 #: src/Admin/EpisodesPage.php:56 src/Admin/Overview.php:29
-msgid "Castsmith — Overview"
-msgstr "Castsmith — Übersicht"
+msgid "Sonoquill — Overview"
+msgstr "Sonoquill — Übersicht"
 
 #: src/Admin/EpisodesPage.php:57 src/Admin/EpisodesPage.php:166
 msgid "Overview"
@@ -1624,8 +1624,8 @@ msgid "Segment %1$d failed: %2$s"
 msgstr "Segment %1$d fehlgeschlagen: %2$s"
 
 #: src/Admin/PromptsPage.php:35
-msgid "Castsmith — Prompts"
-msgstr "Castsmith — Prompts"
+msgid "Sonoquill — Prompts"
+msgstr "Sonoquill — Prompts"
 
 #: src/Admin/PromptsPage.php:35 src/Admin/PromptsPage.php:68
 msgid "Prompts"
@@ -2753,11 +2753,11 @@ msgstr "Benachrichtigung über den Fehler im Schritt „%s“ verschickt."
 msgid ""
 "\n"
 "\n"
-"— Castsmith on "
+"— Sonoquill on "
 msgstr ""
 "\n"
 "\n"
-"— Castsmith auf "
+"— Sonoquill auf "
 
 #. translators: %d: number of digit sequences found outside break tags
 #: src/Numbers/ScriptGuard.php:40
@@ -3262,8 +3262,8 @@ msgstr ""
 "Einstellungen neu eintragen."
 
 #: src/Settings/SettingsPage.php:37
-msgid "Castsmith — Settings"
-msgstr "Castsmith — Einstellungen"
+msgid "Sonoquill — Settings"
+msgstr "Sonoquill — Einstellungen"
 
 #: src/Settings/SettingsPage.php:82
 msgid "checking …"

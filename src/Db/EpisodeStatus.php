@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Db;
+namespace Sonoquill\Db;
 
 /**
  * The states of an episode along the pipeline.
@@ -42,18 +42,18 @@ final class EpisodeStatus
     public static function labels(): array
     {
         return [
-            self::NEW             => __('New', 'castsmith'),
-            self::SOURCE_RUNNING     => __('Preparing source', 'castsmith'),
-            self::SOURCE_FAILED      => __('Preparation failed', 'castsmith'),
-            self::PARSED          => __('Imported', 'castsmith'),
-            self::REDIGAT_RUNNING => __('Editing in progress', 'castsmith'),
-            self::REDIGAT_FAILED  => __('Editing failed', 'castsmith'),
-            self::GATE_FAILED     => __('Numbers differ', 'castsmith'),
-            self::AWAITING_TEXT   => __('Awaiting text approval', 'castsmith'),
-            self::TEXT_APPROVED   => __('Text approved', 'castsmith'),
-            self::PRODUCING       => __('Auphonic is producing', 'castsmith'),
-            self::AWAITING_AUDIO  => __('Awaiting audio approval', 'castsmith'),
-            self::DONE            => __('Completed', 'castsmith'),
+            self::NEW             => __('New', 'sonoquill'),
+            self::SOURCE_RUNNING     => __('Preparing source', 'sonoquill'),
+            self::SOURCE_FAILED      => __('Preparation failed', 'sonoquill'),
+            self::PARSED          => __('Imported', 'sonoquill'),
+            self::REDIGAT_RUNNING => __('Editing in progress', 'sonoquill'),
+            self::REDIGAT_FAILED  => __('Editing failed', 'sonoquill'),
+            self::GATE_FAILED     => __('Numbers differ', 'sonoquill'),
+            self::AWAITING_TEXT   => __('Awaiting text approval', 'sonoquill'),
+            self::TEXT_APPROVED   => __('Text approved', 'sonoquill'),
+            self::PRODUCING       => __('Auphonic is producing', 'sonoquill'),
+            self::AWAITING_AUDIO  => __('Awaiting audio approval', 'sonoquill'),
+            self::DONE            => __('Completed', 'sonoquill'),
         ];
     }
 

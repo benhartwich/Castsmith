@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Ai\AnthropicClient;
-use Castsmith\Ai\FactCheckPrompt;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Text\SourceDocument;
+use Sonoquill\Ai\AnthropicClient;
+use Sonoquill\Ai\FactCheckPrompt;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Text\SourceDocument;
 
 /**
  * The content comparison, run after the number diff.
@@ -32,7 +32,7 @@ final class FactCheck
 
         try {
             $client = AnthropicClient::fromSettings();
-            $response = \Castsmith\Ai\BatchGate::complete(
+            $response = \Sonoquill\Ai\BatchGate::complete(
                 $client,
                 $episodeId,
                 'faktenpruefung',
@@ -44,7 +44,7 @@ final class FactCheck
 
             $data = $response->json();
             if ($data === null) {
-                throw new \RuntimeException(__('The response was not JSON.', 'castsmith'));
+                throw new \RuntimeException(__('The response was not JSON.', 'sonoquill'));
             }
 
             $findings = array_values(array_filter(
@@ -65,7 +65,7 @@ final class FactCheck
 
             EpisodeRepository::log($episodeId, 'faktenpruefung', sprintf(
                 /* translators: 1: number of fact-check findings, 2: number of severe findings, 3: input tokens, 4: output tokens, 5: estimated cost in US cents */
-                __('%1$d findings, %2$d of them severe. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'castsmith'),
+                __('%1$d findings, %2$d of them severe. Tokens: %3$d in, %4$d out, estimated %5$s US cents.', 'sonoquill'),
                 count($findings),
                 $severe,
                 $response->inputTokens,
@@ -74,15 +74,15 @@ final class FactCheck
             ));
 
             Gate::evaluate($episodeId);
-        } catch (\Castsmith\Ai\PendingBatch) {
+        } catch (\Sonoquill\Ai\PendingBatch) {
             return;
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'faktenpruefung', __('Failed: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'faktenpruefung', __('Failed: ', 'sonoquill') . $e->getMessage());
         }
 
         // The mail is only sent once the edited script, the fact check and the
         // metadata are all done; whichever finishes last sends it.
-        \Castsmith\Notify\Notifier::maybeTextReady($episodeId);
+        \Sonoquill\Notify\Notifier::maybeTextReady($episodeId);
     }
 
     /**

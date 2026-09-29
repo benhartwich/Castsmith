@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Rest;
+namespace Sonoquill\Rest;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.NoCaching -- Episode state changes between background jobs and must always be read fresh.
 // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\Schema;
-use Castsmith\Pipeline\Scheduler;
-use Castsmith\Settings\Options;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\Schema;
+use Sonoquill\Pipeline\Scheduler;
+use Sonoquill\Settings\Options;
 
 /**
  * The callback from Auphonic.
@@ -27,7 +27,7 @@ use Castsmith\Settings\Options;
  */
 final class AuphonicWebhook
 {
-    public const NAMESPACE = 'castsmith/v1';
+    public const NAMESPACE = 'sonoquill/v1';
     public const ROUTE     = '/auphonic/(?P<token>[A-Za-z0-9]{16,64})';
 
     public static function register(): void
@@ -99,8 +99,8 @@ final class AuphonicWebhook
 
         EpisodeRepository::log($episodeId, 'auphonic', sprintf(
             /* translators: %s: Auphonic production status reported in the callback */
-            __('Callback received, status "%s".', 'castsmith'),
-            $status !== '' ? $status : __('unknown', 'castsmith')
+            __('Callback received, status "%s".', 'sonoquill'),
+            $status !== '' ? $status : __('unknown', 'sonoquill')
         ));
 
         // No work is done in the callback itself: downloading the finished

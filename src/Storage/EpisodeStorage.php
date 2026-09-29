@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Storage;
+namespace Sonoquill\Storage;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_is_writable -- Checking the plugin's own storage directory, also from background jobs.
@@ -12,14 +12,14 @@ namespace Castsmith\Storage;
  * Storage for the segment audio files, transcripts and the local
  * pronunciation dictionary.
  *
- * By default a folder in uploads, `uploads/castsmith/data-<random>`,
+ * By default a folder in uploads, `uploads/sonoquill/data-<random>`,
  * protected by an .htaccess and an index.php. The random part is generated
  * once, so nobody can guess the folder. Under Apache the .htaccess blocks
  * direct access; nginx ignores it — the storage health check tests this with
  * a probe file and says what to do.
  *
  * A site that keeps private files elsewhere (for example above the web
- * root) can move the storage with the filter `castsmith_storage_dir`.
+ * root) can move the storage with the filter `sonoquill_storage_dir`.
  *
  * The database stores relative paths. Moving the root directory therefore
  * does not invalidate any row.
@@ -27,7 +27,7 @@ namespace Castsmith\Storage;
 final class EpisodeStorage
 {
     /** Name of the plugin's folder in uploads. */
-    public const UPLOADS_FOLDER = 'castsmith';
+    public const UPLOADS_FOLDER = 'sonoquill';
 
     /**
      * The plugin's folder in uploads, as path and URL. Public files (music)
@@ -66,7 +66,7 @@ final class EpisodeStorage
          *
          * @param string $dir Absolute path without trailing slash.
          */
-        $dir = apply_filters('castsmith_storage_dir', $default);
+        $dir = apply_filters('sonoquill_storage_dir', $default);
 
         return untrailingslashit(is_string($dir) && trim($dir) !== '' ? trim($dir) : $default);
     }
@@ -109,7 +109,7 @@ final class EpisodeStorage
 
         if (!is_dir($base) && !wp_mkdir_p($base)) {
             /* translators: %s: path of the storage directory */
-            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'castsmith'), $base));
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'sonoquill'), $base));
         }
 
         foreach ([$base . '/index.php' => "<?php\n// Silence is golden.\n", $base . '/.htaccess' => self::HTACCESS] as $file => $content) {
@@ -131,7 +131,7 @@ final class EpisodeStorage
 
         if (!is_dir($dir) && !wp_mkdir_p($dir)) {
             /* translators: %s: path of the episode directory */
-            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'castsmith'), $dir));
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'sonoquill'), $dir));
         }
 
         return $dir;
@@ -175,12 +175,12 @@ final class EpisodeStorage
 
         if (!is_dir($dir) && !wp_mkdir_p($dir)) {
             /* translators: %s: path of the directory */
-            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'castsmith'), $dir));
+            throw new \RuntimeException(sprintf(__('Directory could not be created: %s', 'sonoquill'), $dir));
         }
 
         if (file_put_contents($path, $bytes) === false) {
             /* translators: %s: absolute path of the file */
-            throw new \RuntimeException(sprintf(__('File could not be written: %s', 'castsmith'), $path));
+            throw new \RuntimeException(sprintf(__('File could not be written: %s', 'sonoquill'), $path));
         }
     }
 
@@ -252,16 +252,16 @@ final class EpisodeStorage
                 'writable' => is_writable($parent),
                 'path'     => $base,
                 'message'  => is_writable($parent)
-                    ? __('Will be created on the first run.', 'castsmith')
+                    ? __('Will be created on the first run.', 'sonoquill')
                     /* translators: %s: path of the parent directory of the storage */
-                    : sprintf(__('The parent directory %s is not writable.', 'castsmith'), $parent),
+                    : sprintf(__('The parent directory %s is not writable.', 'sonoquill'), $parent),
             ];
         }
 
         return [
             'writable' => is_writable($base),
             'path'     => $base,
-            'message'  => is_writable($base) ? __('Present and writable.', 'castsmith') : __('Present, but not writable.', 'castsmith'),
+            'message'  => is_writable($base) ? __('Present and writable.', 'sonoquill') : __('Present, but not writable.', 'sonoquill'),
         ];
     }
 

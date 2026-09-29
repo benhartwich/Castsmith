@@ -10,7 +10,7 @@ Podlove draft ◄── Auphonic ◄── assembly (Montage) ◄── speech s
       └──► audio approval ──► you publish
 ```
 
-Every step is a background job (Action Scheduler, group `castsmith`). Each step is idempotent: it can run again and continues where it stopped. Model calls can go through the Message Batches API (half price); a step then ends with `PendingBatch`, a poll job fetches the result and triggers the step again, which now finds the answer.
+Every step is a background job (Action Scheduler, group `sonoquill`). Each step is idempotent: it can run again and continues where it stopped. Model calls can go through the Message Batches API (half price); a step then ends with `PendingBatch`, a poll job fetches the result and triggers the step again, which now finds the answer.
 
 ## Sources (`src/Source`)
 
@@ -40,7 +40,7 @@ Segments are paragraphs (long ones split at sentence ends); each has a hash over
 
 ## Storage and secrets
 
-Working files live outside the web root if possible (`castsmith-data` next to the WordPress directory), otherwise in `wp-content` under a random name (the health check warns). API keys are encrypted with libsodium using `AASPF_ENCRYPTION_KEY` from `wp-config.php`; without the key nothing is stored.
+Working files live outside the web root if possible (`sonoquill-data` next to the WordPress directory), otherwise in `wp-content` under a random name (the health check warns). API keys are encrypted with libsodium using `AASPF_ENCRYPTION_KEY` from `wp-config.php`; without the key nothing is stored.
 
 ## Two human gates
 

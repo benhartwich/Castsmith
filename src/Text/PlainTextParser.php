@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 /**
  * Fallback path for the source import: pasted text instead of DOCX.

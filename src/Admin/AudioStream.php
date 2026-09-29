@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Recommended -- Read-only navigation parameters of admin screens.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 // phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fread -- Streaming and appending large audio files; WP_Filesystem would hold them in memory and is not set up in background jobs.
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Segments\SegmentRepository;
-use Castsmith\Settings\SettingsPage;
-use Castsmith\Storage\EpisodeStorage;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Segments\SegmentRepository;
+use Sonoquill\Settings\SettingsPage;
+use Sonoquill\Storage\EpisodeStorage;
 
 /**
  * Serves segment and episode audio to the admin area.
@@ -52,14 +52,14 @@ final class AudioStream
     public static function handle(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have permission to do this.', 'castsmith'), '', ['response' => 403]);
+            wp_die(esc_html__('You do not have permission to do this.', 'sonoquill'), '', ['response' => 403]);
         }
 
         check_admin_referer(self::NONCE);
 
         $relative = self::resolvePath();
         if ($relative === null) {
-            wp_die(esc_html__('This file does not exist.', 'castsmith'), '', ['response' => 404]);
+            wp_die(esc_html__('This file does not exist.', 'sonoquill'), '', ['response' => 404]);
         }
 
         $path = EpisodeStorage::absolutePath($relative);
@@ -71,7 +71,7 @@ final class AudioStream
         $base = realpath(EpisodeStorage::baseDir());
 
         if ($real === false || $base === false || !str_starts_with($real, $base . '/')) {
-            wp_die(esc_html__('This file does not exist.', 'castsmith'), '', ['response' => 404]);
+            wp_die(esc_html__('This file does not exist.', 'sonoquill'), '', ['response' => 404]);
         }
 
         self::stream($real);

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Numbers;
+namespace Sonoquill\Numbers;
 
 /**
  * Reads English number words back into numbers.

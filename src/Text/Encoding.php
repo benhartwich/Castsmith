@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Text;
+namespace Sonoquill\Text;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
@@ -52,13 +52,13 @@ final class Encoding
     {
         if (!is_readable($path)) {
             /* translators: %s: path of the file */
-            throw new \RuntimeException(sprintf(__('File is not readable: %s', 'castsmith'), $path));
+            throw new \RuntimeException(sprintf(__('File is not readable: %s', 'sonoquill'), $path));
         }
 
         $raw = file_get_contents($path);
         if ($raw === false) {
             /* translators: %s: path of the file */
-            throw new \RuntimeException(sprintf(__('File could not be read: %s', 'castsmith'), $path));
+            throw new \RuntimeException(sprintf(__('File could not be read: %s', 'sonoquill'), $path));
         }
 
         return self::normalizeLineEndings(self::toUtf8($raw));

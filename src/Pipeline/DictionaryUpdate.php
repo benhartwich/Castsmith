@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Ai\AnthropicClient;
-use Castsmith\Ai\DictionaryPrompt;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Voice\DictionaryWriter;
-use Castsmith\Voice\PronunciationDictionary;
+use Sonoquill\Ai\AnthropicClient;
+use Sonoquill\Ai\DictionaryPrompt;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Voice\DictionaryWriter;
+use Sonoquill\Voice\PronunciationDictionary;
 
 /**
  * Extends the pronunciation dictionary while the script is being generated.
@@ -45,14 +45,14 @@ final class DictionaryUpdate
         // Anything already in there is not submitted at all.
         $open = array_values(array_diff($candidates, $existing));
         if ($open === []) {
-            EpisodeRepository::log($episodeId, 'woerterbuch', __('All reported terms are already in the dictionary.', 'castsmith'));
+            EpisodeRepository::log($episodeId, 'woerterbuch', __('All reported terms are already in the dictionary.', 'sonoquill'));
 
             return;
         }
 
         try {
             $client = AnthropicClient::fromSettings();
-            $response = \Castsmith\Ai\BatchGate::complete(
+            $response = \Sonoquill\Ai\BatchGate::complete(
                 $client,
                 $episodeId,
                 'woerterbuch',
@@ -67,12 +67,12 @@ final class DictionaryUpdate
 
             $data = $response->json();
             if ($data === null) {
-                throw new \RuntimeException(__('The response was not JSON.', 'castsmith'));
+                throw new \RuntimeException(__('The response was not JSON.', 'sonoquill'));
             }
-        } catch (\Castsmith\Ai\PendingBatch) {
+        } catch (\Sonoquill\Ai\PendingBatch) {
             return;
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'woerterbuch', __('Proposal failed: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'woerterbuch', __('Proposal failed: ', 'sonoquill') . $e->getMessage());
 
             return;
         }
@@ -83,7 +83,7 @@ final class DictionaryUpdate
         if ($proposed === []) {
             EpisodeRepository::log($episodeId, 'woerterbuch', sprintf(
                 /* translators: %s: comma-separated list of checked terms */
-                __('No rule needed. Checked: %s.', 'castsmith'),
+                __('No rule needed. Checked: %s.', 'sonoquill'),
                 implode(', ', $open)
             ));
 
@@ -107,7 +107,7 @@ final class DictionaryUpdate
             // gets carried along in every future episode.
             if (!str_contains((string) $episode['script_text'], $grapheme)) {
                 /* translators: %s: the dictionary term */
-                $failed[] = sprintf(__('%s (not in the script)', 'castsmith'), $grapheme);
+                $failed[] = sprintf(__('%s (not in the script)', 'sonoquill'), $grapheme);
                 continue;
             }
 
@@ -136,12 +136,12 @@ final class DictionaryUpdate
 
         EpisodeRepository::log($episodeId, 'woerterbuch', sprintf(
             /* translators: 1: number of rules created, 2: list of added terms or empty, 3: note on terms left without a rule or empty, 4: note on terms that could not be created or empty, 5: ElevenLabs dictionary version ID */
-            __('%1$d rules created%2$s%3$s%4$s Bound version is now %5$s.', 'castsmith'),
+            __('%1$d rules created%2$s%3$s%4$s Bound version is now %5$s.', 'sonoquill'),
             count($added),
             $added === [] ? '' : ': ' . implode(', ', array_column($added, 'begriff')) . '.',
-            $skipped === [] ? '' : __(' Left without a rule: ', 'castsmith') . implode(', ', $skipped) . '.',
-            $failed === [] ? '' : __(' Could not create: ', 'castsmith') . implode('; ', $failed) . '.',
-            \Castsmith\Settings\Options::get('elevenlabs_dictionary_version_id')
+            $skipped === [] ? '' : __(' Left without a rule: ', 'sonoquill') . implode(', ', $skipped) . '.',
+            $failed === [] ? '' : __(' Could not create: ', 'sonoquill') . implode('; ', $failed) . '.',
+            \Sonoquill\Settings\Options::get('elevenlabs_dictionary_version_id')
         ));
     }
 }

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Numbers\NumberDiff;
+use Sonoquill\Numbers\NumberDiff;
 use PHPUnit\Framework\TestCase;
 
 final class NumberDiffTest extends TestCase

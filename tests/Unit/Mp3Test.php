@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Audio\Mp3;
+use Sonoquill\Audio\Mp3;
 use PHPUnit\Framework\TestCase;
 
 /**

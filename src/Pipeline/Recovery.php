@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Segments\SegmentRepository;
-use Castsmith\Storage\EpisodeStorage;
-use Castsmith\Support\RunLog;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Segments\SegmentRepository;
+use Sonoquill\Storage\EpisodeStorage;
+use Sonoquill\Support\RunLog;
 
 /**
  * Resumption of aborted runs.
@@ -35,22 +35,22 @@ final class Recovery
         $age = self::ageSeconds($episode);
 
         // An episode waiting for a batch is not stuck — it is waiting, for up to 24 hours.
-        if (\Castsmith\Ai\BatchGate::pendingFor((int) $episode['id']) !== null) {
+        if (\Sonoquill\Ai\BatchGate::pendingFor((int) $episode['id']) !== null) {
             return null;
         }
 
         if ($status === EpisodeStatus::SOURCE_RUNNING) {
-            $source = \Castsmith\Source\Sources::forEpisode($episode);
+            $source = \Sonoquill\Source\Sources::forEpisode($episode);
             $limit = $source->staleAfterSeconds();
             if ($limit > 0 && $age > $limit) {
                 /* translators: 1: source label, 2: human-readable time span */
-                return sprintf(__('%1$s: no progress for %2$s.', 'castsmith'), $source->label(), human_time_diff(time() - $age));
+                return sprintf(__('%1$s: no progress for %2$s.', 'sonoquill'), $source->label(), human_time_diff(time() - $age));
             }
         }
 
         if ($status === EpisodeStatus::REDIGAT_RUNNING && $age > self::STALE_REDIGAT_SECONDS) {
             /* translators: %s: human-readable time span */
-            return sprintf(__('The edit has been running for %s without progress.', 'castsmith'), human_time_diff(time() - $age));
+            return sprintf(__('The edit has been running for %s without progress.', 'sonoquill'), human_time_diff(time() - $age));
         }
 
         // A step that last ended with an error counts as stuck immediately
@@ -66,7 +66,7 @@ final class Recovery
 
         if ($status === EpisodeStatus::PRODUCING && $age > self::STALE_PRODUCTION_SECONDS) {
             /* translators: %s: human-readable time span */
-            return sprintf(__('Auphonic has not responded for %s.', 'castsmith'), human_time_diff(time() - $age));
+            return sprintf(__('Auphonic has not responded for %s.', 'sonoquill'), human_time_diff(time() - $age));
         }
 
         if ($status === EpisodeStatus::TEXT_APPROVED) {
@@ -75,7 +75,7 @@ final class Recovery
             if ($summary['gesamt'] > 0 && $summary['offen'] > 0 && $age > self::STALE_SYNTHESIS_SECONDS) {
                 return sprintf(
                     /* translators: 1: open segments, 2: total segments, 3: human-readable time span */
-                    __('%1$d of %2$d segments are still missing, and nothing has been added for %3$s.', 'castsmith'),
+                    __('%1$d of %2$d segments are still missing, and nothing has been added for %3$s.', 'sonoquill'),
                     $summary['offen'],
                     $summary['gesamt'],
                     human_time_diff(time() - $age)
@@ -84,7 +84,7 @@ final class Recovery
 
             $mix = (string) ($episode['mixed_audio_path'] ?? '');
             if ($summary['gesamt'] > 0 && $summary['offen'] === 0 && ($mix === '' || !EpisodeStorage::exists($mix))) {
-                return __('All segments are finished, but there is no assembled version.', 'castsmith');
+                return __('All segments are finished, but there is no assembled version.', 'sonoquill');
             }
         }
 
@@ -100,21 +100,21 @@ final class Recovery
     {
         $episode = EpisodeRepository::find($episodeId);
         if ($episode === null) {
-            return __('The episode does not exist.', 'castsmith');
+            return __('The episode does not exist.', 'sonoquill');
         }
 
         $status = (string) $episode['status'];
 
         if ($status === EpisodeStatus::SOURCE_RUNNING || $status === EpisodeStatus::SOURCE_FAILED) {
-            $message = \Castsmith\Source\Sources::forEpisode($episode)->resume($episodeId);
+            $message = \Sonoquill\Source\Sources::forEpisode($episode)->resume($episodeId);
 
-            return $message !== '' ? $message : __('This source could not be resumed; create the episode again.', 'castsmith');
+            return $message !== '' ? $message : __('This source could not be resumed; create the episode again.', 'sonoquill');
         }
 
         if ($status === EpisodeStatus::REDIGAT_RUNNING || $status === EpisodeStatus::REDIGAT_FAILED) {
             Scheduler::queueRedigat($episodeId);
 
-            return __('The edit has been rescheduled.', 'castsmith');
+            return __('The edit has been rescheduled.', 'sonoquill');
         }
 
         if ($status === EpisodeStatus::PRODUCING) {
@@ -122,25 +122,25 @@ final class Recovery
             // got lost. Checking costs nothing.
             Scheduler::queuePublish($episodeId);
 
-            return __('Checking with Auphonic whether the production is finished.', 'castsmith');
+            return __('Checking with Auphonic whether the production is finished.', 'sonoquill');
         }
 
         $summary = SegmentRepository::summary($episodeId);
 
         if ($summary['gesamt'] === 0) {
-            return __('There are no segments yet — that is what the "Generate audio" button is for.', 'castsmith');
+            return __('There are no segments yet — that is what the "Generate audio" button is for.', 'sonoquill');
         }
 
         if ($summary['offen'] > 0) {
             Scheduler::queueSynthesis($episodeId);
 
             /* translators: %d: number of missing segments */
-            return sprintf(__('The synthesis has been rescheduled, %d segments are still missing.', 'castsmith'), $summary['offen']);
+            return sprintf(__('The synthesis has been rescheduled, %d segments are still missing.', 'sonoquill'), $summary['offen']);
         }
 
         Scheduler::queueMontage($episodeId);
 
-        return __('The assembly has been rescheduled.', 'castsmith');
+        return __('The assembly has been rescheduled.', 'sonoquill');
     }
 
     /**
@@ -171,7 +171,7 @@ final class Recovery
             $stuck[] = [
                 'id'    => (int) $episode['id'],
                 /* translators: %d: episode ID */
-                'titel' => $title !== '' ? $title : sprintf(__('Episode %d', 'castsmith'), (int) $episode['id']),
+                'titel' => $title !== '' ? $title : sprintf(__('Episode %d', 'sonoquill'), (int) $episode['id']),
                 'grund' => $reason,
             ];
         }

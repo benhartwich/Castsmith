@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
 /**
  * Not an error: the model's response is delivered as a batch and is still pending.

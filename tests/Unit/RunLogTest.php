@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Support\RunLog;
+use Sonoquill\Support\RunLog;
 use PHPUnit\Framework\TestCase;
 
 /**

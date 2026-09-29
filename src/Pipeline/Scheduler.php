@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Jobs\Scheduler as JobScheduler;
+use Sonoquill\Jobs\Scheduler as JobScheduler;
 
 /**
  * Queues the pipeline steps as background jobs.
@@ -34,21 +34,21 @@ final class Scheduler
         add_action(self::HOOK_DAILY, [self::class, 'daily'], 10, 0);
         add_action('init', [self::class, 'ensureDaily'], 20);
 
-        \Castsmith\Ai\BatchGate::register();
+        \Sonoquill\Ai\BatchGate::register();
     }
 
     /**
      * Once a day: record the state of the services for the overview, clean up
      * collected batch responses after one week — and give add-ons the
      * opportunity to run their own tasks (such as creating an episode
-     * according to a calendar) via the `castsmith_daily` hook.
+     * according to a calendar) via the `sonoquill_daily` hook.
      */
     public static function daily(): void
     {
-        \Castsmith\Health\Registry::runAll();
-        \Castsmith\Ai\BatchGate::cleanup();
+        \Sonoquill\Health\Registry::runAll();
+        \Sonoquill\Ai\BatchGate::cleanup();
 
-        do_action('castsmith_daily');
+        do_action('sonoquill_daily');
     }
 
     /**
@@ -62,9 +62,9 @@ final class Scheduler
             return;
         }
 
-        if (!as_has_scheduled_action(self::HOOK_DAILY, [], \Castsmith\Jobs\Scheduler::GROUP)) {
+        if (!as_has_scheduled_action(self::HOOK_DAILY, [], \Sonoquill\Jobs\Scheduler::GROUP)) {
             $first = new \DateTimeImmutable('tomorrow 06:00', wp_timezone());
-            as_schedule_recurring_action($first->getTimestamp(), DAY_IN_SECONDS, self::HOOK_DAILY, [], \Castsmith\Jobs\Scheduler::GROUP);
+            as_schedule_recurring_action($first->getTimestamp(), DAY_IN_SECONDS, self::HOOK_DAILY, [], \Sonoquill\Jobs\Scheduler::GROUP);
         }
 
         set_transient('aaspf_taeglich_ok', 1, DAY_IN_SECONDS);

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Segments\Segmenter;
-use Castsmith\Segments\SegmentRepository;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Segments\Segmenter;
+use Sonoquill\Segments\SegmentRepository;
 
 /**
  * The chain between the two human gates runs on its own.
@@ -51,7 +51,7 @@ final class AutoChain
 
         $message = sprintf(
             /* translators: 1: total number of segments, 2: number of newly created segments */
-            __('Continuing automatically: %1$d segments, %2$d of them new. Synthesis is running, then montage and Auphonic.', 'castsmith'),
+            __('Continuing automatically: %1$d segments, %2$d of them new. Synthesis is running, then montage and Auphonic.', 'sonoquill'),
             $result['gesamt'],
             $result['angelegt']
         );
@@ -81,6 +81,6 @@ final class AutoChain
         }
 
         Scheduler::queueProduction($episodeId);
-        EpisodeRepository::log($episodeId, 'automatik', __('Montage complete, the episode is being sent to Auphonic automatically.', 'castsmith'));
+        EpisodeRepository::log($episodeId, 'automatik', __('Montage complete, the episode is being sent to Auphonic automatically.', 'sonoquill'));
     }
 }

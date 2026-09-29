@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Db;
+namespace Sonoquill\Db;
 
 // phpcs:disable PluginCheck.Security.DirectDB.UnescapedDBParameter -- Only table names from $wpdb->prefix are interpolated; all values go through $wpdb->prepare().
 // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery -- The plugin keeps episodes and segments in its own tables.
@@ -202,10 +202,10 @@ final class Schema
             self::moveMusic();
 
             // Storage paths are no longer settings (see EpisodeStorage).
-            $settings = get_option(\Castsmith\Settings\Options::OPTION);
+            $settings = get_option(\Sonoquill\Settings\Options::OPTION);
             if (is_array($settings) && (isset($settings['storage_dir']) || isset($settings['dictionary_file']))) {
                 unset($settings['storage_dir'], $settings['dictionary_file']);
-                update_option(\Castsmith\Settings\Options::OPTION, $settings, false);
+                update_option(\Sonoquill\Settings\Options::OPTION, $settings, false);
             }
         }
     }
@@ -218,7 +218,7 @@ final class Schema
     {
         $uploads = wp_upload_dir(null, false);
         $old = untrailingslashit((string) $uploads['basedir']) . '/aaspf-musik';
-        $new = \Castsmith\Audio\MusicBed::dir();
+        $new = \Sonoquill\Audio\MusicBed::dir();
 
         if (is_dir($old) && !file_exists($new) && wp_mkdir_p(dirname($new))) {
             @rename($old, $new); // phpcs:ignore WordPress.WP.AlternativeFunctions.rename_rename -- moving the plugin's own folder within uploads.

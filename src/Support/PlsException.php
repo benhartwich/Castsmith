@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Support;
+namespace Sonoquill\Support;
 
 final class PlsException extends \RuntimeException
 {

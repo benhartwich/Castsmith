@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Health\Checks;
+namespace Sonoquill\Health\Checks;
 
-use Castsmith\Health\CheckInterface;
-use Castsmith\Health\Result;
-use Castsmith\Storage\EpisodeStorage;
+use Sonoquill\Health\CheckInterface;
+use Sonoquill\Health\Result;
+use Sonoquill\Storage\EpisodeStorage;
 
 /**
  * Checks the storage location for the segment audio files.
@@ -24,14 +24,14 @@ final class StorageCheck implements CheckInterface
 
     public function label(): string
     {
-        return __('Audio storage', 'castsmith');
+        return __('Audio storage', 'sonoquill');
     }
 
     public function run(): Result
     {
         $status = EpisodeStorage::status();
         /* translators: %s: filesystem path of the audio storage directory */
-        $detail = sprintf(__('Path: %s', 'castsmith'), $status['path']);
+        $detail = sprintf(__('Path: %s', 'sonoquill'), $status['path']);
 
         if (!$status['writable']) {
             return Result::fail($status['message'], $detail);
@@ -40,28 +40,28 @@ final class StorageCheck implements CheckInterface
         $url = EpisodeStorage::url();
         if ($url === null) {
             return EpisodeStorage::isInsideDocroot()
-                ? Result::warn(__('Writable, but located inside the WordPress directory.', 'castsmith'), $detail . __(' Make sure the web server does not serve this folder.', 'castsmith'))
-                : Result::ok(__('Writable and outside the web directory.', 'castsmith'), $detail);
+                ? Result::warn(__('Writable, but located inside the WordPress directory.', 'sonoquill'), $detail . __(' Make sure the web server does not serve this folder.', 'sonoquill'))
+                : Result::ok(__('Writable and outside the web directory.', 'sonoquill'), $detail);
         }
 
         $reachable = self::probe($url);
         if ($reachable === null) {
-            return Result::warn(__('Writable; whether it is reachable from the web could not be tested.', 'castsmith'), $detail);
+            return Result::warn(__('Writable; whether it is reachable from the web could not be tested.', 'sonoquill'), $detail);
         }
 
         if ($reachable) {
             return Result::warn(
-                __('Writable, but the files can be downloaded from the web.', 'castsmith'),
+                __('Writable, but the files can be downloaded from the web.', 'sonoquill'),
                 $detail . ' ' . sprintf(
                     /* translators: 1: URL path of the storage folder, 2: name of the filter */
-                    __('The web server ignores the .htaccess in this folder (nginx does). Block the path %1$s in the server configuration, or move the storage outside the web directory with the filter %2$s.', 'castsmith'),
+                    __('The web server ignores the .htaccess in this folder (nginx does). Block the path %1$s in the server configuration, or move the storage outside the web directory with the filter %2$s.', 'sonoquill'),
                     (string) wp_parse_url($url, PHP_URL_PATH),
-                    'castsmith_storage_dir'
+                    'sonoquill_storage_dir'
                 )
             );
         }
 
-        return Result::ok(__('Writable and protected from direct access.', 'castsmith'), $detail);
+        return Result::ok(__('Writable and protected from direct access.', 'sonoquill'), $detail);
     }
 
     /**

@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith;
+namespace Sonoquill;
 
-use Castsmith\Db\Schema;
-use Castsmith\Jobs\Scheduler;
-use Castsmith\Settings\Options;
+use Sonoquill\Db\Schema;
+use Sonoquill\Jobs\Scheduler;
+use Sonoquill\Settings\Options;
 
 /**
  * What happens when the plugin is activated and deactivated.

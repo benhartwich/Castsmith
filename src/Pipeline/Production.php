@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
-use Castsmith\Auphonic\AuphonicClient;
-use Castsmith\Auphonic\ChapterFormat;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Podlove\SlugBuilder;
-use Castsmith\Rest\AuphonicWebhook;
-use Castsmith\Storage\EpisodeStorage;
+use Sonoquill\Auphonic\AuphonicClient;
+use Sonoquill\Auphonic\ChapterFormat;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Podlove\SlugBuilder;
+use Sonoquill\Rest\AuphonicWebhook;
+use Sonoquill\Storage\EpisodeStorage;
 
 /**
  * Step 10: the assembled raw mix is sent to Auphonic.
@@ -28,21 +28,21 @@ final class Production
 
         $mix = (string) ($episode['mixed_audio_path'] ?? '');
         if ($mix === '' || !EpisodeStorage::exists($mix)) {
-            EpisodeRepository::log($episodeId, 'auphonic', __('Aborted: there is no assembled mix.', 'castsmith'));
+            EpisodeRepository::log($episodeId, 'auphonic', __('Aborted: there is no assembled mix.', 'sonoquill'));
 
             return;
         }
 
         $title = trim((string) ($episode['episode_title'] ?? ''));
         if ($title === '') {
-            EpisodeRepository::log($episodeId, 'auphonic', __('Aborted: the episode has no title.', 'castsmith'));
+            EpisodeRepository::log($episodeId, 'auphonic', __('Aborted: the episode has no title.', 'sonoquill'));
 
             return;
         }
 
         $slug = (string) ($episode['podlove_slug'] ?? '');
         if ($slug === '') {
-            $slug = SlugBuilder::fromTitle($title, \Castsmith\Settings\Options::filePrefix());
+            $slug = SlugBuilder::fromTitle($title, \Sonoquill\Settings\Options::filePrefix());
             EpisodeRepository::update($episodeId, ['podlove_slug' => $slug]);
         }
 
@@ -85,18 +85,18 @@ final class Production
 
             EpisodeRepository::update($episodeId, [
                 'auphonic_production_uuid' => $uuid,
-                'status'                   => \Castsmith\Db\EpisodeStatus::PRODUCING,
+                'status'                   => \Sonoquill\Db\EpisodeStatus::PRODUCING,
             ]);
 
             EpisodeRepository::log($episodeId, 'auphonic', sprintf(
                 /* translators: 1: Auphonic production UUID, 2: uploaded file size, 3: webhook callback URL */
-                __('Production %1$s started, %2$s uploaded. The callback will arrive at %3$s.', 'castsmith'),
+                __('Production %1$s started, %2$s uploaded. The callback will arrive at %3$s.', 'sonoquill'),
                 $uuid,
                 size_format(EpisodeStorage::size($mix)),
                 AuphonicWebhook::url()
             ));
         } catch (\Throwable $e) {
-            EpisodeRepository::log($episodeId, 'auphonic', __('Failed: ', 'castsmith') . $e->getMessage());
+            EpisodeRepository::log($episodeId, 'auphonic', __('Failed: ', 'sonoquill') . $e->getMessage());
         }
     }
 }

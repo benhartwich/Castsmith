@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Source;
+namespace Sonoquill\Source;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
 /**
  * The registered sources.
  *
- * Add-ons register their source via the `castsmith_register_sources` hook:
+ * Add-ons register their source via the `sonoquill_register_sources` hook:
  *
- *     add_action('castsmith_register_sources', static function (): void {
- *         \Castsmith\Source\Sources::register(new MySource());
+ *     add_action('sonoquill_register_sources', static function (): void {
+ *         \Sonoquill\Source\Sources::register(new MySource());
  *     });
  *
  * The hook runs on first access, i.e. not before `init`.
@@ -31,7 +31,7 @@ final class Sources
         $id = $source->id();
         if (preg_match('/^[a-z0-9-]{1,32}$/', $id) !== 1) {
             /* translators: %s: the rejected source identifier */
-            throw new \InvalidArgumentException(sprintf(__('Invalid source identifier "%s".', 'castsmith'), $id));
+            throw new \InvalidArgumentException(sprintf(__('Invalid source identifier "%s".', 'sonoquill'), $id));
         }
 
         self::$sources[$id] = $source;
@@ -87,7 +87,7 @@ final class Sources
         self::register(new PostSource());
 
         if (function_exists('do_action')) {
-            do_action('castsmith_register_sources');
+            do_action('sonoquill_register_sources');
         }
     }
 }

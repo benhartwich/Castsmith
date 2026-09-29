@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Audio\AlignmentScaler;
+use Sonoquill\Audio\AlignmentScaler;
 use PHPUnit\Framework\TestCase;
 
 final class AlignmentScalerTest extends TestCase

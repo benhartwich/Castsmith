@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Ai\AnthropicResponse;
-use Castsmith\Ai\Pricing;
+use Sonoquill\Ai\AnthropicResponse;
+use Sonoquill\Ai\Pricing;
 use PHPUnit\Framework\TestCase;
 
 /**

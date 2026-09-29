@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Audio\MusicBed;
+use Sonoquill\Audio\MusicBed;
 use PHPUnit\Framework\TestCase;
 
 /**

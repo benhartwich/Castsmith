@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use Castsmith\Settings\Options;
-use Castsmith\Support\CryptoException;
+use Sonoquill\Settings\Options;
+use Sonoquill\Support\CryptoException;
 
 /**
  * Lean client for the Anthropic Messages API, built on the WordPress HTTP API.
@@ -36,16 +36,16 @@ final class AnthropicClient
         try {
             $key = Options::secret('anthropic_api_key');
         } catch (CryptoException $e) {
-            throw new AnthropicException(__('Anthropic credentials could not be read: ', 'castsmith') . $e->getMessage(), 0, $e);
+            throw new AnthropicException(__('Anthropic credentials could not be read: ', 'sonoquill') . $e->getMessage(), 0, $e);
         }
 
         if ($key === '') {
-            throw new AnthropicException(__('No Anthropic API key has been configured.', 'castsmith'));
+            throw new AnthropicException(__('No Anthropic API key has been configured.', 'sonoquill'));
         }
 
         $model = Options::get('anthropic_model');
         if ($model === '') {
-            throw new AnthropicException(__('No Anthropic model has been selected.', 'castsmith'));
+            throw new AnthropicException(__('No Anthropic model has been selected.', 'sonoquill'));
         }
 
         return new self($key, $model, Options::get('anthropic_workspace_id'));
@@ -120,7 +120,7 @@ final class AnthropicClient
 
         $id = (string) ($decoded['id'] ?? '');
         if ($id === '') {
-            throw new AnthropicException(__('The batch was submitted, but no identifier was returned.', 'castsmith'));
+            throw new AnthropicException(__('The batch was submitted, but no identifier was returned.', 'sonoquill'));
         }
 
         return $id;
@@ -146,18 +146,18 @@ final class AnthropicClient
     public function batchResults(string $resultsUrl): array
     {
         if (!str_starts_with($resultsUrl, 'https://api.anthropic.com/')) {
-            throw new AnthropicException(__('Unexpected address for batch results.', 'castsmith'));
+            throw new AnthropicException(__('Unexpected address for batch results.', 'sonoquill'));
         }
 
         $response = wp_remote_get($resultsUrl, ['timeout' => 120, 'headers' => $this->headers()]);
         if (is_wp_error($response)) {
-            throw new AnthropicException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
+            throw new AnthropicException(__('Connection failed: ', 'sonoquill') . $response->get_error_message());
         }
 
         $code = (int) wp_remote_retrieve_response_code($response);
         if ($code !== 200) {
             /* translators: %d: HTTP status code of the batch results request */
-            throw new AnthropicException(sprintf(__('Batch results: HTTP %d.', 'castsmith'), $code));
+            throw new AnthropicException(sprintf(__('Batch results: HTTP %d.', 'sonoquill'), $code));
         }
 
         $rows = [];
@@ -184,14 +184,14 @@ final class AnthropicClient
         if ($body !== null) {
             $json = wp_json_encode($body);
             if ($json === false) {
-                throw new AnthropicException(__('The request could not be encoded as JSON.', 'castsmith'));
+                throw new AnthropicException(__('The request could not be encoded as JSON.', 'sonoquill'));
             }
             $args['body'] = $json;
         }
 
         $response = wp_remote_request($url, $args);
         if (is_wp_error($response)) {
-            throw new AnthropicException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
+            throw new AnthropicException(__('Connection failed: ', 'sonoquill') . $response->get_error_message());
         }
 
         $decoded = json_decode((string) wp_remote_retrieve_body($response), true);
@@ -200,10 +200,10 @@ final class AnthropicClient
         if ($code !== 200 || !is_array($decoded)) {
             $message = is_array($decoded) && isset($decoded['error']['message'])
                 ? (string) $decoded['error']['message']
-                : __('no readable response', 'castsmith');
+                : __('no readable response', 'sonoquill');
 
             /* translators: 1: HTTP status code, 2: error message from the API */
-            throw new AnthropicException(sprintf(__('Anthropic responded with HTTP %1$d: %2$s', 'castsmith'), $code, $message));
+            throw new AnthropicException(sprintf(__('Anthropic responded with HTTP %1$d: %2$s', 'sonoquill'), $code, $message));
         }
 
         return $decoded;
@@ -246,7 +246,7 @@ final class AnthropicClient
 
         $body = wp_json_encode($payload);
         if ($body === false) {
-            throw new AnthropicException(__('The request could not be encoded as JSON.', 'castsmith'));
+            throw new AnthropicException(__('The request could not be encoded as JSON.', 'sonoquill'));
         }
 
         $response = wp_remote_post(self::ENDPOINT, [
@@ -256,7 +256,7 @@ final class AnthropicClient
         ]);
 
         if (is_wp_error($response)) {
-            throw new AnthropicException(__('Connection failed: ', 'castsmith') . $response->get_error_message());
+            throw new AnthropicException(__('Connection failed: ', 'sonoquill') . $response->get_error_message());
         }
 
         return self::decode(
@@ -280,7 +280,7 @@ final class AnthropicClient
                 : mb_substr($raw, 0, 300);
 
             /* translators: 1: HTTP status code, 2: error message or start of the raw response */
-            throw new AnthropicException(sprintf(__('Anthropic responded with HTTP %1$d: %2$s', 'castsmith'), $code, $message));
+            throw new AnthropicException(sprintf(__('Anthropic responded with HTTP %1$d: %2$s', 'sonoquill'), $code, $message));
         }
 
         self::ensureNotRefused($decoded);
@@ -300,10 +300,10 @@ final class AnthropicClient
     public static function ensureNotRefused(array $decoded): void
     {
         if ((string) ($decoded['stop_reason'] ?? '') === 'refusal') {
-            $category = (string) ($decoded['stop_details']['category'] ?? __('unknown', 'castsmith'));
+            $category = (string) ($decoded['stop_details']['category'] ?? __('unknown', 'sonoquill'));
 
             /* translators: %s: refusal category reported by the API */
-            throw new AnthropicException(sprintf(__('The request was not accepted (%s).', 'castsmith'), $category));
+            throw new AnthropicException(sprintf(__('The request was not accepted (%s).', 'sonoquill'), $category));
         }
     }
 
@@ -322,7 +322,7 @@ final class AnthropicClient
         if ($stopReason === 'max_tokens') {
             throw new AnthropicException(sprintf(
                 /* translators: 1: number of output tokens, 2: number of thinking tokens among them */
-                __('The response was aborted because the token limit was reached (%1$d output tokens, %2$d of them thinking).', 'castsmith'),
+                __('The response was aborted because the token limit was reached (%1$d output tokens, %2$d of them thinking).', 'sonoquill'),
                 (int) ($decoded['usage']['output_tokens'] ?? 0),
                 (int) ($decoded['usage']['output_tokens_details']['thinking_tokens'] ?? 0)
             ));
@@ -336,7 +336,7 @@ final class AnthropicClient
         }
 
         if (trim($text) === '') {
-            throw new AnthropicException(__('The response contains no text.', 'castsmith'));
+            throw new AnthropicException(__('The response contains no text.', 'sonoquill'));
         }
 
         return new AnthropicResponse(

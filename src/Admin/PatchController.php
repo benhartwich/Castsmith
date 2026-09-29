@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Admin;
+namespace Sonoquill\Admin;
 
 // phpcs:disable WordPress.Security.NonceVerification.Missing -- Every handler verifies its nonce first (guard() / check_ajax_referer()).
 
-use Castsmith\Audio\AlignmentScaler;
-use Castsmith\Audio\Ffmpeg;
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Segments\SegmentRepository;
-use Castsmith\Segments\SegmentStatus;
-use Castsmith\Settings\SettingsPage;
-use Castsmith\Storage\EpisodeStorage;
-use Castsmith\Voice\VoiceChanger;
+use Sonoquill\Audio\AlignmentScaler;
+use Sonoquill\Audio\Ffmpeg;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Segments\SegmentRepository;
+use Sonoquill\Segments\SegmentStatus;
+use Sonoquill\Settings\SettingsPage;
+use Sonoquill\Storage\EpisodeStorage;
+use Sonoquill\Voice\VoiceChanger;
 
 /**
  * Receives the passage recorded in the browser and replaces the segment.
@@ -34,7 +34,7 @@ final class PatchController
     public static function handle(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_send_json_error(['message' => __('You do not have permission to do this.', 'castsmith')], 403);
+            wp_send_json_error(['message' => __('You do not have permission to do this.', 'sonoquill')], 403);
         }
 
         check_ajax_referer(self::NONCE, 'nonce');
@@ -43,12 +43,12 @@ final class PatchController
         $segment = SegmentRepository::find($segmentId);
 
         if ($segment === null) {
-            wp_send_json_error(['message' => __('This segment does not exist.', 'castsmith')], 404);
+            wp_send_json_error(['message' => __('This segment does not exist.', 'sonoquill')], 404);
         }
 
         $recording = self::readUpload();
         if ($recording === null) {
-            wp_send_json_error(['message' => __('No recording was received.', 'castsmith')], 400);
+            wp_send_json_error(['message' => __('No recording was received.', 'sonoquill')], 400);
         }
 
         $episodeId = (int) $segment['episode_id'];
@@ -60,7 +60,7 @@ final class PatchController
             $relative = EpisodeStorage::segmentRelativePath($episodeId, (int) $segment['idx'], $changer->fileExtension());
             EpisodeStorage::write($relative, $audio);
 
-            $duration = \Castsmith\Audio\AudioEngine::durationMs(EpisodeStorage::absolutePath($relative));
+            $duration = \Sonoquill\Audio\AudioEngine::durationMs(EpisodeStorage::absolutePath($relative));
             $previous = (int) $segment['duration_ms'];
 
             SegmentRepository::update($segmentId, [
@@ -83,21 +83,21 @@ final class PatchController
 
             EpisodeRepository::log($episodeId, 'nachsprechen', sprintf(
                 /* translators: 1: segment number, 2: previous duration in seconds, 3: new duration in seconds */
-                __('Segment %1$d re-recorded. Before %2$s, now %3$s.', 'castsmith'),
+                __('Segment %1$d re-recorded. Before %2$s, now %3$s.', 'sonoquill'),
                 (int) $segment['idx'],
                 self::seconds($previous),
                 self::seconds((int) $duration)
             ));
 
             wp_send_json_success([
-                'message'  => __('Re-recorded. The mixdown has to be rendered again.', 'castsmith'),
+                'message'  => __('Re-recorded. The mixdown has to be rendered again.', 'sonoquill'),
                 'duration' => self::seconds((int) $duration),
                 'audioUrl' => AudioStream::segmentUrl($segmentId) . '&t=' . time(),
             ]);
         } catch (\Throwable $e) {
             EpisodeRepository::log($episodeId, 'nachsprechen', sprintf(
                 /* translators: 1: segment number, 2: error message */
-                __('Segment %1$d failed: %2$s', 'castsmith'),
+                __('Segment %1$d failed: %2$s', 'sonoquill'),
                 (int) $segment['idx'],
                 $e->getMessage()
             ));

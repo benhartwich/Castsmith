@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Podlove;
+namespace Sonoquill\Podlove;
 
 /**
  * Builds the identifier under which the episode is stored in Podlove.

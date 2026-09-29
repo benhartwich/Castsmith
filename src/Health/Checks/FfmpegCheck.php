@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Health\Checks;
+namespace Sonoquill\Health\Checks;
 
-use Castsmith\Health\CheckInterface;
-use Castsmith\Health\Result;
-use Castsmith\Settings\Options;
-use Castsmith\Support\ProcessRunner;
+use Sonoquill\Health\CheckInterface;
+use Sonoquill\Health\Result;
+use Sonoquill\Settings\Options;
+use Sonoquill\Support\ProcessRunner;
 
 /**
  * Checks ffmpeg and ffprobe.
@@ -36,14 +36,14 @@ final class FfmpegCheck implements CheckInterface
     public function run(): Result
     {
         // Not needed when the assembly runs in PHP on purpose or by fallback.
-        if (\Castsmith\Audio\AudioEngine::mode() === \Castsmith\Audio\AudioEngine::MODE_PHP) {
-            return Result::skip(__('Not needed: the assembly runs in PHP.', 'castsmith'));
+        if (\Sonoquill\Audio\AudioEngine::mode() === \Sonoquill\Audio\AudioEngine::MODE_PHP) {
+            return Result::skip(__('Not needed: the assembly runs in PHP.', 'sonoquill'));
         }
 
         if (!ProcessRunner::isAvailable()) {
             return Result::fail(
-                __('External programs cannot be called.', 'castsmith'),
-                __('Neither proc_open nor exec is available. Both are blocked in disable_functions.', 'castsmith')
+                __('External programs cannot be called.', 'sonoquill'),
+                __('Neither proc_open nor exec is available. Both are blocked in disable_functions.', 'sonoquill')
             );
         }
 
@@ -55,28 +55,28 @@ final class FfmpegCheck implements CheckInterface
 
         if ($ffmpegVersion === null && $ffprobeVersion === null) {
             return Result::fail(
-                __('Neither ffmpeg nor ffprobe can be called.', 'castsmith'),
+                __('Neither ffmpeg nor ffprobe can be called.', 'sonoquill'),
                 /* translators: 1: configured ffmpeg path or command, 2: configured ffprobe path or command */
-                sprintf(__('Looked for "%1$s" and "%2$s".', 'castsmith'), $ffmpeg, $ffprobe)
+                sprintf(__('Looked for "%1$s" and "%2$s".', 'sonoquill'), $ffmpeg, $ffprobe)
             );
         }
 
         if ($ffmpegVersion === null) {
             /* translators: %s: configured ffmpeg path or command */
-            return Result::fail(sprintf(__('ffmpeg cannot be called ("%s").', 'castsmith'), $ffmpeg));
+            return Result::fail(sprintf(__('ffmpeg cannot be called ("%s").', 'sonoquill'), $ffmpeg));
         }
 
         if ($ffprobeVersion === null) {
             return Result::warn(
                 /* translators: %s: configured ffprobe path or command */
-                sprintf(__('ffmpeg is available, but ffprobe cannot be called ("%s").', 'castsmith'), $ffprobe),
-                __('Without ffprobe, the segment durations and therefore the chapter times could not be measured.', 'castsmith')
+                sprintf(__('ffmpeg is available, but ffprobe cannot be called ("%s").', 'sonoquill'), $ffprobe),
+                __('Without ffprobe, the segment durations and therefore the chapter times could not be measured.', 'sonoquill')
             );
         }
 
         return Result::ok(
             /* translators: %s: ffmpeg version string */
-            sprintf(__('Available (%s).', 'castsmith'), $ffmpegVersion),
+            sprintf(__('Available (%s).', 'sonoquill'), $ffmpegVersion),
             sprintf('ffprobe: %s', $ffprobeVersion)
         );
     }

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Audio;
+namespace Sonoquill\Audio;
 
 /**
  * Opener and outro, attached automatically by the assembly step.
@@ -91,7 +91,7 @@ final class MusicBed
 
     public static function dir(): string
     {
-        return \Castsmith\Storage\EpisodeStorage::uploads()['dir'] . '/music';
+        return \Sonoquill\Storage\EpisodeStorage::uploads()['dir'] . '/music';
     }
 
     public static function file(string $slot): string
@@ -103,7 +103,7 @@ final class MusicBed
     {
         $path = self::file($slot);
 
-        return \Castsmith\Storage\EpisodeStorage::uploads()['url'] . '/music/' . $slot . '.mp3' . (is_readable($path) ? '?v=' . filemtime($path) : '');
+        return \Sonoquill\Storage\EpisodeStorage::uploads()['url'] . '/music/' . $slot . '.mp3' . (is_readable($path) ? '?v=' . filemtime($path) : '');
     }
 
     /**
@@ -113,7 +113,7 @@ final class MusicBed
      */
     public static function active(): array
     {
-        if (!\Castsmith\Settings\Options::flag('music_enabled')) {
+        if (!\Sonoquill\Settings\Options::flag('music_enabled')) {
             return ['opener' => null, 'outro' => null, 'trenner' => []];
         }
 

@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Jobs;
+namespace Sonoquill\Jobs;
 
-use Castsmith\Settings\SettingsPage;
+use Sonoquill\Settings\SettingsPage;
 
 /**
  * The "Schedule test job" button on the settings page.
@@ -23,7 +23,7 @@ final class AdminActions
     public static function handleSchedulePing(): void
     {
         if (!current_user_can(SettingsPage::CAPABILITY)) {
-            wp_die(esc_html__('You do not have permission to do this.', 'castsmith'), '', ['response' => 403]);
+            wp_die(esc_html__('You do not have permission to do this.', 'sonoquill'), '', ['response' => 403]);
         }
 
         check_admin_referer(self::NONCE_ACTION);
@@ -39,7 +39,7 @@ final class AdminActions
             60
         );
 
-        wp_safe_redirect(\Castsmith\Admin\Urls::settings());
+        wp_safe_redirect(\Sonoquill\Admin\Urls::settings());
         exit;
     }
 

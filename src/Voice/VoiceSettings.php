@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Voice;
+namespace Sonoquill\Voice;
 
-use Castsmith\Settings\Options;
+use Sonoquill\Settings\Options;
 
 /**
  * The voice settings of an episode.

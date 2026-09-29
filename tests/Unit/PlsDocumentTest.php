@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Tests\Unit;
+namespace Sonoquill\Tests\Unit;
 
-use Castsmith\Support\PlsDocument;
-use Castsmith\Support\PlsException;
+use Sonoquill\Support\PlsDocument;
+use Sonoquill\Support\PlsException;
 use PHPUnit\Framework\TestCase;
 
 final class PlsDocumentTest extends TestCase

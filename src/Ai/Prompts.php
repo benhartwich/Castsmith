@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Ai;
+namespace Sonoquill\Ai;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use Castsmith\Settings\Options;
-use Castsmith\Text\Encoding;
+use Sonoquill\Settings\Options;
+use Sonoquill\Text\Encoding;
 
 /**
  * The core prompts, per language.
@@ -40,7 +40,7 @@ final class Prompts
         $text = trim(self::raw($name)['text']);
         if ($text === '') {
             /* translators: %s: name of the prompt */
-            throw new AnthropicException(sprintf(__('The prompt "%s" is missing or empty.', 'castsmith'), $name));
+            throw new AnthropicException(sprintf(__('The prompt "%s" is missing or empty.', 'sonoquill'), $name));
         }
 
         return Options::fill($text);
@@ -119,7 +119,7 @@ final class Prompts
     {
         if (!in_array($name, self::NAMES, true)) {
             /* translators: %s: requested prompt name */
-            throw new \InvalidArgumentException(sprintf(__('Unknown prompt "%s".', 'castsmith'), $name));
+            throw new \InvalidArgumentException(sprintf(__('Unknown prompt "%s".', 'sonoquill'), $name));
         }
     }
 }

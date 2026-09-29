@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Pipeline;
+namespace Sonoquill\Pipeline;
 
 // phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are plain text for the run log and e-mails; they are escaped where they are displayed.
 
-use Castsmith\Db\EpisodeRepository;
-use Castsmith\Db\EpisodeStatus;
-use Castsmith\Numbers\NumberDiff;
-use Castsmith\Numbers\ScriptGuard;
+use Sonoquill\Db\EpisodeRepository;
+use Sonoquill\Db\EpisodeStatus;
+use Sonoquill\Numbers\NumberDiff;
+use Sonoquill\Numbers\ScriptGuard;
 
 /**
  * The number and content checks, applied to a stored episode.
@@ -29,13 +29,13 @@ final class Gate
         $episode = EpisodeRepository::find($episodeId);
         if ($episode === null) {
             /* translators: %d: episode ID */
-            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'castsmith'), $episodeId));
+            throw new \RuntimeException(sprintf(__('Episode %d does not exist.', 'sonoquill'), $episodeId));
         }
 
         $source = (string) ($episode['source_text'] ?? '');
         $script = (string) ($episode['script_text'] ?? '');
 
-        $diff = NumberDiff::compare($source, $script, \Castsmith\Settings\Options::language());
+        $diff = NumberDiff::compare($source, $script, \Sonoquill\Settings\Options::language());
         $guard = ScriptGuard::check($script);
 
         $acknowledged = EpisodeRepository::decodeList($episode['diff_acknowledged'] ?? null);
@@ -100,7 +100,7 @@ final class Gate
      */
     public static function sourceKeys(array $episode): array
     {
-        return \Castsmith\Source\Sources::forEpisode($episode)->blockingKeys($episode);
+        return \Sonoquill\Source\Sources::forEpisode($episode)->blockingKeys($episode);
     }
 
     /**

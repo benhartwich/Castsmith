@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Castsmith\Jobs;
+namespace Sonoquill\Jobs;
 
 /**
  * Example job. It does nothing except record that it ran.
