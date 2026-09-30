@@ -12,24 +12,39 @@ Turns a fact script or a post into a finished podcast episode spoken with your o
 
 == Description ==
 
-Sonoquill produces podcast episodes from text:
+Sonoquill turns written text into a finished podcast episode, spoken with your own voice clone. You keep writing — a fact script, a blog post, a page of your site — and Sonoquill does the rest: it rewrites the text for the ear, checks every number against your source, synthesises the audio, assembles music and chapters, has it mastered and hands you a ready Podlove draft.
 
-* **Sources:** upload a DOCX, paste text, pick a post or page of your site, or add your own source through a hook.
-* **Spoken script:** a language model rewrites the fact script for the ear — numbers as words, spoken transitions, a fixed opening and sign-off. Prompts are editable, in German and English.
-* **Checks:** a deterministic number gate compares every number, time and date of the source with the spoken script; a second model call looks for changed, missing or invented statements.
-* **Approval:** you read, edit and approve the text. An e-mail tells you when it is waiting.
-* **Voice:** speech synthesis with your ElevenLabs voice clone, segment by segment, with a growing pronunciation dictionary. Re-record single passages with your own voice if needed.
-* **Assembly:** pauses, opener, rotating music bridges between chapters, outro, chapter marks and a WebVTT transcript — with ffmpeg on the server, or in plain PHP with Auphonic adding the music.
-* **Publishing:** mastering with Auphonic and a Podlove draft with title, descriptions, chapters, transcript and an AI disclosure. The episode goes online only when you publish it.
+Nothing goes online on its own. There are two human approvals: you approve the spoken text, and you approve the finished audio.
 
-Sonoquill is an open-source project without support. Bug reports and pull requests are welcome on GitHub.
+Sonoquill grew out of the monthly sky-preview podcast of an astronomy club, where it produces every episode. It is released as open source in the hope that it is useful to others.
+
+= How an episode is made =
+
+1. **Source.** Upload a DOCX, paste text, or pick a post or page of your site. Developers can add their own sources through a hook.
+2. **Spoken script.** A language model (Anthropic Claude) rewrites the text for listening: numbers as words, spoken transitions, a fixed opening and sign-off. The prompts are editable, in German and English.
+3. **Checks.** A deterministic number check compares every number, time and date of the source with the spoken script. A second model call looks for changed, missing or invented statements.
+4. **Your first approval.** You read and edit the script in the browser. An e-mail tells you when it is waiting.
+5. **Voice.** ElevenLabs speaks the script segment by segment with your voice clone. A pronunciation dictionary with phonetic (IPA) rules grows with every episode. Single passages can be re-recorded with your own voice.
+6. **Assembly.** Pauses, opener, rotating music bridges between chapters, outro, chapter marks and a WebVTT transcript — with ffmpeg on your server, or in plain PHP with Auphonic adding the music.
+7. **Mastering and draft.** Auphonic masters the episode; Sonoquill creates a Podlove draft with title, descriptions, chapters, transcript and an AI disclosure.
+8. **Your second approval.** You listen and publish the episode in Podlove yourself.
+
+= Highlights =
+
+* **Numbers you can trust.** The number check is plain code, not a model: a date that changed between source and script blocks the approval until you confirm it.
+* **Your voice, your rules.** Works with your own ElevenLabs voice clone. With Eleven v4, phonetic (IPA) pronunciation rules take effect in German and other languages, not only in English.
+* **Transparent about AI.** Every episode carries a disclosure in the show notes, optionally also spoken at the end.
+* **Runs on ordinary hosting.** No ffmpeg? Sonoquill joins the audio in PHP and lets Auphonic mix the music. Health checks show what works on your server.
+* **Costs under control.** Model calls can run through the Anthropic Batch API at half price, and every episode shows what its model calls cost.
 
 = Requirements =
 
 * Podlove Podcast Publisher
 * API keys for Anthropic, ElevenLabs (with a voice clone you have the rights to) and Auphonic
-* An encryption key in wp-config.php: `define('AASPF_ENCRYPTION_KEY', '…');` — 32 random bytes, base64 encoded
+* An encryption key in wp-config.php: `define('AASPF_ENCRYPTION_KEY', '…');` — 32 random bytes, base64 encoded. The settings page suggests one.
 * Optional: ffmpeg and exec() for mixing the music on your own server
+
+Sonoquill is an open-source project without support. Bug reports and pull requests are welcome on [GitHub](https://github.com/benhartwich/sonoquill).
 
 == Installation ==
 
@@ -51,6 +66,22 @@ The interface is English with a German translation. Prompts and the number check
 = Can I use a voice that is not mine? =
 
 Only if you have the rights to it. The voice clone is created in your own ElevenLabs account; Sonoquill only uses it.
+
+= Are the raw recordings private? =
+
+Segment audio, transcripts and the pronunciation file are stored in `wp-content/uploads/sonoquill/data-<random>` with an .htaccess and an index.php. Apache honours the .htaccess; nginx does not. The storage health check tests with a probe file whether the folder can be downloaded and tells you what to do. On nginx, block it with a rule such as `location ~ ^/wp-content/uploads/sonoquill/data- { deny all; }`, or move the storage outside the web root with the `sonoquill_storage_dir` filter.
+
+= What does an episode cost? =
+
+That depends on your plans with Anthropic, ElevenLabs and Auphonic. Speech synthesis is billed per character of the spoken script, the model calls per token. Each episode lists the costs of its model calls, and the ElevenLabs health check shows the remaining character quota.
+
+= Does it publish anything automatically? =
+
+No. If you enable it, Sonoquill runs the chain on its own up to the text approval and again up to the Podlove draft, but the approvals and the publishing are always yours.
+
+= Is there support? =
+
+No. Sonoquill is maintained as a side project. Issues and pull requests on GitHub are welcome; answers may take a while.
 
 == External services ==
 
